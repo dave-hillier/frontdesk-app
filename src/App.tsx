@@ -41,12 +41,12 @@ class Home extends React.Component {
     return (
       <div className="home">
         <div className="home-header">
-          <img src={logo} className="home-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <h2>Test Page</h2>
         </div>
         <p className="home-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          Do something
         </p>
+        <div><i className="material-icons">face</i>Face</div>
       </div>
     );
   }
@@ -58,10 +58,11 @@ class TabChild extends React.Component {
       <div className="toolbar-tabs">
         <TabsContainer  >
           <Tabs tabId="simple-tab" menuOverflow={true}>
-            <Tab label="Tab one" />
-            <Tab label="Tab two" />
-            <Tab label="Tab three" />
-            <Tab label="Tab four" />
+            <Tab label="Check In" />
+            <Tab label="Room Billing" />
+            <Tab label="Check Out" />
+            <Tab label="Planner" />
+            <Tab label="Allocations" />
           </Tabs>
         </TabsContainer>
       </div>
@@ -105,17 +106,33 @@ const navItems = [{
   to: '/',
   icon: 'home',
 }, {
-  label: 'Page 1',
+  label: 'Guest Journey',
   to: '/page-1',
-  icon: 'bookmark',
+  icon: 'room_service',
 }, {
-  label: 'Page 2',
+  label: 'Profiles',
   to: '/page-2',
-  icon: 'donut_large',
+  icon: 'contact_mail',
 }, {
-  label: 'Page 3',
+  label: 'Conference & Banqueting',
   to: '/page-3',
-  icon: 'flight_land',
+  icon: 'event',
+}, {
+  label: 'Reporting',
+  to: '/page-3',
+  icon: 'show_chart',
+}, {
+  label: 'Accounting',
+  to: '/page-3',
+  icon: 'account_balance',
+}, {
+  label: 'Settings',
+  to: '/page-3',
+  icon: 'settings',
+}, {
+  label: 'Help',
+  to: '/page-3',
+  icon: 'help',
 }];
 
 class NavLink extends React.Component<{ to: string, exact?: boolean, icon: string, label: string }, {}> {
@@ -144,21 +161,30 @@ class NavLink extends React.Component<{ to: string, exact?: boolean, icon: strin
   }
 }
 const links = [{
-  label: 'Movies & TV',
-  icon: <FontIcon>ondemand_video</FontIcon>,
+  label: 'Check In',
+  icon: <FontIcon>room_service</FontIcon>,
 }, {
-  label: 'Music',
-  icon: <FontIcon>music_note</FontIcon>,
+  label: 'Room Billing',
+  icon: <FontIcon>receipt</FontIcon>,
 }, {
-  label: 'Books',
-  icon: <FontIcon>book</FontIcon>,
+  label: 'Check Out',
+  icon: <FontIcon>directions_walk</FontIcon>,
 }, {
-  label: 'Newsstand',
-  icon: <FontIcon iconClassName="fa fa-newspaper-o" />,
+  label: 'Planner',
+  icon: <FontIcon>list</FontIcon>,
+}, {
+  label: 'Allocations',
+  icon: <FontIcon>library_add</FontIcon>,
 }];
 
 class App extends React.Component {
   render() {
+    const bottomNavigation = (
+      <BottomNavigation
+        dynamic={true}
+        links={links}
+        colored={true}
+      />);
     const menubutton = (
       <MenuButton
         id="menu-button-2"
@@ -176,12 +202,12 @@ class App extends React.Component {
         render={({ location }) => (
           <NavigationDrawer
             className="nav-drawer"
-            drawerTitle={<h1>Drawer</h1>}
-            toolbarTitle={<div><img src={logo} className="toolbar-logo" alt="logo" /> Application</div>}
+            drawerTitle={<div>Rezlynx</div>}
+            toolbarTitle={<div><img src={logo} className="toolbar-logo" alt="logo" /> Guest Journey</div>}
             toolbarActions={<div>
               <Button key="search" icon={true}>search</Button>
               {menubutton}
-              <Avatar key="av" random={true}>XX</Avatar>
+              {!mobile ? <Avatar key="av" random={true}>DH</Avatar> : null}
             </div>}
             toolbarProminent={location.pathname === '/' && !mobile}
             toolbarChildren={location.pathname === '/' && !mobile ? <TabChild /> : null}
@@ -193,11 +219,8 @@ class App extends React.Component {
               <Route path="/page-2" location={location} component={Page1} />
               <Route path="/page-3" location={location} component={Home} />
             </Switch>
-            {location.pathname === '/' && mobile ? <BottomNavigation
-              dynamic={true}
-              links={links}
-              colored={true}
-            /> : null}
+
+            {mobile && bottomNavigation}
 
           </NavigationDrawer>
         )}
