@@ -1,0 +1,11 @@
+@import 'globals';
+
+$md-light-theme: true; // optional for light theme
+$md-primary-color: $md-grey-800;
+$md-secondary-color: $md-pink-a-400;
+
+@include react-md-everything;
+
+body {
+  margin: 0;
+}

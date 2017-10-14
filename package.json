@@ -1,0 +1,32 @@
+{
+  "name": "with-typescript",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-md": "^1.2.2",
+    "react-router-dom": "^4.2.2",
+    "webfontloader": "^1.6.28"
+  },
+  "devDependencies": {
+    "@types/jest": "^21.1.2",
+    "@types/node": "^8.0.34",
+    "@types/react": "^16.0.10",
+    "@types/react-dom": "^16.0.1",
+    "@types/react-router-dom": "^4.0.8",
+    "@types/webfontloader": "^1.6.29",
+    "node-sass-chokidar": "^0.0.3",
+    "npm-run-all": "^4.1.1",
+    "react-scripts-ts": "2.7.0"
+  },
+  "scripts": {
+    "build-css": "node-sass-chokidar --include-path ./node_modules src/ -o src/",
+    "watch-css": "npm run build-css && npm run build-css --watch --recursive",
+    "start-js": "react-scripts-ts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  }
+}
