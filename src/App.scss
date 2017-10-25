@@ -30,7 +30,7 @@
 
 // TODO: move to own file
 .toolbar-tabs {
-  background: #00b9f0;
+  background: $md-grey-800;//#00b9f0;
   bottom: 0;
   position: absolute;
   right: 0;
@@ -53,7 +53,23 @@
   height: 110px;
 }
 
+.md-drawer--fixed > header {
+  height: 144px; // relies on fixed with
+}
+
 .toolbar-logo {
-  height: 24px;
+  height: 36px;
   vertical-align: middle;
+}
+
+.drawer-header {
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin: 16px;
+}
+
+.toolbar-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

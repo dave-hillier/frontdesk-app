@@ -6,17 +6,15 @@ import {
   Card,
   CardTitle,
   CardText,
-  TabsContainer,
-  Tabs,
-  Tab,
   Button,
   Avatar,
-  MenuButton,
   BottomNavigation
 } from 'react-md';
 import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
 import './App.css';
+import Guests from './Guests';
+import GridPage from './GridPage';
 
 const logo = require('./logo.svg');
 export const MobileMinWidth = 320;
@@ -36,6 +34,17 @@ const mobile = matchesMedia(MobileMinWidth, TabletMinWidth - 1);
 // const tablet = matchesMedia(TabletMinWidth, DesktopMinWidth);
 // const desktop = matchesMedia(DesktopMinWidth);
 
+class DrawerHeader extends React.Component {
+  render() {
+    return (
+      <div className="drawer-header">
+        <h1><img src={logo} className="toolbar-logo" alt="logo" /> Rezlynx</h1>
+      </div>
+
+    );
+  }
+}
+
 class Home extends React.Component {
   render() {
     return (
@@ -47,24 +56,6 @@ class Home extends React.Component {
           Do something
         </p>
         <div><i className="material-icons">face</i>Face</div>
-      </div>
-    );
-  }
-}
-
-class TabChild extends React.Component {
-  render() {
-    return (
-      <div className="toolbar-tabs">
-        <TabsContainer  >
-          <Tabs tabId="simple-tab" menuOverflow={true}>
-            <Tab label="Check In" />
-            <Tab label="Room Billing" />
-            <Tab label="Check Out" />
-            <Tab label="Planner" />
-            <Tab label="Allocations" />
-          </Tabs>
-        </TabsContainer>
       </div>
     );
   }
@@ -107,31 +98,31 @@ const navItems = [{
   icon: 'home',
 }, {
   label: 'Guest Journey',
-  to: '/page-1',
+  to: '/guests',
   icon: 'room_service',
 }, {
   label: 'Profiles',
-  to: '/page-2',
+  to: '/profiles',
   icon: 'contact_mail',
 }, {
   label: 'Conference & Banqueting',
-  to: '/page-3',
+  to: '/cab',
   icon: 'event',
 }, {
   label: 'Reporting',
-  to: '/page-3',
+  to: '/reporting',
   icon: 'show_chart',
 }, {
   label: 'Accounting',
-  to: '/page-3',
+  to: '/accounting',
   icon: 'account_balance',
 }, {
   label: 'Settings',
-  to: '/page-3',
+  to: '/settings',
   icon: 'settings',
 }, {
   label: 'Help',
-  to: '/page-3',
+  to: '/help',
   icon: 'help',
 }];
 
@@ -185,37 +176,22 @@ class App extends React.Component {
         links={links}
         colored={true}
       />);
-    const menubutton = (
-      <MenuButton
-        id="menu-button-2"
-        icon={true}
-        menuItems={[
-          <ListItem key={1} primaryText="Item One" />,
-          <ListItem key={2} primaryText="Item Two" />,
-        ]}
-        centered={true}
-      >
-        more_vert
-      </MenuButton>);
     return (
       <Route
         render={({ location }) => (
           <NavigationDrawer
             className="nav-drawer"
-            drawerTitle={<div>Rezlynx</div>}
-            toolbarTitle={<div><img src={logo} className="toolbar-logo" alt="logo" /> Guest Journey</div>}
-            toolbarActions={<div>
+            drawerTitle={<DrawerHeader />}
+            toolbarTitle={<div>Planner</div>}
+            toolbarActions={<div className="toolbar-actions">
               <Button key="search" icon={true}>search</Button>
-              {menubutton}
-              {!mobile ? <Avatar key="av" random={true}>DH</Avatar> : null}
+              {!mobile ? <Avatar key="av">DH</Avatar> : null}
             </div>}
-            toolbarProminent={location.pathname === '/' && !mobile}
-            toolbarChildren={location.pathname === '/' && !mobile ? <TabChild /> : null}
             navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
           >
             <Switch key={location.key}>
-              <Route exact={true} path="/" location={location} component={Home} />
-              <Route path="/page-1" location={location} component={Page1} />
+              <Route exact={true} path="/" location={location} component={Guests} />
+              <Route path="/profiles" location={location} component={GridPage} />
               <Route path="/page-2" location={location} component={Page1} />
               <Route path="/page-3" location={location} component={Home} />
             </Switch>

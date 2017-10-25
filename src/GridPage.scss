@@ -1,0 +1,58 @@
+.grid-row {
+  height: 40px; // TODO: same height as toolbar -- or at least a multiple of 32 half size
+  vertical-align: middle;
+  display: flex; 
+  flex-direction: row;
+}
+
+.grid-row:nth-child(odd) { 
+  background-color:#f7f7f7; }
+
+.grid-row:nth-child(even)	{ 
+  background-color:#fff; 
+}
+
+.grid-cell {
+  min-width: 40px; 
+  line-height: 40px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.grid-row-header {
+  padding-left: 4px;
+}
+
+.grid-col-header {
+  min-width: 40px; 
+  vertical-align: middle;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.grid-row-headers {
+  min-width: 80px; 
+  vertical-align: middle;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  line-height: 40px;
+}
+
+.grid-container {
+  display: flex; 
+  flex-direction: row;
+}
+
+.grid-header-day-of-week {
+  margin-top: 4px;
+  font-size: x-small;
+
+}
+
+.grid-header-day-of-month {
+  margin-top: -2px;
+  margin-bottom: 4px;
+}
