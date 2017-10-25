@@ -6,9 +6,7 @@ import {
   Card,
   CardTitle,
   CardText,
-  Button,
-  Avatar,
-  Autocomplete
+  Avatar
 } from 'react-md';
 import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
@@ -16,6 +14,7 @@ import './App.css';
 import Guests from './Guests';
 import GridPage from './GridPage';
 import Grid2 from './Grid2';
+import SearchBox from './SearchBox';
 
 const logo = require('./logo.svg');
 export const MobileMinWidth = 320;
@@ -148,30 +147,6 @@ class NavLink extends React.Component<{ to: string, exact?: boolean, icon: strin
   }
 }
 
-class SearchBox extends React.Component<{}, { open: boolean }> {
-  constructor(props: {}) {
-    super(props);
-    this.state = { open: false };
-  }
-  render() {
-    return !this.state.open ?
-      <Button key="search" icon={true} onClick={() => this.setState({ open: true })}>search</Button> :
-      (
-        <div className="toolbar-actions">
-          <Button key="search" icon={true}>search</Button>
-          <Autocomplete
-            id="my-search"
-            label="Search Reservations"
-            placeholder="Reference, Name, etc"
-            data={['abc', 'def', 'dave hillier']}
-            filter={Autocomplete.caseInsensitiveFilter}
-          />
-          <Button key="close" icon={true} onClick={() => this.setState({ open: false })}>close</Button>
-        </div>
-      );
-  }
-}
-
 class App extends React.Component {
   render() {
     return (
@@ -182,7 +157,7 @@ class App extends React.Component {
             drawerTitle={<DrawerHeader />}
             toolbarTitle={<div>Planner</div>}
             toolbarActions={<div className="toolbar-actions">
-              <SearchBox />
+              <SearchBox data={['rez1', 'rez2', 'rez3']} />
               {!mobile ? <Avatar key="av">DH</Avatar> : null}
             </div>}
             navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
