@@ -8,18 +8,19 @@ import {
   CardText,
   Button,
   Avatar,
-  BottomNavigation
+  Autocomplete
 } from 'react-md';
 import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 import Guests from './Guests';
 import GridPage from './GridPage';
+import Grid2 from './Grid2';
 
 const logo = require('./logo.svg');
 export const MobileMinWidth = 320;
 export const TabletMinWidth = 768;
-// export const DesktopMinWidth = 1025;
+export const DesktopMinWidth = 1025;
 
 function matchesMedia(min: number, max?: number) {
   let media = `screen and (min-width: ${min}px)`;
@@ -31,8 +32,11 @@ function matchesMedia(min: number, max?: number) {
 }
 
 const mobile = matchesMedia(MobileMinWidth, TabletMinWidth - 1);
-// const tablet = matchesMedia(TabletMinWidth, DesktopMinWidth);
-// const desktop = matchesMedia(DesktopMinWidth);
+const tablet = matchesMedia(TabletMinWidth, DesktopMinWidth);
+const desktop = matchesMedia(DesktopMinWidth);
+
+// tslint:disable-next-line:no-console
+console.log('Mobile', mobile, 'Tablet', tablet, 'desktop', desktop);
 
 class DrawerHeader extends React.Component {
   render() {
@@ -61,7 +65,7 @@ class Home extends React.Component {
   }
 }
 
-class Page1 extends React.Component {
+class Cards extends React.Component {
   render() {
     return (
       <div className="md-grid md-text-container">
@@ -97,25 +101,17 @@ const navItems = [{
   to: '/',
   icon: 'home',
 }, {
-  label: 'Guest Journey',
-  to: '/guests',
+  label: 'Check In',
+  to: '/checkin',
   icon: 'room_service',
 }, {
-  label: 'Profiles',
-  to: '/profiles',
-  icon: 'contact_mail',
+  label: 'Planner',
+  to: '/planner',
+  icon: 'list',
 }, {
-  label: 'Conference & Banqueting',
-  to: '/cab',
-  icon: 'event',
-}, {
-  label: 'Reporting',
-  to: '/reporting',
-  icon: 'show_chart',
-}, {
-  label: 'Accounting',
-  to: '/accounting',
-  icon: 'account_balance',
+  label: 'Allocations',
+  to: '/allocations',
+  icon: 'library_add',
 }, {
   label: 'Settings',
   to: '/settings',
@@ -151,31 +147,33 @@ class NavLink extends React.Component<{ to: string, exact?: boolean, icon: strin
     );
   }
 }
-const links = [{
-  label: 'Check In',
-  icon: <FontIcon>room_service</FontIcon>,
-}, {
-  label: 'Room Billing',
-  icon: <FontIcon>receipt</FontIcon>,
-}, {
-  label: 'Check Out',
-  icon: <FontIcon>directions_walk</FontIcon>,
-}, {
-  label: 'Planner',
-  icon: <FontIcon>list</FontIcon>,
-}, {
-  label: 'Allocations',
-  icon: <FontIcon>library_add</FontIcon>,
-}];
+
+class SearchBox extends React.Component<{}, { open: boolean }> {
+  constructor(props: {}) {
+    super(props);
+    this.state = { open: false };
+  }
+  render() {
+    return !this.state.open ?
+      <Button key="search" icon={true} onClick={() => this.setState({ open: true })}>search</Button> :
+      (
+        <div className="toolbar-actions">
+          <Button key="search" icon={true}>search</Button>
+          <Autocomplete
+            id="my-search"
+            label="Search Reservations"
+            placeholder="Reference, Name, etc"
+            data={['abc', 'def', 'dave hillier']}
+            filter={Autocomplete.caseInsensitiveFilter}
+          />
+          <Button key="close" icon={true} onClick={() => this.setState({ open: false })}>close</Button>
+        </div>
+      );
+  }
+}
 
 class App extends React.Component {
   render() {
-    const bottomNavigation = (
-      <BottomNavigation
-        dynamic={true}
-        links={links}
-        colored={true}
-      />);
     return (
       <Route
         render={({ location }) => (
@@ -184,19 +182,18 @@ class App extends React.Component {
             drawerTitle={<DrawerHeader />}
             toolbarTitle={<div>Planner</div>}
             toolbarActions={<div className="toolbar-actions">
-              <Button key="search" icon={true}>search</Button>
+              <SearchBox />
               {!mobile ? <Avatar key="av">DH</Avatar> : null}
             </div>}
             navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
           >
             <Switch key={location.key}>
-              <Route exact={true} path="/" location={location} component={Guests} />
-              <Route path="/profiles" location={location} component={GridPage} />
-              <Route path="/page-2" location={location} component={Page1} />
-              <Route path="/page-3" location={location} component={Home} />
+              <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
+              <Route path="/planner" location={location} component={GridPage} />
+              <Route path="/allocations" location={location} component={Grid2} />
+              <Route path="/checkin" location={location} component={Cards} />
+              <Route path="/settings" location={location} component={Home} />
             </Switch>
-
-            {mobile && bottomNavigation}
 
           </NavigationDrawer>
         )}

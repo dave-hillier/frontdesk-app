@@ -71,7 +71,7 @@ export default class GridPage extends React.Component {
             key={'' + i + j}
             className="md-divider-border md-divider-border--right grid-cell"
           >
-            {Math.floor(Math.random() * 12) + 1}
+            &nbsp;
           </div>
         );
       }
