@@ -4,5 +4,10 @@
   overflow: hidden;
   background: pink;
   padding: 4px;
-  
+}
+
+.rez-row {
+  display: flex;
+  flex-direction: row;
+  flex-flow: row;
 }

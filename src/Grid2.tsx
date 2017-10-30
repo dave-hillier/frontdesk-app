@@ -8,19 +8,40 @@ function addDays(date: Date, days: number): Date {
   return dat;
 }
 
-export default class Grid2 extends React.Component {
-  render() {
-    const reservations = getReservations();
-    const rooms: any[] = reservations.filter(r => r.room).map(r => { return { room: r.room, rez: r }; });
+function randomHsl() {
+  return 'hsla(' + (Math.random() * 360) + ', 100%, 50%, 1)';
+}
 
-    let lookup: any = {};
-    for (let i = 0; i < rooms.length; ++i) {
-      if (rooms[i].room in lookup) {
-        lookup[rooms[i].room].push(rooms[i].rez);
-      } else {
-        lookup[rooms[i].room] = [rooms[i].rez];
-      }
+// TODO: move this out of here
+function getReservationsByRoom(): any {
+  const reservations = getReservations();
+  const rooms: any[] = reservations.filter(r => r.room).map(r => { return { room: r.room, rez: r }; });
+
+  let lookup: any = {};
+  for (let i = 0; i < rooms.length; ++i) {
+    if (rooms[i].room in lookup) {
+      lookup[rooms[i].room].push(rooms[i].rez);
+    } else {
+      lookup[rooms[i].room] = [rooms[i].rez];
     }
+  }
+
+  for (let i = 0; i < lookup.length; ++i) {
+    lookup[i].sort((a: any, b: any) => {
+      return new Date(a.arrival).getTime() - new Date(b.arrival).getTime();
+    });
+  }
+  return lookup;
+}
+
+// const nowUtc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+const now = new Date();
+const today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()); // TODO: ensure this updates
+
+export default class Grid2 extends React.Component {
+
+  render() {
+    const lookup = getReservationsByRoom();
 
     // tslint:disable-next-line:no-console
     console.log('rooms', lookup);
@@ -39,16 +60,18 @@ export default class Grid2 extends React.Component {
       if (i in lookup) {
         const roomReservations = lookup[i];
         const rez: {}[] = [];
+        // TODO: sort the rez in reverse order
+
         for (let j = 0; j < roomReservations.length; ++j) {
           const rs = {
             width: roomReservations[0].nights * 40 + 'px',
-            background: 'pink'
+            background: randomHsl()
           };
-          rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{lookup[i][0].lastName}<br /> {lookup[i][0].nights} nights</div>);
+          rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{lookup[i][j].lastName}<br /> {lookup[i][j].nights}---{new Date(lookup[i][j].arrival).toISOString()} </div>);
         }
-        rows.push(<div key={'RoomRow' + i} style={rowStyle}>{...rez}</div>);
+        rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row">{...rez}</div>);
       } else {
-        rows.push(<div key={'RoomRow' + i} style={rowStyle}>&nbsp;</div>);
+        rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row">&nbsp;</div>);
       }
     }
     const cellStyle = {
@@ -57,8 +80,7 @@ export default class Grid2 extends React.Component {
     const daysAhead = 40;
     const colHeaders = [];
     const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-    var today = new Date();
-    today.setHours(0, 0, 0, 0);
+
     for (let i = 0; i < daysAhead; ++i) {
       let date = addDays(today, i);
       colHeaders.push(<div key={'Day' + i} style={cellStyle}><div>{daysOfWeek[date.getDay()]}</div><div>{date.getDate()}</div></div>);
