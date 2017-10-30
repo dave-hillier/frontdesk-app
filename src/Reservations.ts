@@ -7,7 +7,7 @@ today.setHours(0, 0, 0, 0);
 
 const roomCount = 100;
 
-export const roomTypesList: string[] = ['Double', 'Twin', 'Suite'];
+export const roomTypesList: string[] = ['Double', 'Twin', 'Suite', 'Acc Double', 'Acc Twin', 'Acc Suite', 'Exec Doubl', 'Exec Twin', 'Exec Suite'];
 
 export const roomTypes: string[] = [];
 export const roomNames: string[] = []; // TODO: combine
