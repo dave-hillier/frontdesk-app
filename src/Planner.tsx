@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Planner.css';
-import { getReservations } from './Reservations';
+import { getReservationsByRoom } from './Reservations';
 
 function addDays(date: Date, days: number): Date {
   var dat = new Date(date);
@@ -8,36 +8,19 @@ function addDays(date: Date, days: number): Date {
   return dat;
 }
 
+function daysBetween(date1: Date, date2: Date): number {
+  const oneDay = 1000 * 60 * 60 * 24;
+  var difference = Math.abs(date1.getTime() - date2.getTime());
+  return Math.round(difference / oneDay);
+
+}
+
 function randomHsl() {
   return 'hsla(' + (Math.random() * 360) + ', 100%, 50%, 1)';
 }
 
-// TODO: move this out of here
-function getReservationsByRoom(): any {
-  const reservations = getReservations();
-  const rooms: any[] = reservations.filter(r => r.room).map(r => { return { room: r.room, rez: r }; });
-
-  let lookup: any = {};
-  for (let i = 0; i < rooms.length; ++i) {
-    if (rooms[i].room in lookup) {
-      lookup[rooms[i].room].push(rooms[i].rez);
-    } else {
-      lookup[rooms[i].room] = [rooms[i].rez];
-    }
-  }
-
-  for (let key in lookup) {
-    if (lookup.hasOwnProperty(key)) {
-      lookup[key].sort((a: any, b: any) => {
-        return new Date(a.arrival).getTime() - new Date(b.arrival).getTime();
-      });
-    }
-  }
-  return lookup;
-}
-
 // const nowUtc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-const now = new Date();
+const now = new Date('2017-10-25'); // new Date();
 const today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()); // TODO: ensure this updates
 
 export default class Planner extends React.Component {
@@ -50,26 +33,41 @@ export default class Planner extends React.Component {
     const rowStyle = {
       height: '40px',
     };
+    const rowHeaderStyle = {
+      ...rowStyle,
+      width: '80px'
+    };
     const numberOfRooms = 100;
     const rowHeaders = [];
     for (let i = 0; i < numberOfRooms; ++i) {
-      rowHeaders.push(<div key={'Room' + i} style={rowStyle}>Room {i}</div>);
+      rowHeaders.push(<div key={'Room' + i} style={rowHeaderStyle}>Room {i}</div>);
     }
 
     const rows = [];
-
+    let currentDate = today;
     for (let i = 0; i < numberOfRooms; ++i) {
       if (i in lookup) {
         const roomReservations = lookup[i];
         const rez: {}[] = [];
-        // TODO: sort the rez in reverse order
-
         for (let j = 0; j < roomReservations.length; ++j) {
+          const arrival = new Date(roomReservations[j].arrival);
+          const daysTillNext = daysBetween(arrival, currentDate);
+
+          if (daysTillNext > 0) {
+            const emptyStyle = {
+              width: daysTillNext * 40 + 'px',
+              background: 'lightgrey'
+            };
+            rez.push(<div key={'empty' + '_' + j + '_' + i} style={emptyStyle} className="rez-cell">Empty </div>);
+            currentDate = addDays(currentDate, daysTillNext);
+          }
           const rs = {
             width: roomReservations[0].nights * 40 + 'px',
             background: randomHsl()
           };
-          rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{lookup[i][j].lastName}<br />{new Date(lookup[i][j].arrival).toISOString()} </div>);
+          rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{roomReservations[j].lastName}<br />{arrival.toISOString()} </div>);
+          currentDate = addDays(currentDate, roomReservations[j].nights);
+
         }
         rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row">{...rez}</div>);
       } else {
@@ -90,7 +88,7 @@ export default class Planner extends React.Component {
 
     const c = {
       display: 'flex',
-      flexFlow: 'row wrap'
+      flexFlow: 'row'
     };
     const s0 = {
       background: 'blue',
@@ -111,18 +109,22 @@ export default class Planner extends React.Component {
       background: 'green'
     };
     return (
-      <div style={c}>
-        <div style={s1}>
-          <div style={s0}>
-            Corner
+      <div>
+        <div style={c}>
+          <div style={s1}>
+            <div style={s0}>
+              Corner
           </div>
-          {...colHeaders}
+            {...colHeaders}
+          </div>
         </div>
-        <div style={s2}>
-          {...rowHeaders}
-        </div>
-        <div style={s3}>
-          {...rows}
+        <div style={c}>
+          <div style={s2}>
+            {...rowHeaders}
+          </div>
+          <div style={s3}>
+            {...rows}
+          </div>
         </div>
       </div>
     );

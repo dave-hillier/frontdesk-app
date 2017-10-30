@@ -2,7 +2,6 @@ import * as React from 'react';
 import './Allocations.css';
 
 export default class Allocations extends React.Component {
-
   render() {
     const rows = this.buildGrid(3, 40);
 
