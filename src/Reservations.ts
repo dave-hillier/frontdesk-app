@@ -1,16 +1,20 @@
 
 import { addDays } from './dateHelpers';
+import { Chance } from 'chance';
 
 const today = new Date('2017-10-25');
 today.setHours(0, 0, 0, 0);
 
 const roomCount = 100;
 
+export const roomTypesList: string[] = ['DOUBLE', 'TWIN', 'SUITE', 'RoomType'];
+
+export const roomTypes: string[] = [];
+
 export interface ReservationData {
   firstName: string;
   lastName: string;
   email: string;
-  title: string;
   arrival: string; // TODO: change to date?
   nights: number;
   roomType: string;
@@ -21,16 +25,21 @@ export interface ReservationData {
 }
 
 let seed = 1;
+
+const chance = new Chance(seed);
+
 function pseudoRandom() {
-  const x = Math.sin(seed++) * 10000;
-  return x - Math.floor(x);
+  return chance.d100() / 100;
 }
 
 const roomReservations: ReservationData[][] = [];
 
 for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
+  const roomType = roomTypesList[roomTypesList.length * roomIndex / roomCount];
+  roomTypes.push(roomType);
+
   const room: ReservationData[] = roomReservations[roomIndex] = [];
-  let currentDate = addDays(today, -5);
+  let currentDate = addDays(today, -5); // Start 5 days before
   for (let num = Math.floor(pseudoRandom() * 10); num > 0; --num) {
     const dayBefore = Math.floor(pseudoRandom() * 8);
     const nights = 1 + Math.floor(pseudoRandom() * 7);
@@ -40,17 +49,16 @@ for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
     currentDate = departure;
 
     const item: ReservationData = {
-      firstName: 'Firstname',
-      lastName: 'Lastname',
-      email: 'Firstname.LastName@domain.com',
-      title: 'Mr',
+      firstName: chance.first(),
+      lastName: chance.last(),
+      email: chance.email(),
       arrival: arrival.toISOString(), // TODO: change to date?
       nights: nights,
-      roomType: 'string',
-      ref: 'string',
+      roomType: roomType,
+      ref: 'BK' + chance.ssn(),
       balance: nights * 100 + Math.floor(pseudoRandom() * 100),
       room: roomIndex,
-      ledger: pseudoRandom() > 0.7 ? 'string' : undefined,
+      ledger: pseudoRandom() > 0.7 ? 'Ledger ' + chance.d100() : undefined,
     };
     room.push(item);
   }
@@ -89,7 +97,6 @@ export function getResidents() {
   });
 }
 
-// TODO: move this out of here
 export function getReservationsByRoom(): any {
   const rooms: any[] = getReservations().filter(r => r.room).map(r => { return { room: r.room, rez: r }; });
 
@@ -112,3 +119,5 @@ export function getReservationsByRoom(): any {
 
   return lookup;
 }
+
+// TODO: get reservations by room type
