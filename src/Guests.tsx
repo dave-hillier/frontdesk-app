@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import {
   List,
   ListItem,
@@ -7,7 +6,6 @@ import {
   BottomNavigation,
   FontIcon
 } from 'react-md';
-
 import { ReservationDialog } from './ReservationDialog';
 import { getArrivals, getResidents, getDepartures } from './Reservations';
 

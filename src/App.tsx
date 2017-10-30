@@ -42,6 +42,7 @@ class DrawerHeader extends React.Component {
     return (
       <div className="drawer-header">
         <h1><img src={logo} className="toolbar-logo" alt="logo" /> Rezlynx</h1>
+        <h2>Some Hotel Site</h2>
       </div>
 
     );

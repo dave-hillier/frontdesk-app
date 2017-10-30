@@ -38,3 +38,7 @@ export function getResidents() {
       a.getTime() < today.getTime();
   });
 }
+
+export function getReservations() {
+  return mockData;
+}
