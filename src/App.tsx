@@ -46,22 +46,6 @@ class DrawerHeader extends React.Component {
   }
 }
 
-class Home extends React.Component {
-  render() {
-    return (
-      <div className="home">
-        <div className="home-header">
-          <h2>Test Page</h2>
-        </div>
-        <p className="home-intro">
-          Do something
-        </p>
-        <div><i className="material-icons">face</i>Face</div>
-      </div>
-    );
-  }
-}
-
 const navItems = [{
   exact: true,
   label: 'Home',
@@ -122,7 +106,6 @@ class App extends React.Component {
               <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
               <Route path="/planner" location={location} component={Planner} />
               <Route path="/allocations" location={location} component={Allocations} />
-              <Route path="/settings" location={location} component={Home} />
             </Switch>
 
           </NavigationDrawer>
