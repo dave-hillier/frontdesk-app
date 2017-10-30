@@ -8,9 +8,12 @@ function randomHsl() {
 }
 
 // TODO: break this up!
-// TODO: style this
+// TODO: style this - but avoid heights in styles as stuff will be fragile
 // TODO: limit how many we do per row up front, fetch more
 // const nowUtc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+// TODO: transparent create reservation...?
+// TODO: click to go to reservation
+// TODO: tooltips
 const now = new Date('2017-10-25'); // new Date();
 const today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()); // TODO: ensure this updates
 let maxDate = addDays(today, 30);
@@ -59,9 +62,7 @@ export default class Planner extends React.Component {
                   key={'empty' + '_' + j + '_' + i + '_' + k}
                   style={emptyStyle}
                   className="rez-empty-cell"
-                >
-                  {daysTillNext}
-                </div>
+                />
               );
 
             }

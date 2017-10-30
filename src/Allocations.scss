@@ -44,6 +44,7 @@
 .grid-container {
   display: flex; 
   flex-direction: row;
+  user-select: none;
 }
 
 .grid-header-day-of-week {

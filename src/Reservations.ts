@@ -27,6 +27,7 @@ export interface ReservationData {
 
 let seed = 1;
 
+// Generate fake data 
 const chance = new Chance(seed);
 
 function pseudoRandom() {

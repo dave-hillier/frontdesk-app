@@ -87,6 +87,11 @@ class NavLink extends React.Component<{ to: string, exact?: boolean, icon: strin
   }
 }
 
+const titles = {
+  '/planner': 'Planner',
+  '/allocations': 'Allocations'
+};
+
 class App extends React.Component {
   render() {
     return (
@@ -95,7 +100,7 @@ class App extends React.Component {
           <NavigationDrawer
             className="nav-drawer"
             drawerTitle={<DrawerHeader />}
-            toolbarTitle={<div>Planner</div>}
+            toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : 'Guests'}</div>}
             toolbarActions={<div className="toolbar-actions">
               <SearchBox data={['rez1', 'rez2', 'rez3']} />
               {!mobile ? <Avatar key="av">DH</Avatar> : null}
