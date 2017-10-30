@@ -4,7 +4,7 @@ import './GridPage.css';
 export default class GridPage extends React.Component {
 
   render() {
-    const rows = this.buildGrid();
+    const rows = this.buildGrid(4, 40);
 
     return (
       <div className="grid-container">
@@ -20,15 +20,16 @@ export default class GridPage extends React.Component {
 
   private rowHeaders() {
     const rows: {}[] = [];
+    const roomTypes: string[] = ['', 'DOUBLE', 'TWIN', 'SUITE', 'EXEC_DOUBLE'];
 
-    for (let i = 0; i < 40; ++i) {
+    for (let i = 0; i < roomTypes.length; ++i) {
       rows.push(
         <div
           key={'row' + i}
           // tslint:disable-next-line:max-line-length
           className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header"
         >
-          {i !== 0 ? 'Room ' + i : ''}
+          {roomTypes[i]}
         </div>);
     }
     return rows;
@@ -58,14 +59,14 @@ export default class GridPage extends React.Component {
       </div>);
   }
 
-  private buildGrid() {
-    const rows: {}[] = [
+  private buildGrid(rows: number, cols: number) {
+    const r: {}[] = [
       this.colHeaders()
     ];
 
-    for (let i = 0; i < 40; ++i) {
+    for (let i = 0; i < rows; ++i) {
       const c: {}[] = [];
-      for (let j = 0; j < 40; ++j) {
+      for (let j = 0; j < cols; ++j) {
         c.push(
           <div
             key={'' + i + j}
@@ -75,7 +76,7 @@ export default class GridPage extends React.Component {
           </div>
         );
       }
-      rows.push(
+      r.push(
         <div
           key={'row' + i}
           className="md-divider-border md-divider-border--bottom grid-row"
@@ -83,6 +84,6 @@ export default class GridPage extends React.Component {
           {...c}
         </div>);
     }
-    return rows;
+    return r;
   }
 }
