@@ -46,17 +46,19 @@ export class ReservationDialog extends React.Component<{ isMobile: boolean }, { 
           <Toolbar
             fixed={true}
             colored={true}
-            title="New Event"
+            title="Reservation"
             titleId="simple-full-page-dialog-title"
             nav={<Button icon={true} onClick={this.hide}>close</Button>}
             actions={<Button flat={true} onClick={this.hide}>Save</Button>}
           />
           <section className="md-toolbar-relative">
-            <TextField id="event-email" placeholder="Email" block={true} paddedBlock={true} />
+            <TextField id="reservation-email" placeholder="Email" block={true} paddedBlock={true} />
             <Divider />
-            <TextField id="event-name" placeholder="Event name" block={true} paddedBlock={true} />
+            <TextField id="reservation-firtname" placeholder="First Name(s)" block={true} paddedBlock={true} />
             <Divider />
-            <TextField id="event-desc" placeholder="Description" block={true} paddedBlock={true} rows={4} />
+            <TextField id="reservation-surename" placeholder="Surname" block={true} paddedBlock={true} />
+            <Divider />
+            <TextField id="reservation-desc" placeholder="Description" block={true} paddedBlock={true} rows={4} />
           </section>
         </DialogContainer>
       </div>
