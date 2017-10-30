@@ -1,10 +1,10 @@
 import * as React from 'react';
-import './Grid2.css';
+import './Planner.css';
 import { getReservations } from './Reservations';
 
 function addDays(date: Date, days: number): Date {
   var dat = new Date(date);
-  dat.setDate(dat.getDate() + days);
+  dat.setDate(dat.getDate() + days); // TODO: does this work across month boundaries?
   return dat;
 }
 
@@ -26,10 +26,12 @@ function getReservationsByRoom(): any {
     }
   }
 
-  for (let i = 0; i < lookup.length; ++i) {
-    lookup[i].sort((a: any, b: any) => {
-      return new Date(a.arrival).getTime() - new Date(b.arrival).getTime();
-    });
+  for (let key in lookup) {
+    if (lookup.hasOwnProperty(key)) {
+      lookup[key].sort((a: any, b: any) => {
+        return new Date(a.arrival).getTime() - new Date(b.arrival).getTime();
+      });
+    }
   }
   return lookup;
 }
@@ -38,7 +40,7 @@ function getReservationsByRoom(): any {
 const now = new Date();
 const today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()); // TODO: ensure this updates
 
-export default class Grid2 extends React.Component {
+export default class Planner extends React.Component {
 
   render() {
     const lookup = getReservationsByRoom();
@@ -67,7 +69,7 @@ export default class Grid2 extends React.Component {
             width: roomReservations[0].nights * 40 + 'px',
             background: randomHsl()
           };
-          rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{lookup[i][j].lastName}<br /> {lookup[i][j].nights}---{new Date(lookup[i][j].arrival).toISOString()} </div>);
+          rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{lookup[i][j].lastName}<br />{new Date(lookup[i][j].arrival).toISOString()} </div>);
         }
         rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row">{...rez}</div>);
       } else {

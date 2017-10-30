@@ -142,7 +142,7 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
 
       const { children } = this.state;
       return (
-        <div>
+        <div className="md-grid">
           <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
           {children}
           <BottomNavigation links={links} dynamic={false} onNavChange={e => this.handleNavChange(e)} />

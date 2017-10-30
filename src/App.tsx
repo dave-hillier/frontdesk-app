@@ -9,8 +9,8 @@ import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 import Guests from './Guests';
-import GridPage from './GridPage';
-import Grid2 from './Grid2';
+import Allocations from './Allocations';
+import Planner from './Planner';
 import SearchBox from './SearchBox';
 
 const logo = require('./logo.svg');
@@ -68,10 +68,6 @@ const navItems = [{
   to: '/',
   icon: 'home',
 }, {
-  label: 'Check In',
-  to: '/checkin',
-  icon: 'room_service',
-}, {
   label: 'Planner',
   to: '/planner',
   icon: 'list',
@@ -79,14 +75,6 @@ const navItems = [{
   label: 'Allocations',
   to: '/allocations',
   icon: 'library_add',
-}, {
-  label: 'Settings',
-  to: '/settings',
-  icon: 'settings',
-}, {
-  label: 'Help',
-  to: '/help',
-  icon: 'help',
 }];
 
 class NavLink extends React.Component<{ to: string, exact?: boolean, icon: string, label: string }, {}> {
@@ -132,8 +120,8 @@ class App extends React.Component {
           >
             <Switch key={location.key}>
               <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
-              <Route path="/planner" location={location} component={GridPage} />
-              <Route path="/allocations" location={location} component={Grid2} />
+              <Route path="/planner" location={location} component={Planner} />
+              <Route path="/allocations" location={location} component={Allocations} />
               <Route path="/settings" location={location} component={Home} />
             </Switch>
 

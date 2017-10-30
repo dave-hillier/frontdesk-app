@@ -1,10 +1,10 @@
 import * as React from 'react';
-import './GridPage.css';
+import './Allocations.css';
 
-export default class GridPage extends React.Component {
+export default class Allocations extends React.Component {
 
   render() {
-    const rows = this.buildGrid(4, 40);
+    const rows = this.buildGrid(3, 40);
 
     return (
       <div className="grid-container">
@@ -20,7 +20,7 @@ export default class GridPage extends React.Component {
 
   private rowHeaders() {
     const rows: {}[] = [];
-    const roomTypes: string[] = ['', 'DOUBLE', 'TWIN', 'SUITE', 'EXEC_DOUBLE'];
+    const roomTypes: string[] = ['', 'DOUBLE', 'TWIN', 'SUITE'];
 
     for (let i = 0; i < roomTypes.length; ++i) {
       rows.push(
