@@ -36,7 +36,7 @@ function addDays(date: Date, days: number) {
   return dat;
 }
 
-function residentList(): {}[] {
+function residentList(f: any): {}[] {
   const residents = getResidents();
   const result: {}[] = [];
   for (let i = 0; i < residents.length; ++i) {
@@ -50,13 +50,14 @@ function residentList(): {}[] {
         primaryText={firstLine}
         secondaryText={`Departs ${departs}\nBalance £${balance}`}
         threeLines={true}
+        onClick={e => f()}
       />)
     );
   }
   return result;
 }
 
-function departureList(): {}[] {
+function departureList(f: any): {}[] {
   const residents = getDepartures();
   const result: {}[] = [];
   for (let i = 0; i < residents.length; ++i) {
@@ -69,6 +70,7 @@ function departureList(): {}[] {
         primaryText={firstLine}
         secondaryText={`Balance £${balance}`}
         threeLines={true}
+        onClick={e => f()}
       />)
     );
   }
@@ -110,7 +112,7 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
     return (
       <List className="md-cell md-paper md-paper--1">
         <Subheader primaryText="Residents" primary={true} />
-        {...residentList()}
+        {...residentList(() => this.dialog.show(0))}
       </List>
     );
   }
@@ -119,7 +121,7 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
     return (
       <List className="md-cell md-paper md-paper--1">
         <Subheader primaryText="Departures" primary={true} />
-        {...departureList()}
+        {...departureList(() => this.dialog.show(0))}
       </List>
     );
   }
