@@ -3,9 +3,6 @@ import {
   NavigationDrawer,
   FontIcon,
   ListItem,
-  Card,
-  CardTitle,
-  CardText,
   Avatar
 } from 'react-md';
 import { Link as RouterLink, Route, Switch } from 'react-router-dom';
@@ -60,36 +57,6 @@ class Home extends React.Component {
           Do something
         </p>
         <div><i className="material-icons">face</i>Face</div>
-      </div>
-    );
-  }
-}
-
-class Cards extends React.Component {
-  render() {
-    return (
-      <div className="md-grid md-text-container">
-        <h2 className="md-cell md-cell--12">
-          Page 1
-        </h2>
-        <Card className="md-cell">
-          <CardTitle title="Card 1" />
-          <CardText>
-            <p>Wowza</p>
-          </CardText>
-        </Card>
-        <Card className="md-cell">
-          <CardTitle title="Card 2" />
-          <CardText>
-            <p>Wowza</p>
-          </CardText>
-        </Card>
-        <Card className="md-cell">
-          <CardTitle title="Card 3" />
-          <CardText>
-            <p>Wowza</p>
-          </CardText>
-        </Card>
       </div>
     );
   }
@@ -167,7 +134,6 @@ class App extends React.Component {
               <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
               <Route path="/planner" location={location} component={GridPage} />
               <Route path="/allocations" location={location} component={Grid2} />
-              <Route path="/checkin" location={location} component={Cards} />
               <Route path="/settings" location={location} component={Home} />
             </Switch>
 
