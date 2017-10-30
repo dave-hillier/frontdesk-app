@@ -1,9 +1,11 @@
 import * as React from 'react';
 import './Allocations.css';
 
+import { roomTypesList } from './Reservations';
+
 export default class Allocations extends React.Component {
   render() {
-    const rows = this.buildGrid(3, 40);
+    const rows = this.buildGrid(roomTypesList.length, 40);
 
     return (
       <div className="grid-container">
@@ -19,13 +21,12 @@ export default class Allocations extends React.Component {
 
   private rowHeaders() {
     const rows: {}[] = [];
-    const roomTypes: string[] = ['', 'DOUBLE', 'TWIN', 'SUITE'];
+    const roomTypes: string[] = ['', ...roomTypesList];
 
     for (let i = 0; i < roomTypes.length; ++i) {
       rows.push(
         <div
           key={'row' + i}
-          // tslint:disable-next-line:max-line-length
           className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header"
         >
           {roomTypes[i]}

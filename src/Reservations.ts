@@ -7,9 +7,10 @@ today.setHours(0, 0, 0, 0);
 
 const roomCount = 100;
 
-export const roomTypesList: string[] = ['DOUBLE', 'TWIN', 'SUITE', 'RoomType'];
+export const roomTypesList: string[] = ['Double', 'Twin', 'Suite'];
 
 export const roomTypes: string[] = [];
+export const roomNames: string[] = []; // TODO: combine
 
 export interface ReservationData {
   firstName: string;
@@ -37,6 +38,7 @@ const roomReservations: ReservationData[][] = [];
 for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
   const roomType = roomTypesList[roomTypesList.length * roomIndex / roomCount];
   roomTypes.push(roomType);
+  roomNames.push(`Room ${roomIndex + 1}`);
 
   const room: ReservationData[] = roomReservations[roomIndex] = [];
   let currentDate = addDays(today, -5); // Start 5 days before

@@ -1,15 +1,19 @@
 import * as React from 'react';
 import './Planner.css';
-import { getReservationsByRoom } from './Reservations';
-import { daysBetween, addDays } from './dateHelpers';
+import { getReservationsByRoom, roomNames } from './Reservations';
+import { subtractDates, addDays } from './dateHelpers';
 
 function randomHsl() {
   return 'hsla(' + (Math.random() * 360) + ', 100%, 50%, 1)';
 }
 
+// TODO: break this up!
+// TODO: style this
+// TODO: limit how many we do per row up front, fetch more
 // const nowUtc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
 const now = new Date('2017-10-25'); // new Date();
 const today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()); // TODO: ensure this updates
+let maxDate = addDays(today, 30);
 
 export default class Planner extends React.Component {
 
@@ -28,7 +32,7 @@ export default class Planner extends React.Component {
     const numberOfRooms = 100;
     const rowHeaders = [];
     for (let i = 0; i < numberOfRooms; ++i) {
-      rowHeaders.push(<div key={'Room' + i} style={rowHeaderStyle}>Room {i}</div>);
+      rowHeaders.push(<div key={'Room' + i} style={rowHeaderStyle}>{roomNames[i]}</div>);
     }
 
     const rows = [];
@@ -40,26 +44,53 @@ export default class Planner extends React.Component {
         const rez: {}[] = [];
         for (let j = 0; j < roomReservations.length; ++j) {
           const arrival = new Date(roomReservations[j].arrival);
-          const daysTillNext = daysBetween(arrival, currentDate) - 1;
+          const nights = roomReservations[j].nights;
+          const departure = addDays(arrival, nights);
+          const daysTillNext = subtractDates(arrival, currentDate);
+          const daysTillDeparture = subtractDates(departure, currentDate);
 
           if (daysTillNext > 0) {
-
             for (let k = 0; k < daysTillNext; ++k) {
               const emptyStyle = {
-                width: 40 + 'px',
-                background: 'lightgrey'
+                width: 40 + 'px'
               };
-              rez.push(<div key={'empty' + '_' + j + '_' + i + '_' + k} style={emptyStyle} className="rez-cell"> {daysTillNext} Empty</div>);
-            }
+              rez.push(
+                <div
+                  key={'empty' + '_' + j + '_' + i + '_' + k}
+                  style={emptyStyle}
+                  className="rez-empty-cell"
+                >
+                  {daysTillNext}
+                </div>
+              );
 
+            }
             currentDate = addDays(currentDate, daysTillNext);
           }
-          const rs = {
-            width: roomReservations[j].nights * 40 + 'px',
-            background: randomHsl()
-          };
-          rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{roomReservations[j].lastName} - {roomReservations[j].nights} < br />{arrival.toISOString()} </div>);
-          currentDate = addDays(currentDate, roomReservations[j].nights);
+
+          if (daysTillNext < 0 && daysTillDeparture > 0) {
+            const rs = {
+              width: nights + daysTillNext * 40 + 'px',
+              background: randomHsl(),
+              fontSize: '10px'
+            };
+            rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{roomReservations[j].lastName} - {nights} < br />{arrival.toDateString()} </div>);
+            currentDate = departure;
+          }
+
+          if (daysTillNext >= 0) {
+            const rs = {
+              width: nights * 40 + 'px',
+              background: randomHsl(),
+              fontSize: '10px'
+            };
+            rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{roomReservations[j].lastName} - {nights} < br />{arrival.toDateString()} </div>);
+            currentDate = departure;
+          }
+
+          if (currentDate > maxDate) {
+            maxDate = currentDate;
+          }
         }
         rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row">{...rez}</div>);
       } else {
@@ -67,13 +98,14 @@ export default class Planner extends React.Component {
       }
     }
     const cellStyle = {
-      margin: 4
+      padding: 4,
+      width: '40px'
     };
-    const daysAhead = 40;
+    const daysAhead = maxDate;
     const colHeaders = [];
     const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-    for (let i = 0; i < daysAhead; ++i) {
+    for (let i = 0; i < subtractDates(daysAhead, today); ++i) {
       let date = addDays(today, i);
       colHeaders.push(<div key={'Day' + i} style={cellStyle}><div>{daysOfWeek[date.getDay()]}</div><div>{date.getDate()}</div></div>);
     }
@@ -83,30 +115,22 @@ export default class Planner extends React.Component {
       flexFlow: 'row'
     };
     const s0 = {
-      background: 'blue',
       width: '80px',
       height: '40px'
     };
     const s1 = {
-      background: 'yellow',
       height: '40px',
       display: 'flex',
       flex: 'row'
     };
     const s2 = {
-      background: 'red',
       width: '80px'
-    };
-    const s3 = {
-      background: 'green'
     };
     return (
       <div>
         <div style={c}>
           <div style={s1}>
-            <div style={s0}>
-              Corner
-          </div>
+            <div style={s0} />
             {...colHeaders}
           </div>
         </div>
@@ -114,7 +138,7 @@ export default class Planner extends React.Component {
           <div style={s2}>
             {...rowHeaders}
           </div>
-          <div style={s3}>
+          <div>
             {...rows}
           </div>
         </div>

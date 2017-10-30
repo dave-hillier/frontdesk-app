@@ -2,7 +2,17 @@
   text-overflow: ellipsis;
 	white-space: nowrap;
   overflow: hidden;
-  background: pink;
+  padding: 4px;
+  background: red;
+  color: white;
+  border: black;
+  border-radius: 4px; // TODO: is this not very material?
+}
+
+.rez-empty-cell {
+  text-overflow: ellipsis;
+	white-space: nowrap;
+  overflow: hidden;
   padding: 4px;
 }
 
