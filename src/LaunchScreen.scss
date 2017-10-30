@@ -1,0 +1,37 @@
+@import 'globals';
+
+.launch-overlay {
+  position:fixed;
+  padding:0;
+  margin:0;
+
+  left:0;
+
+  width: 100%;
+  height: 100%;
+  background: #333333;
+  z-index: 99999;
+
+  transition: 0.3s;
+  transition-timing-function: $md-transition-acceleration;// $md-transition-standard;
+
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.launch-overlay.hide {
+  top:100%;
+}
+
+.launch-overlay.show {
+  top:0;
+}
+
+.launch-overlay > h1 {
+  color: white;
+  margin: 48px;
+}

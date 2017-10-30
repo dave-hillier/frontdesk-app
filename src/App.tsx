@@ -12,6 +12,7 @@ import Guests from './Guests';
 import Allocations from './Allocations';
 import Planner from './Planner';
 import SearchBox from './SearchBox';
+import LaunchScreen from './LaunchScreen';
 
 const logo = require('./logo.svg');
 export const MobileMinWidth = 320;
@@ -92,30 +93,44 @@ const titles = {
   '/allocations': 'Allocations'
 };
 
-class App extends React.Component {
-  render() {
-    return (
-      <Route
-        render={({ location }) => (
-          <NavigationDrawer
-            className="nav-drawer"
-            drawerTitle={<DrawerHeader />}
-            toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : 'Guests'}</div>}
-            toolbarActions={<div className="toolbar-actions">
-              <SearchBox data={['rez1', 'rez2', 'rez3']} />
-              {!mobile ? <Avatar key="av">DH</Avatar> : null}
-            </div>}
-            navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
-          >
-            <Switch key={location.key}>
-              <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
-              <Route path="/planner" location={location} component={Planner} />
-              <Route path="/allocations" location={location} component={Allocations} />
-            </Switch>
+class App extends React.Component<{}, { loaded: boolean }> {
+  constructor(props: {}) {
+    super(props);
+    this.state = { loaded: false };
+  }
 
-          </NavigationDrawer>
-        )}
-      />
+  componentWillMount() {
+    setTimeout(() => {
+      this.setState({ loaded: true });
+      // tslint:disable-next-line:align
+    }, 1500);
+  }
+
+  render() {
+
+    return (
+      <div>
+        <LaunchScreen show={!this.state.loaded} />
+        <Route
+          render={({ location }) => (
+            <NavigationDrawer
+              className="nav-drawer"
+              drawerTitle={<DrawerHeader />}
+              toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : 'Guests'}</div>}
+              toolbarActions={<div className="toolbar-actions">
+                <SearchBox data={['rez1', 'rez2', 'rez3']} />
+                {!mobile ? <Avatar key="av">DH</Avatar> : null}
+              </div>}
+              navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
+            >
+              <Switch key={location.key}>
+                <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
+                <Route path="/planner" location={location} component={Planner} />
+                <Route path="/allocations" location={location} component={Allocations} />
+              </Switch>
+            </NavigationDrawer>
+          )}
+        /></div>
     );
   }
 }
