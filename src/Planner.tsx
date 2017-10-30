@@ -1,19 +1,7 @@
 import * as React from 'react';
 import './Planner.css';
 import { getReservationsByRoom } from './Reservations';
-
-function addDays(date: Date, days: number): Date {
-  var dat = new Date(date);
-  dat.setDate(dat.getDate() + days); // TODO: does this work across month boundaries?
-  return dat;
-}
-
-function daysBetween(date1: Date, date2: Date): number {
-  const oneDay = 1000 * 60 * 60 * 24;
-  var difference = Math.abs(date1.getTime() - date2.getTime());
-  return Math.round(difference / oneDay);
-
-}
+import { daysBetween, addDays } from './dateHelpers';
 
 function randomHsl() {
   return 'hsla(' + (Math.random() * 360) + ', 100%, 50%, 1)';
@@ -44,30 +32,34 @@ export default class Planner extends React.Component {
     }
 
     const rows = [];
-    let currentDate = today;
+
     for (let i = 0; i < numberOfRooms; ++i) {
+      let currentDate = today;
       if (i in lookup) {
         const roomReservations = lookup[i];
         const rez: {}[] = [];
         for (let j = 0; j < roomReservations.length; ++j) {
           const arrival = new Date(roomReservations[j].arrival);
-          const daysTillNext = daysBetween(arrival, currentDate);
+          const daysTillNext = daysBetween(arrival, currentDate) - 1;
 
           if (daysTillNext > 0) {
-            const emptyStyle = {
-              width: daysTillNext * 40 + 'px',
-              background: 'lightgrey'
-            };
-            rez.push(<div key={'empty' + '_' + j + '_' + i} style={emptyStyle} className="rez-cell">Empty </div>);
+
+            for (let k = 0; k < daysTillNext; ++k) {
+              const emptyStyle = {
+                width: 40 + 'px',
+                background: 'lightgrey'
+              };
+              rez.push(<div key={'empty' + '_' + j + '_' + i + '_' + k} style={emptyStyle} className="rez-cell"> {daysTillNext} Empty</div>);
+            }
+
             currentDate = addDays(currentDate, daysTillNext);
           }
           const rs = {
-            width: roomReservations[0].nights * 40 + 'px',
+            width: roomReservations[j].nights * 40 + 'px',
             background: randomHsl()
           };
-          rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{roomReservations[j].lastName}<br />{arrival.toISOString()} </div>);
+          rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{roomReservations[j].lastName} - {roomReservations[j].nights} < br />{arrival.toISOString()} </div>);
           currentDate = addDays(currentDate, roomReservations[j].nights);
-
         }
         rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row">{...rez}</div>);
       } else {
