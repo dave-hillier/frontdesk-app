@@ -9,11 +9,11 @@
 
   width: 100%;
   height: 100%;
-  background: #333333;
-  z-index: 99999;
+  background: #333333; 
+  z-index: 99; // TODO: show allow login screen above this...
 
   transition: 0.3s;
-  transition-timing-function: $md-transition-acceleration;// $md-transition-standard;
+  transition-timing-function: $md-transition-acceleration;
 
   color: white;
 

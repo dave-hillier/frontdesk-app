@@ -2,6 +2,7 @@ import * as React from 'react';
 import './Planner.css';
 import { getReservationsByRoom, roomNames } from './Reservations';
 import { subtractDates, addDays } from './dateHelpers';
+import { ReservationDialog } from './ReservationDialog';
 
 function randomHsl() {
   return 'hsla(' + (Math.random() * 360) + ', 100%, 50%, 1)';
@@ -12,19 +13,18 @@ function randomHsl() {
 // TODO: limit how many we do per row up front, fetch more
 // const nowUtc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
 // TODO: transparent create reservation...?
-// TODO: click to go to reservation
+// TODO: click to go to reservation - mobile
 // TODO: tooltips
 const now = new Date('2017-10-25'); // new Date();
 const today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()); // TODO: ensure this updates
 let maxDate = addDays(today, 30);
 
 export default class Planner extends React.Component {
+  dialog: ReservationDialog;
 
   render() {
     const lookup = getReservationsByRoom();
 
-    // tslint:disable-next-line:no-console
-    console.log('rooms', lookup);
     const rowStyle = {
       height: '40px',
     };
@@ -68,24 +68,22 @@ export default class Planner extends React.Component {
             }
             currentDate = addDays(currentDate, daysTillNext);
           }
-
-          if (daysTillNext < 0 && daysTillDeparture > 0) {
+          const size = (daysTillNext < 0 && daysTillDeparture > 0) ? (nights + daysTillNext * 40 + 'px') : (nights * 40 + 'px');
+          if (daysTillNext < 0 && daysTillDeparture > 0 || daysTillNext >= 0) {
             const rs = {
-              width: nights + daysTillNext * 40 + 'px',
+              width: size, // negative
               background: randomHsl(),
               fontSize: '10px'
             };
-            rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{roomReservations[j].lastName} - {nights} < br />{arrival.toDateString()} </div>);
-            currentDate = departure;
-          }
-
-          if (daysTillNext >= 0) {
-            const rs = {
-              width: nights * 40 + 'px',
-              background: randomHsl(),
-              fontSize: '10px'
-            };
-            rez.push(<div key={'rez' + '_' + j + '_' + i} style={rs} className="rez-cell">{roomReservations[j].lastName} - {nights} < br />{arrival.toDateString()} </div>);
+            rez.push(
+              <div
+                key={'rez' + '_' + j + '_' + i}
+                style={rs}
+                onClick={e => this.dialog.show(0)}
+                className="rez-cell"
+              >
+                {roomReservations[j].lastName} - {nights} < br />{arrival.toDateString()}
+              </div>);
             currentDate = departure;
           }
 
@@ -129,6 +127,7 @@ export default class Planner extends React.Component {
     };
     return (
       <div>
+        <ReservationDialog isMobile={false} ref={(r: ReservationDialog) => this.dialog = r} />
         <div style={c}>
           <div style={s1}>
             <div style={s0} />
