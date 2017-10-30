@@ -1,9 +1,10 @@
 
 import { addDays } from './dateHelpers';
-import mockData from './mockData';
 
 const today = new Date('2017-10-25');
 today.setHours(0, 0, 0, 0);
+
+const roomCount = 100;
 
 export interface ReservationData {
   firstName: string;
@@ -19,35 +20,44 @@ export interface ReservationData {
   ledger?: string;
 }
 
-const lookup1 = getReservationsByRoom();
-
-var seed = 1;
+let seed = 1;
 function pseudoRandom() {
-  var x = Math.sin(seed++) * 10000;
+  const x = Math.sin(seed++) * 10000;
   return x - Math.floor(x);
 }
 
-for (let key in lookup1) {
-  if (lookup1.hasOwnProperty(key)) {
+const roomReservations: ReservationData[][] = [];
 
-    let currentDate = today;
-    for (let reservation of lookup1[key]) {
+for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
+  const room: ReservationData[] = roomReservations[roomIndex] = [];
+  let currentDate = addDays(today, -5);
+  for (let num = Math.floor(pseudoRandom() * 10); num > 0; --num) {
+    const dayBefore = Math.floor(pseudoRandom() * 8);
+    const nights = 1 + Math.floor(pseudoRandom() * 7);
+    currentDate = addDays(currentDate, dayBefore);
+    const departure = addDays(currentDate, nights);
+    const arrival = currentDate;
+    currentDate = departure;
 
-      const dayBefore = Math.floor(pseudoRandom() * 8);
-      const nights = 1 + Math.floor(pseudoRandom() * 7);
-      currentDate = addDays(currentDate, dayBefore);
-      const departure = addDays(currentDate, nights);
-
-      reservation.arrival = currentDate;
-      currentDate = departure;
-      reservation.nights = nights;
-
-    }
+    const item: ReservationData = {
+      firstName: 'Firstname',
+      lastName: 'Lastname',
+      email: 'Firstname.LastName@domain.com',
+      title: 'Mr',
+      arrival: arrival.toISOString(), // TODO: change to date?
+      nights: nights,
+      roomType: 'string',
+      ref: 'string',
+      balance: nights * 100 + Math.floor(pseudoRandom() * 100),
+      room: roomIndex,
+      ledger: pseudoRandom() > 0.7 ? 'string' : undefined,
+    };
+    room.push(item);
   }
 }
 
 export function getReservations(): ReservationData[] {
-  return mockData;
+  return roomReservations.reduce((a, b) => a.concat(b), []);
 }
 
 export function getArrivals() {
@@ -80,8 +90,8 @@ export function getResidents() {
 }
 
 // TODO: move this out of here
-export function getReservationsByRoom(reservations: any[] = mockData): any {
-  const rooms: any[] = reservations.filter(r => r.room).map(r => { return { room: r.room, rez: r }; });
+export function getReservationsByRoom(): any {
+  const rooms: any[] = getReservations().filter(r => r.room).map(r => { return { room: r.room, rez: r }; });
 
   let lookup: any = {};
   for (let i = 0; i < rooms.length; ++i) {
