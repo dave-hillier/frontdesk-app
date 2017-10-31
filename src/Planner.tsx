@@ -26,18 +26,16 @@ let maxDate = addDays(today, maxDays);
 
 function fillEmpty(count: number) {
   const rez: {}[] = [];
-  // for (let k = 0; k < count; ++k) {
-  const  emptyStyle = {
-      width: count * gridSize + 'px'
-    };
+  const emptyStyle = {
+    width: count * gridSize + 'px'
+  };
   rez.push(
     <div
+      key={Math.random()} // TODO: quite warnings
       style={emptyStyle}
-      className="rez-empty-cell  md-divider-border md-divider-border--right grid-cell"
+      className="rez-empty-cell md-divider-border md-divider-border--right grid-cell"
     />
   );
-  // }
-
   return rez;
 }
 
