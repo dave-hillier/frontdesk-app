@@ -12,34 +12,6 @@ const style = {
 };
 
 const ReservationsCard = (props: { rez: ReservationData }) => (
-  /*<Card style={style} className="md-block-centered">
-    <CardActions expander={true}>
-      <CardText>
-        {props.rez.firstName} {props.rez.lastName} {props.rez.ledger ? ' - ' + props.rez.ledger : ''} -&nbsp;
-        {new Date(props.rez.arrival).toDateString()} - {new Date().toDateString()} ({props.rez.nights} Nights)<br />
-        Room: {props.rez.room} Rate: {props.rez.rate} Room Type: {props.rez.roomType}<br />
-        Adults: 1 Children: 0 Infants: 0 - Balance £{props.rez.balance}<br />
-      </CardText>
-    </CardActions>
-
-    <CardText expandable={true}>
-      <p>
-        Contact Information:
-      </p>
-      <p>
-        Line1<br />
-        Line2<br />
-        Line3<br />
-        Line4<br />
-        Line5<br />
-      </p>
-      <p>
-        <Button raised={true} primary={true}>Check in</Button>&nbsp;
-        <Button raised={true} primary={true}>Deallocate</Button>&nbsp;
-        <Button raised={true} primary={true}>Room Billing</Button>&nbsp;
-      </p>
-    </CardText>
-  </Card>*/
   <ExpansionPanel
     className="md-block-centered"
     style={style}
