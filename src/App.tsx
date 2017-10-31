@@ -13,6 +13,7 @@ import Allocations from './Allocations';
 import Planner from './Planner';
 import SearchBox from './SearchBox';
 import LaunchScreen from './LaunchScreen';
+import ReservationsPage from './ReservationsPage';
 
 const logo = require('./logo.svg');
 export const MobileMinWidth = 320;
@@ -60,6 +61,10 @@ const navItems = [{
   label: 'Allocations',
   to: '/allocations',
   icon: 'library_add',
+}, {
+  label: 'Reservations',
+  to: '/reservations',
+  icon: 'print',
 }];
 
 class NavLink extends React.Component<{ to: string, exact?: boolean, icon: string, label: string }, {}> {
@@ -90,7 +95,8 @@ class NavLink extends React.Component<{ to: string, exact?: boolean, icon: strin
 
 const titles = {
   '/planner': 'Planner',
-  '/allocations': 'Allocations'
+  '/allocations': 'Allocations',
+  '/reservations': 'Reservations'
 };
 
 class App extends React.Component<{}, { loaded: boolean }> {
@@ -103,7 +109,7 @@ class App extends React.Component<{}, { loaded: boolean }> {
     setTimeout(() => {
       this.setState({ loaded: true });
       // tslint:disable-next-line:align
-    }, 1500);
+    }, 300); // TODO: replace with real load
   }
 
   render() {
@@ -127,6 +133,7 @@ class App extends React.Component<{}, { loaded: boolean }> {
                 <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
                 <Route path="/planner" location={location} component={() => <Planner isMobile={mobile} />} />
                 <Route path="/allocations" location={location} component={Allocations} />
+                <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={mobile} />} />
               </Switch>
             </NavigationDrawer>
           )}
