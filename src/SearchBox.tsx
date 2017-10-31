@@ -6,10 +6,10 @@ import {
   FontIcon
 } from 'react-md';
 
-export default class SearchBox extends React.Component<{ data: any }, { open: boolean }> {
+export default class SearchBox extends React.Component<{ data: any, mobile: boolean }, { open: boolean }> {
   constructor(props: any) {
     super(props);
-    this.state = { open: false };
+    this.state = { open: true };
   }
   render() {
     return !this.state.open ?
@@ -21,8 +21,14 @@ export default class SearchBox extends React.Component<{ data: any }, { open: bo
             id="my-search"
             label="Search Reservations"
             placeholder="Reference, Name, etc"
+            className="toolbar-search"
             data={this.props.data}
             filter={Autocomplete.caseInsensitiveFilter}
+            sameWidth={false}
+            simplifiedMenu={false}
+            minBottom={20}
+            fillViewportWidth={this.props.mobile}
+            fillViewportHeight={this.props.mobile}
           />
           <Button key="close" icon={true} onClick={() => this.setState({ open: false })}>close</Button>
         </div>

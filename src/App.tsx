@@ -118,7 +118,7 @@ class App extends React.Component<{}, { loaded: boolean }> {
               drawerTitle={<DrawerHeader />}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : 'Guests'}</div>}
               toolbarActions={<div className="toolbar-actions">
-                <SearchBox data={['rez1', 'rez2', 'rez3']} />
+                <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={mobile} />
                 {!mobile ? <Avatar key="av">DH</Avatar> : null}
               </div>}
               navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}

@@ -74,3 +74,16 @@
   align-items: center;
 }
 
+.toolbar-search {
+  margin-top: -20px;
+  margin-left: 12px;
+
+  div {
+    hr {
+      background: $md-white-base;
+    }
+    label {
+      color: $md-white-base;
+    }
+  }
+}
