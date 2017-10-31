@@ -14,6 +14,9 @@ function randomHsl() {
 // TODO: transparent create reservation...?
 // TODO: tooltips
 // TODO: consider paging vs scrolling
+// TODO: optimise: can we cut down on empty cells?
+// TODO: clean up the styles
+// TODO: fix the grid -- top corner style
 const now = new Date('2017-10-25'); // new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // TODO: ensure this updates
 const gridSize = 40;
@@ -21,7 +24,7 @@ const maxDays = 7 + (window.innerWidth / gridSize); // TODO: observe change?
 
 let maxDate = addDays(today, maxDays);
 
-function fill(count: number) {
+function fillEmpty(count: number) {
   const rez: {}[] = [];
   for (let k = 0; k < count; ++k) {
     const emptyStyle = {
@@ -82,7 +85,7 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
           }
 
           if (daysTillNext > 0) {
-            rez.push(fill(daysTillNext));
+            rez.push(fillEmpty(daysTillNext));
             currentDate = addDays(currentDate, daysTillNext);
           }
           const size = (daysTillNext < 0 && daysTillDeparture > 0) ? ((nights + daysTillNext) * gridSize + 'px') : (nights * gridSize + 'px');
@@ -110,7 +113,7 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
         }
         const daysToFill = subtractDates(maxDate, currentDate);
         if (daysToFill > 0) {
-          rez.push(fill(daysToFill));
+          rez.push(fillEmpty(daysToFill));
         }
 
         rows.push(
@@ -122,7 +125,7 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
             {...rez}
           </div>);
       } else {
-        rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row md-divider-border md-divider-border--bottom grid-row">{...fill(subtractDates(maxDate, today))}</div>);
+        rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row md-divider-border md-divider-border--bottom grid-row">{...fillEmpty(subtractDates(maxDate, today))}</div>);
       }
     }
 
