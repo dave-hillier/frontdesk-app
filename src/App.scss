@@ -72,6 +72,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap: nowrap;
+  max-height: 56px;
 }
 
 .search-box {
@@ -95,6 +97,8 @@
 .search-box.hide {
   width: 0%;
   overflow: hidden;
+  display: none; // TODO: fix animation
+  height: 0;
 }
 
 .search-box.show {
