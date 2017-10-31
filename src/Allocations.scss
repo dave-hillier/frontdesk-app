@@ -1,20 +1,28 @@
+$grid-size: 42px;
+
+
 .grid-row {
-  height: 40px; // TODO: same height as toolbar -- or at least a multiple of 32 half size
+  height: $grid-size; // TODO: same height as toolbar -- or at least a multiple of 32 half size
   vertical-align: middle;
   display: flex; 
   flex-direction: row;
 }
 
 .grid-row:nth-child(odd) { 
-  background-color:#f7f7f7; }
+  background-color:#f7f7f7; 
+  //background-size: $grid-size $grid-size;
+  //background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
+}
 
 .grid-row:nth-child(even)	{ 
   background-color:#fff; 
+  //background-size: $grid-size $grid-size;
+  //background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 
 .grid-cell {
-  min-width: 40px; 
-  line-height: 40px;
+  min-width: $grid-size; 
+  line-height: $grid-size;
   vertical-align: middle;
   text-align: center;
 }
@@ -24,7 +32,7 @@
 }
 
 .grid-col-header {
-  min-width: 40px; 
+  min-width: $grid-size; 
   vertical-align: middle;
   text-align: center;
   display: flex;
@@ -33,12 +41,12 @@
 }
 
 .grid-row-headers {
-  min-width: 80px; 
+  min-width: $grid-size*2; 
   vertical-align: middle;
   text-align: center;
   display: flex;
   flex-direction: column;
-  line-height: 40px;
+  line-height: $grid-size;
 }
 
 .grid-container {
@@ -56,4 +64,9 @@
 .grid-header-day-of-month {
   margin-top: -2px;
   margin-bottom: 4px;
+}
+
+.grid-body { 
+  background-size: $grid-size $grid-size;
+  background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
