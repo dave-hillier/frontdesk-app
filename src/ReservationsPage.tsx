@@ -11,14 +11,24 @@ const style = {
   maxWidth: 1024
 };
 
-const ReservationsCard = (props: { rez: ReservationData }) => (
+const ReservationLabel = (props: { rez: ReservationData }) => {
+  return (
+    <div>{props.rez.ref} - {props.rez.firstName} {props.rez.lastName} -
+      {new Date(props.rez.arrival).toDateString()} - {addDays(new Date(), props.rez.nights).toDateString()} ({props.rez.nights} Nights)<br />
+      Room: {props.rez.room} Rate: {props.rez.rate} Room Type: {props.rez.roomType} -
+      Balance £{props.rez.balance}
+    </div>
+  );
+};
+
+const ReservationsPanel = (props: { rez: ReservationData }) => (
   <ExpansionPanel
     className="md-block-centered"
     style={style}
-    label={<div>{`${props.rez.ref} - ${props.rez.firstName} ${props.rez.lastName} - ${new Date(props.rez.arrival).toDateString()} - ${addDays(new Date(), props.rez.nights).toDateString()} (${props.rez.nights} Nights) - Balance £${props.rez.balance}`}</div>}
+    label={<ReservationLabel rez={props.rez} />}
     footer={null}
   >
-    <p>Room: {props.rez.room} Rate: {props.rez.rate} Room Type: {props.rez.roomType}<br />
+    <p>
       Adults: 1 Children: 0 Infants: 0<br />
     </p>
     <p>
@@ -44,7 +54,7 @@ const ReservationsPage = (props: { isMobile: boolean }) => {
   const rez = getReservations();
   rez.sort((a: ReservationData, b: ReservationData) => new Date(a.arrival).getTime() - new Date(b.arrival).getTime());
   rez.splice(100);
-  const cards = rez.map(r => <ReservationsCard rez={r} key={r.ref} />);
+  const cards = rez.map(r => <ReservationsPanel rez={r} key={r.ref} />);
 
   return (
     <div>
