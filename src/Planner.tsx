@@ -11,13 +11,17 @@ function randomHsl() {
 // TODO: break this up!
 // TODO: style this - but avoid heights in styles as stuff will be fragile
 // TODO: limit how many we do per row up front, fetch more
-// const nowUtc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
 // TODO: transparent create reservation...?
 // TODO: click to go to reservation - mobile
 // TODO: tooltips
+// TODO: consider paging vs scrolling
+// const nowUtc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
 const now = new Date('2017-10-25'); // new Date();
 const today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()); // TODO: ensure this updates
-let maxDate = addDays(today, 30);
+const gridSize = 40;
+const maxDays = 7 + (window.innerWidth / gridSize); // TODO: observe change?
+
+let maxDate = addDays(today, maxDays);
 
 export default class Planner extends React.Component {
   dialog: ReservationDialog;
@@ -26,11 +30,11 @@ export default class Planner extends React.Component {
     const lookup = getReservationsByRoom();
 
     const rowStyle = {
-      height: '40px',
+      height: gridSize + 'px',
     };
     const rowHeaderStyle = {
       ...rowStyle,
-      width: '80px'
+      width: 2 * gridSize + 'px'
     };
     const numberOfRooms = 100;
     const rowHeaders = [];
@@ -51,11 +55,14 @@ export default class Planner extends React.Component {
           const departure = addDays(arrival, nights);
           const daysTillNext = subtractDates(arrival, currentDate);
           const daysTillDeparture = subtractDates(departure, currentDate);
+          if (arrival > addDays(today, maxDays)) {
+            break;
+          }
 
           if (daysTillNext > 0) {
             for (let k = 0; k < daysTillNext; ++k) {
               const emptyStyle = {
-                width: 40 + 'px'
+                width: gridSize + 'px'
               };
               rez.push(
                 <div
@@ -68,7 +75,7 @@ export default class Planner extends React.Component {
             }
             currentDate = addDays(currentDate, daysTillNext);
           }
-          const size = (daysTillNext < 0 && daysTillDeparture > 0) ? (nights + daysTillNext * 40 + 'px') : (nights * 40 + 'px');
+          const size = (daysTillNext < 0 && daysTillDeparture > 0) ? (nights + daysTillNext * gridSize + 'px') : (nights * gridSize + 'px');
           if (daysTillNext < 0 && daysTillDeparture > 0 || daysTillNext >= 0) {
             const rs = {
               width: size, // negative
@@ -98,7 +105,7 @@ export default class Planner extends React.Component {
     }
     const cellStyle = {
       padding: 4,
-      width: '40px'
+      width: gridSize + 'px'
     };
     const daysAhead = maxDate;
     const colHeaders = [];
@@ -114,16 +121,16 @@ export default class Planner extends React.Component {
       flexFlow: 'row'
     };
     const s0 = {
-      width: '80px',
-      height: '40px'
+      width: 2 * gridSize + 'px',
+      height: gridSize + 'px'
     };
     const s1 = {
-      height: '40px',
+      height: gridSize + 'px',
       display: 'flex',
       flex: 'row'
     };
     const s2 = {
-      width: '80px'
+      width: 2 * gridSize + 'px'
     };
     return (
       <div>
