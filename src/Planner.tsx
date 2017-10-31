@@ -40,7 +40,14 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
     const numberOfRooms = 100;
     const rowHeaders = [];
     for (let i = 0; i < numberOfRooms; ++i) {
-      rowHeaders.push(<div key={'Room' + i} style={rowHeaderStyle}>{roomNames[i]}</div>);
+      rowHeaders.push(
+        <div
+          key={'Room' + i}
+          style={rowHeaderStyle}
+          className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header grid-cell"
+        >
+          {roomNames[i]}
+        </div>);
     }
 
     const rows = [];
@@ -123,17 +130,26 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
     const s2 = {
       width: 2 * gridSize + 'px'
     };
+    // TODO: fixup this grid vs the Allocations, extract a standard layout
     return (
       <div>
         <ReservationDialog isMobile={this.props.isMobile} ref={(r: ReservationDialog) => this.dialog = r} />
         <div style={c}>
           <div style={s1}>
-            <div style={s0} />
+            <div
+              style={s0}
+              className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header"
+            />
             <DateColumnHeaders start={today} days={subtractDates(daysAhead, today)} />
           </div>
         </div>
-        <div style={c}>
-          <div style={s2}>
+        <div
+          style={c}
+          className="grid-container"
+        >
+          <div
+            style={s2}
+          >
             {...rowHeaders}
           </div>
           <div>
