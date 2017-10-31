@@ -15,7 +15,7 @@ const ReservationsCard = (props: { rez: ReservationData }) => (
   <ExpansionPanel
     className="md-block-centered"
     style={style}
-    label={`${props.rez.ref} - ${props.rez.firstName} ${props.rez.lastName} - ${new Date(props.rez.arrival).toDateString()} - ${addDays(new Date(), props.rez.nights).toDateString()} (${props.rez.nights} Nights) - Balance £${props.rez.balance}`}
+    label={<div>{`${props.rez.ref} - ${props.rez.firstName} ${props.rez.lastName} - ${new Date(props.rez.arrival).toDateString()} - ${addDays(new Date(), props.rez.nights).toDateString()} (${props.rez.nights} Nights) - Balance £${props.rez.balance}`}</div>}
     footer={null}
   >
     <p>Room: {props.rez.room} Rate: {props.rez.rate} Room Type: {props.rez.roomType}<br />
@@ -48,7 +48,6 @@ const ReservationsPage = (props: { isMobile: boolean }) => {
 
   return (
     <div>
-      <div></div>
       <ExpansionList>
         {...cards}
       </ExpansionList>
