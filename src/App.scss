@@ -74,6 +74,10 @@
   align-items: center;
 }
 
+.search-box {
+  transition: 0.3s;
+}
+
 .toolbar-search {
   margin-top: -20px;
   margin-left: 12px;
@@ -86,4 +90,13 @@
       color: $md-white-base;
     }
   }
+}
+
+.search-box.hide {
+  width: 0%;
+  overflow: hidden;
+}
+
+.search-box.show {
+  width: 100%;
 }

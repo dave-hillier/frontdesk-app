@@ -9,13 +9,13 @@ import {
 export default class SearchBox extends React.Component<{ data: any, mobile: boolean }, { open: boolean }> {
   constructor(props: any) {
     super(props);
-    this.state = { open: true };
+    this.state = { open: false };
   }
   render() {
-    return !this.state.open ?
-      <Button key="search" icon={true} onClick={() => this.setState({ open: true })}>search</Button> :
-      (
-        <div className="toolbar-actions">
+    return (
+      <div>
+        {!this.state.open ? <Button key="search" icon={true} onClick={() => this.setState({ open: true })}>search</Button> : null}
+        <div className={'toolbar-actions search-box ' + (!this.state.open ? 'hide' : 'show')}>
           <FontIcon>search</FontIcon>
           <Autocomplete
             id="my-search"
@@ -31,7 +31,7 @@ export default class SearchBox extends React.Component<{ data: any, mobile: bool
             fillViewportHeight={this.props.mobile}
           />
           <Button key="close" icon={true} onClick={() => this.setState({ open: false })}>close</Button>
-        </div>
-      );
+        </div></div>
+    );
   }
 }
