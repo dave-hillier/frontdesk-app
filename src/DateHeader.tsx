@@ -3,8 +3,8 @@ import * as React from 'react';
 const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
 const DateHeader = (props: { date: Date }) => {
-  const dayOfWeek = props.date.getUTCDay();
-  const dayOfMonth = props.date.getUTCDate();
+  const dayOfWeek = props.date.getDay();
+  const dayOfMonth = props.date.getDate();
   return (
     <div
       className="grid-col-header md-divider-border md-divider-border--right grid-col"

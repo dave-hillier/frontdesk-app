@@ -3,6 +3,7 @@ import './Planner.css';
 import { getReservationsByRoom, roomNames } from './Reservations';
 import { subtractDates, addDays } from './dateHelpers';
 import { ReservationDialog } from './ReservationDialog';
+import DateColumnHeaders from './DateColumnHeaders';
 
 function randomHsl() {
   return 'hsla(' + (Math.random() * 360) + ', 100%, 50%, 1)';
@@ -103,18 +104,8 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
         rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row">&nbsp;</div>);
       }
     }
-    const cellStyle = {
-      padding: 4,
-      width: gridSize + 'px'
-    };
-    const daysAhead = maxDate;
-    const colHeaders = [];
-    const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-    for (let i = 0; i < subtractDates(daysAhead, today); ++i) {
-      let date = addDays(today, i);
-      colHeaders.push(<div key={'Day' + i} style={cellStyle}><div>{daysOfWeek[date.getDay()]}</div><div>{date.getDate()}</div></div>);
-    }
+    const daysAhead = maxDate;
 
     const c = {
       display: 'flex',
@@ -138,7 +129,7 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
         <div style={c}>
           <div style={s1}>
             <div style={s0} />
-            {...colHeaders}
+            <DateColumnHeaders start={today} days={subtractDates(daysAhead, today)} />
           </div>
         </div>
         <div style={c}>

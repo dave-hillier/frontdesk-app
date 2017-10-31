@@ -31,7 +31,7 @@ export default class Allocations extends React.Component {
       <div className="grid-container">
         <RowHeaders />
         <div>
-          <DateColumnHeaders start={today} days={40} key={'headers'} />
+          <DateColumnHeaders start={today} days={40} />
           {...rows}
         </div>
       </div>
