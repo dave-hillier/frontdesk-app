@@ -10,7 +10,6 @@ function randomHsl() {
 }
 
 // TODO: break this up!
-// TODO: style this - but avoid heights in styles as stuff will be fragile
 // TODO: limit how many we do per row up front, fetch more
 // TODO: transparent create reservation...?
 // TODO: tooltips
@@ -21,6 +20,23 @@ const gridSize = 40;
 const maxDays = 7 + (window.innerWidth / gridSize); // TODO: observe change?
 
 let maxDate = addDays(today, maxDays);
+
+function fill(count: number) {
+  const rez: {}[] = [];
+  for (let k = 0; k < count; ++k) {
+    const emptyStyle = {
+      width: gridSize + 'px'
+    };
+    rez.push(
+      <div
+        key={'empty' + '_' + k}
+        style={emptyStyle}
+        className="rez-empty-cell  md-divider-border md-divider-border--right grid-cell"
+      />
+    );
+  }
+  return rez;
+}
 
 export default class Planner extends React.Component<{ isMobile: boolean }, {}> {
   dialog: ReservationDialog;
@@ -66,22 +82,10 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
           }
 
           if (daysTillNext > 0) {
-            for (let k = 0; k < daysTillNext; ++k) {
-              const emptyStyle = {
-                width: gridSize + 'px'
-              };
-              rez.push(
-                <div
-                  key={'empty' + '_' + j + '_' + i + '_' + k}
-                  style={emptyStyle}
-                  className="rez-empty-cell"
-                />
-              );
-
-            }
+            rez.push(fill(daysTillNext));
             currentDate = addDays(currentDate, daysTillNext);
           }
-          const size = (daysTillNext < 0 && daysTillDeparture > 0) ? (nights + daysTillNext * gridSize + 'px') : (nights * gridSize + 'px');
+          const size = (daysTillNext < 0 && daysTillDeparture > 0) ? ((nights + daysTillNext) * gridSize + 'px') : (nights * gridSize + 'px');
           if (daysTillNext < 0 && daysTillDeparture > 0 || daysTillNext >= 0) {
             const rs = {
               width: size, // negative
@@ -104,9 +108,21 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
             maxDate = currentDate;
           }
         }
-        rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row">{...rez}</div>);
+        const daysToFill = subtractDates(maxDate, currentDate);
+        if (daysToFill > 0) {
+          rez.push(fill(daysToFill));
+        }
+
+        rows.push(
+          <div
+            key={'RoomRow' + i}
+            style={rowStyle}
+            className="md-divider-border md-divider-border--bottom grid-row"
+          >
+            {...rez}
+          </div>);
       } else {
-        rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row">&nbsp;</div>);
+        rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row md-divider-border md-divider-border--bottom grid-row">{...fill(subtractDates(maxDate, today))}</div>);
       }
     }
 
