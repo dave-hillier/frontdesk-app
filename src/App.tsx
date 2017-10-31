@@ -125,7 +125,7 @@ class App extends React.Component<{}, { loaded: boolean }> {
             >
               <Switch key={location.key}>
                 <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
-                <Route path="/planner" location={location} component={Planner} />
+                <Route path="/planner" location={location} component={() => <Planner isMobile={mobile} />} />
                 <Route path="/allocations" location={location} component={Allocations} />
               </Switch>
             </NavigationDrawer>

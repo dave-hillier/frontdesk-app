@@ -23,7 +23,7 @@ const maxDays = 7 + (window.innerWidth / gridSize); // TODO: observe change?
 
 let maxDate = addDays(today, maxDays);
 
-export default class Planner extends React.Component {
+export default class Planner extends React.Component<{ isMobile: boolean }, {}> {
   dialog: ReservationDialog;
 
   render() {
@@ -134,7 +134,7 @@ export default class Planner extends React.Component {
     };
     return (
       <div>
-        <ReservationDialog isMobile={false} ref={(r: ReservationDialog) => this.dialog = r} />
+        <ReservationDialog isMobile={this.props.isMobile} ref={(r: ReservationDialog) => this.dialog = r} />
         <div style={c}>
           <div style={s1}>
             <div style={s0} />
