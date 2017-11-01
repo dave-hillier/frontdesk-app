@@ -70,13 +70,26 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
   }
 
   render() {
+    const r = this.state.reservation;
+    const wide = { width: 100 };
+    const rows: JSX.Element[] = [];
+    for (let key in r) {
+      if (r.hasOwnProperty(key)) {
+        rows.push(
+          <div className="grid-row">
+            <div style={wide} className="grid-cell grid-row-header">{key}</div>
+            <div className="grid-cell">{r[key]}</div>
+          </div>);
+      }
+    }
+
     return (
       <StandardDialog
         title="Reservation"
         {...this.props}
         ref={self => this.dialog = self}
       >
-        {JSON.stringify(this.state.reservation)}
+        {rows}
       </StandardDialog>);
   }
 
