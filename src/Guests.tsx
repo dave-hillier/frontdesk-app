@@ -34,10 +34,10 @@ const ArrivalTopLine = (props: { name: string, time?: Date }): JSX.Element => De
 const DepartureTopLine = (props: { name: string, time?: Date, label?: string }): JSX.Element => {
   const label = props.label ? props.label : 'ETD';
 
-  const estimated = props.time ? label + ': ' + props.time.toLocaleDateString('en-GB', {
+  const estimated = props.time ? label + ': ' + props.time.toLocaleTimeString('en-GB', {
     hour: '2-digit',
     minute: '2-digit'
-  }).substring(12) : '';
+  }) : '';
   return (
     <div className="space-between-content">
       <div>{props.name}</div>
@@ -90,7 +90,6 @@ const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) =>
       primaryText={(
         <ArrivalTopLine
           name={`${r.firstName} ${r.lastName}`}
-        // time={new Date()}
         />)}
       secondaryText={(
         <div>
@@ -138,7 +137,6 @@ const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) 
       primaryText={(
         <DepartureTopLine
           name={`${r.firstName} ${r.lastName}`}
-        // time={new Date()}
         />)}
       secondaryText={(
         <div>
