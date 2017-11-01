@@ -29,7 +29,7 @@ class StandardDialog extends React.Component<{ title: any, isMobile?: boolean, i
 
   render() {
     const { visible, pageX, pageY } = this.state;
-    const width = this.props.isDesktop ? 1024 : (!this.props.isMobile ? 800 : undefined);
+    const width = this.props.isDesktop ? 1024 : (!this.props.isMobile ? 800 : undefined); // min tablet 768
     const height = this.props.isDesktop ? 768 : (!this.props.isMobile ? 600 : undefined);
     return (
       <div>
@@ -76,7 +76,7 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
     for (let key in r) {
       if (r.hasOwnProperty(key)) {
         rows.push(
-          <div className="grid-row">
+          <div key={key} className="grid-row">
             <div style={wide} className="grid-cell grid-row-header">{key}</div>
             <div className="grid-cell">{r[key]}</div>
           </div>);
