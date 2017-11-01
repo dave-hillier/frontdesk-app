@@ -3,7 +3,8 @@ import {
   NavigationDrawer,
   FontIcon,
   ListItem,
-  Avatar
+  Avatar,
+  SelectField
 } from 'react-md';
 import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
@@ -36,12 +37,21 @@ const desktop = matchesMedia(DesktopMinWidth);
 // tslint:disable-next-line:no-console
 console.log('Mobile', mobile, 'Tablet', tablet, 'desktop', desktop);
 
+const hotelSites = ['Hotel Site A', 'Hotel Site B', 'Hotel Site C'];
+
 class DrawerHeader extends React.Component {
   render() {
     return (
       <div className="drawer-header">
         <h1><img src={logo} className="toolbar-logo" alt="logo" /> Rezlynx</h1>
-        <h2>Some Hotel Site</h2>
+        <SelectField
+          id="site-select"
+          className="md-title md-select-field--toolbar"
+          menuItems={hotelSites}
+          simplifiedMenu={false}
+          closeOnOutsideClick={true}
+          defaultValue={hotelSites[0]}
+        />
       </div>
 
     );
@@ -113,7 +123,6 @@ class App extends React.Component<{}, { loaded: boolean }> {
   }
 
   render() {
-
     return (
       <div>
         <LaunchScreen show={!this.state.loaded} />
