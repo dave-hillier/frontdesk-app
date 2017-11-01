@@ -24,20 +24,17 @@ const maxDays = 7 + (window.innerWidth / gridSize); // TODO: observe change?
 
 let maxDate = addDays(today, maxDays);
 
-function fillEmpty(count: number) {
-  const rez: {}[] = [];
+const EmptyCellBlock = (props: { days: number }): JSX.Element => {
   const emptyStyle = {
-    width: count * gridSize + 'px'
+    width: props.days * gridSize + 'px'
   };
-  rez.push(
+
+  return (
     <div
-      key={Math.random()} // TODO: quite warnings
       style={emptyStyle}
       className="rez-empty-cell md-divider-border md-divider-border--right grid-cell"
-    />
-  );
-  return rez;
-}
+    />);
+};
 
 export default class Planner extends React.Component<{ isMobile: boolean }, {}> {
   dialog: ReservationDialog;
@@ -83,7 +80,11 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
           }
 
           if (daysTillNext > 0) {
-            rez.push(fillEmpty(daysTillNext));
+            rez.push(
+              <EmptyCellBlock
+                key={'empty' + '_' + j + '_' + i}
+                days={daysTillNext}
+              />);
             currentDate = addDays(currentDate, daysTillNext);
           }
           const size = (daysTillNext < 0 && daysTillDeparture > 0) ? ((nights + daysTillNext) * gridSize + 'px') : (nights * gridSize + 'px');
@@ -111,7 +112,7 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
         }
         const daysToFill = subtractDates(maxDate, currentDate);
         if (daysToFill > 0) {
-          rez.push(fillEmpty(daysToFill));
+          rez.push(<EmptyCellBlock key={'empty' + i} days={daysToFill} />);
         }
 
         rows.push(
@@ -123,7 +124,15 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
             {...rez}
           </div>);
       } else {
-        rows.push(<div key={'RoomRow' + i} style={rowStyle} className="rez-row md-divider-border md-divider-border--bottom grid-row" />);
+        const daysToFill = subtractDates(maxDate, currentDate);
+        rows.push(
+          <div
+            key={'RoomRow' + i}
+            style={rowStyle}
+            className="md-divider-border md-divider-border--bottom grid-row"
+          >
+            <EmptyCellBlock key={'emptyr' + i} days={daysToFill} />
+          </div>);
       }
     }
 
