@@ -16,7 +16,7 @@ export interface ReservationData {
   firstName: string;
   lastName: string;
   email: string;
-  arrival: string; // TODO: change to date?
+  arrival: string;
   nights: number;
   roomType: string;
   ref: string;

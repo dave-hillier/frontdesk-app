@@ -104,3 +104,17 @@
 .search-box.show {
   width: 100%;
 }
+
+.space-between-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+  display: flex;
+}
+
+i.medium-icon {
+  font-size: medium;
+}
