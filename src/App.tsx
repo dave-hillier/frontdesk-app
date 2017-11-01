@@ -68,8 +68,8 @@ const navItems = [{
   to: '/planner',
   icon: 'list',
 }, {
-  label: 'Allocations',
-  to: '/allocations',
+  label: 'Availability',
+  to: '/availability',
   icon: 'library_add',
 }, {
   label: 'Reservations',
@@ -141,7 +141,7 @@ class App extends React.Component<{}, { loaded: boolean }> {
               <Switch key={location.key}>
                 <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
                 <Route path="/planner" location={location} component={() => <Planner isMobile={mobile} />} />
-                <Route path="/allocations" location={location} component={Allocations} />
+                <Route path="/availability" location={location} component={Allocations} />
                 <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={mobile} />} />
               </Switch>
             </NavigationDrawer>
