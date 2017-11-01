@@ -91,17 +91,16 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
           if (daysTillNext < 0 && daysTillDeparture > 0 || daysTillNext >= 0) {
             const rs = {
               width: size, // negative
-              background: randomHsl(),
-              fontSize: '10px'
+              background: randomHsl()
             };
             rez.push(
               <div
                 key={'rez' + '_' + j + '_' + i}
                 style={rs}
                 onClick={e => this.dialog.show(0)}
-                className="rez-cell"
+                className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header grid-cell rez-cell"
               >
-                {roomReservations[j].lastName} - {nights} < br />{arrival.toDateString()}
+                {roomReservations[j].lastName}
               </div>);
             currentDate = departure;
           }
