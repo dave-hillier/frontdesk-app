@@ -2,20 +2,18 @@ import * as React from 'react';
 import {
   Button,
   DialogContainer,
-  Divider,
-  TextField,
+
   Toolbar,
+
 } from 'react-md';
 
-export class ReservationDialog extends React.Component<{ isMobile: boolean }, { pageX?: number, pageY?: number, visible: boolean }> {
+class Dialog extends React.Component<{ title: any, isMobile?: boolean, isDesktop?: boolean }, { pageX?: number, pageY?: number, visible: boolean }> {
   constructor(props: any) {
     super(props);
     this.state = { visible: false };
   }
 
   show = (e: any) => {
-    // provide a pageX/pageY to the dialog when making visible to make the
-    // dialog "appear" from that x/y coordinate
     let { pageX, pageY } = e;
     if (e.changedTouches) {
       pageX = e.changedTouches[0].pageX;
@@ -31,7 +29,8 @@ export class ReservationDialog extends React.Component<{ isMobile: boolean }, { 
 
   render() {
     const { visible, pageX, pageY } = this.state;
-    // TODO: full page for mobile
+    const width = this.props.isDesktop ? 1024 : (!this.props.isMobile ? 800 : undefined);
+    const height = this.props.isDesktop ? 768 : (!this.props.isMobile ? 600 : undefined);
     return (
       <div>
         <DialogContainer
@@ -41,27 +40,50 @@ export class ReservationDialog extends React.Component<{ isMobile: boolean }, { 
           pageY={pageY}
           fullPage={this.props.isMobile}
           onHide={this.hide}
+          width={width}
+          height={height}
           aria-labelledby="simple-full-page-dialog-title"
         >
           <Toolbar
             fixed={true}
             colored={true}
-            title="Reservation"
+            title={this.props.title}
             titleId="simple-full-page-dialog-title"
             nav={<Button icon={true} onClick={this.hide}>close</Button>}
             actions={<Button flat={true} onClick={this.hide}>Save</Button>}
           />
           <section className="md-toolbar-relative">
-            <TextField id="reservation-email" placeholder="Email" block={true} paddedBlock={true} />
-            <Divider />
-            <TextField id="reservation-firtname" placeholder="First Name(s)" block={true} paddedBlock={true} />
-            <Divider />
-            <TextField id="reservation-surename" placeholder="Surname" block={true} paddedBlock={true} />
-            <Divider />
-            <TextField id="reservation-desc" placeholder="Description" block={true} paddedBlock={true} rows={4} />
+            {this.props.children}
           </section>
         </DialogContainer>
       </div>
     );
+  }
+}
+
+export class ReservationDialog extends React.Component<{ isMobile?: boolean, isDesktop?: boolean }, { reservation: any }> {
+  private dialog: Dialog | null;
+
+  constructor(props: any) {
+    super(props);
+    this.state = { reservation: null };
+  }
+
+  render() {
+    return (
+      <Dialog
+        title="Reservation"
+        {...this.props}
+        ref={self => this.dialog = self}
+      >
+        {JSON.stringify(this.state.reservation)}
+      </Dialog>);
+  }
+
+  show(e: any, r: any) {
+    if (this.dialog) {
+      this.dialog.show(e);
+      this.setState({ reservation: r });
+    }
   }
 }

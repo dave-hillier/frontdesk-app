@@ -90,14 +90,14 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
           const size = (daysTillNext < 0 && daysTillDeparture > 0) ? ((nights + daysTillNext) * gridSize + 'px') : (nights * gridSize + 'px');
           if (daysTillNext < 0 && daysTillDeparture > 0 || daysTillNext >= 0) {
             const rs = {
-              width: size, // negative
+              width: size,
               background: randomHsl()
             };
             rez.push(
               <div
                 key={'rez' + '_' + j + '_' + i}
                 style={rs}
-                onClick={e => this.dialog.show(0)}
+                onClick={e => this.dialog.show(e, roomReservations[j])}
                 className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header grid-cell rez-cell"
               >
                 {roomReservations[j].lastName}

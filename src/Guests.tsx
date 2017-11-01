@@ -8,23 +8,25 @@ import {
 } from 'react-md';
 import { ReservationDialog } from './ReservationDialog';
 import { ReservationData, getArrivals, getResidents, getDepartures } from './Reservations';
+import { addDays } from './dateHelpers';
 
 // TODO: swipe to navigate
 // TODO: animate change screen?
 // TODO: warning for no allocation, room state
 // TODO: billing warning for departure red/green?
 // TODO: ETA/ETD need to be added to data
-
-function formatDateRange(year: boolean, arrival?: Date, departure?: Date) {
+// TODO: using routes for mobile subsections
+// TODO: react-transition-group betweeen tabs
+function formatDateRange(arrival: Date, departure?: Date) {
   const arrivalShort = arrival ? arrival.toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short'
-  }).split(' ').join(' ') : '';
+  }) : '';
 
   const departureShort = departure ? (' - ' + departure.toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short'
-  }).split(' ').join(' ')) : '';
+  })) : '';
 
   return arrivalShort + departureShort;
 }
@@ -33,11 +35,11 @@ const ArrivalTopLine = (props: { name: string, time?: Date }): JSX.Element => De
 
 const DepartureTopLine = (props: { name: string, time?: Date, label?: string }): JSX.Element => {
   const label = props.label ? props.label : 'ETD';
-
   const estimated = props.time ? label + ': ' + props.time.toLocaleTimeString('en-GB', {
     hour: '2-digit',
     minute: '2-digit'
   }) : '';
+
   return (
     <div className="space-between-content">
       <div>{props.name}</div>
@@ -50,7 +52,7 @@ const ResidentsTopLine = (props: { name: string, arrival: Date, departure: Date 
   return (
     <div className="space-between-content">
       <div>{props.name}</div>
-      <div className="md-text--secondary">{formatDateRange(false, props.arrival, props.departure)}</div>
+      <div className="md-text--secondary">{formatDateRange(props.arrival, props.departure)}</div>
     </div>)
     ;
 };
@@ -68,6 +70,7 @@ const People = (props: { adults: number, children: number, infants: number }): J
 
 const MiddleLine = (props: { room: string, roomType: string, nights?: number }): JSX.Element => {
   const nights = props.nights ? `${props.nights} nights` : '';
+
   return (
     <div className="space-between-content">
       <div>{props.roomType} {props.room}</div>
@@ -85,6 +88,7 @@ const BottomLine = (props: { balance: number, adults: number, children: number, 
 
 const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
+
   return (
     <ListItem
       className="md-divider-border md-divider-border--bottom"
@@ -109,6 +113,7 @@ const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) =>
 const ResidentItem = (props: { reservation: ReservationData, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
   const a = new Date(r.arrival);
+
   return (
     <ListItem
       className="md-divider-border md-divider-border--bottom"
@@ -134,6 +139,7 @@ const ResidentItem = (props: { reservation: ReservationData, onClick: (e: any) =
 
 const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
+
   return (
     <ListItem
       className="md-divider-border md-divider-border--bottom"
@@ -153,7 +159,7 @@ const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) 
   );
 };
 
-function arrivalsList(f: any): {}[] {
+function arrivalsList(onClick: (e: any, r: any) => void): {}[] {
   const arrivals = getArrivals();
   const result: {}[] = [];
   for (let i = 0; i < arrivals.length; ++i) {
@@ -161,20 +167,14 @@ function arrivalsList(f: any): {}[] {
       <ArrivalItem
         key={i}
         reservation={arrivals[i]}
-        onClick={f}
+        onClick={(e) => onClick(e, arrivals[i])}
       />
     );
   }
   return result;
 }
 
-function addDays(date: Date, days: number) {
-  var dat = new Date(date);
-  dat.setDate(dat.getDate() + days);
-  return dat;
-}
-
-function residentList(onClick: (e: any) => void): {}[] {
+function residentList(onClick: (e: any, r: any) => void): {}[] {
   const residents = getResidents();
   const result: {}[] = [];
   for (let i = 0; i < residents.length; ++i) {
@@ -182,14 +182,14 @@ function residentList(onClick: (e: any) => void): {}[] {
       <ResidentItem
         key={i}
         reservation={residents[i]}
-        onClick={onClick}
+        onClick={(e) => onClick(e, residents[i])}
       />
     );
   }
   return result;
 }
 
-function departureList(f: (e: any) => void): {}[] {
+function departureList(onClick: (e: any, r: any) => void): {}[] {
   const residents = getDepartures();
   const result: {}[] = [];
   for (let i = 0; i < residents.length; ++i) {
@@ -197,7 +197,7 @@ function departureList(f: (e: any) => void): {}[] {
       <DepartureItem
         key={i}
         reservation={residents[i]}
-        onClick={f}
+        onClick={(e) => onClick(e, residents[i])}
       />)
     );
   }
@@ -233,19 +233,18 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, cur
 
     this.state = {
       title: '',
-      currentList: <Arrivals onClick={(e: any) => this.dialog.show(e)} listClassName={props.isMobile ? '' : 'md-cell md-paper md-paper--1'} isMobile={props.isMobile} />
+      currentList: <Arrivals onClick={(e: any, r: any) => this.dialog.show(e, r)} listClassName={props.isMobile ? '' : 'md-cell md-paper md-paper--1'} isMobile={props.isMobile} />
     };
   }
 
   render() {
     if (!this.props.isMobile) {
       return (
-
         <div className="md-grid">
           <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
-          <Arrivals onClick={(e: any) => this.dialog.show(e)} listClassName={'md-cell md-paper md-paper--1'} />
-          <Residents onClick={(e: any) => this.dialog.show(e)} listClassName={'md-cell md-paper md-paper--1'} />
-          <Departures onClick={(e: any) => this.dialog.show(e)} listClassName={'md-cell md-paper md-paper--1'} />
+          <Arrivals onClick={(e: any, r: any) => this.dialog.show(e, r)} listClassName={'md-cell md-paper md-paper--1'} />
+          <Residents onClick={(e: any, r: any) => this.dialog.show(e, r)} listClassName={'md-cell md-paper md-paper--1'} />
+          <Departures onClick={(e: any, r: any) => this.dialog.show(e, r)} listClassName={'md-cell md-paper md-paper--1'} />
         </div>
 
       );
@@ -255,7 +254,12 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, cur
         <div>
           <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
           {currentList}
-          <BottomNavigation links={links} dynamic={false} onNavChange={e => this.handleNavChange(e)} />
+          <BottomNavigation
+            links={links}
+            dynamic={true}
+            animate={true}
+            onNavChange={e => this.handleNavChange(e)}
+          />
         </div>);
     }
   }
@@ -265,13 +269,13 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, cur
     let currentList;
     switch (index) {
       case 1:
-        currentList = <Residents onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
+        currentList = <Residents onClick={(e: any, r: any) => this.dialog.show(e, r)} isMobile={true} />;
         break;
       case 2:
-        currentList = <Departures onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
+        currentList = <Departures onClick={(e: any, r: any) => this.dialog.show(e, r)} isMobile={true} />;
         break;
       default:
-        currentList = <Arrivals onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
+        currentList = <Arrivals onClick={(e: any, r: any) => this.dialog.show(e, r)} isMobile={true} />;
     }
 
     this.setState({ title, currentList });
