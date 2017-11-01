@@ -7,7 +7,7 @@ import {
 
 } from 'react-md';
 
-class Dialog extends React.Component<{ title: any, isMobile?: boolean, isDesktop?: boolean }, { pageX?: number, pageY?: number, visible: boolean }> {
+class StandardDialog extends React.Component<{ title: any, isMobile?: boolean, isDesktop?: boolean }, { pageX?: number, pageY?: number, visible: boolean }> {
   constructor(props: any) {
     super(props);
     this.state = { visible: false };
@@ -62,7 +62,7 @@ class Dialog extends React.Component<{ title: any, isMobile?: boolean, isDesktop
 }
 
 export class ReservationDialog extends React.Component<{ isMobile?: boolean, isDesktop?: boolean }, { reservation: any }> {
-  private dialog: Dialog | null;
+  private dialog: StandardDialog | null;
 
   constructor(props: any) {
     super(props);
@@ -71,13 +71,13 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
 
   render() {
     return (
-      <Dialog
+      <StandardDialog
         title="Reservation"
         {...this.props}
         ref={self => this.dialog = self}
       >
         {JSON.stringify(this.state.reservation)}
-      </Dialog>);
+      </StandardDialog>);
   }
 
   show(e: any, r: any) {

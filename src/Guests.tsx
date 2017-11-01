@@ -31,7 +31,7 @@ function formatDateRange(arrival: Date, departure?: Date) {
   return arrivalShort + departureShort;
 }
 
-const ArrivalTopLine = (props: { name: string, time?: Date }): JSX.Element => DepartureTopLine({ name: props.name, time: props.time, label: 'ETA' });
+const ArrivalTopLine = (props: { name: string, time?: Date }) => DepartureTopLine({ name: props.name, time: props.time, label: 'ETA' });
 
 const DepartureTopLine = (props: { name: string, time?: Date, label?: string }): JSX.Element => {
   const label = props.label ? props.label : 'ETD';
@@ -159,50 +159,6 @@ const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) 
   );
 };
 
-function arrivalsList(onClick: (e: any, r: any) => void): {}[] {
-  const arrivals = getArrivals();
-  const result: {}[] = [];
-  for (let i = 0; i < arrivals.length; ++i) {
-    result.push(
-      <ArrivalItem
-        key={i}
-        reservation={arrivals[i]}
-        onClick={(e) => onClick(e, arrivals[i])}
-      />
-    );
-  }
-  return result;
-}
-
-function residentList(onClick: (e: any, r: any) => void): {}[] {
-  const residents = getResidents();
-  const result: {}[] = [];
-  for (let i = 0; i < residents.length; ++i) {
-    result.push(
-      <ResidentItem
-        key={i}
-        reservation={residents[i]}
-        onClick={(e) => onClick(e, residents[i])}
-      />
-    );
-  }
-  return result;
-}
-
-function departureList(onClick: (e: any, r: any) => void): {}[] {
-  const residents = getDepartures();
-  const result: {}[] = [];
-  for (let i = 0; i < residents.length; ++i) {
-    result.push((
-      <DepartureItem
-        key={i}
-        reservation={residents[i]}
-        onClick={(e) => onClick(e, residents[i])}
-      />)
-    );
-  }
-  return result;
-}
 const links = [{
   label: 'Arrivals',
   icon: <FontIcon>room_service</FontIcon>,
@@ -221,9 +177,41 @@ const GridSection = (props: { primaryText: string, listClassName?: string, child
   </List>
 );
 
-const Arrivals = (props: any) => <GridSection primaryText="Arrivals" {...props}>{...arrivalsList(props.onClick)}</ GridSection>;
-const Residents = (props: any) => <GridSection primaryText="Residents" {...props}>{...residentList(props.onClick)}</ GridSection>;
-const Departures = (props: any) => <GridSection primaryText="Departures" {...props}>{...departureList(props.onClick)}</ GridSection>;
+const Arrivals = (props: any) => {
+  const items = getArrivals().map(r => {
+    return (
+      <ArrivalItem
+        key={r.ref}
+        reservation={r}
+        onClick={(e) => props.onClick(e, r)}
+      />);
+  });
+  return <GridSection primaryText="Arrivals" {...props}>{...items}</ GridSection>;
+};
+
+const Residents = (props: any) => {
+  const items = getResidents().map(r => {
+    return (
+      <ResidentItem
+        key={r.ref}
+        reservation={r}
+        onClick={(e) => props.onClick(e, r)}
+      />);
+  });
+  return <GridSection primaryText="Residents" {...props}>{...items}</ GridSection>;
+};
+
+const Departures = (props: any) => {
+  const items = getDepartures().map(r => {
+    return (
+      <DepartureItem
+        key={r.ref}
+        reservation={r}
+        onClick={(e) => props.onClick(e, r)}
+      />);
+  });
+  return <GridSection primaryText="Departures" {...props}>{...items}</ GridSection>;
+};
 
 class Guests extends React.Component<{ isMobile: boolean }, { title: string, currentList: any }> {
   dialog: ReservationDialog;
