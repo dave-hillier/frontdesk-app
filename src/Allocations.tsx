@@ -49,7 +49,7 @@ export default class Allocations extends React.Component {
             key={'' + i + j}
             className="md-divider-border md-divider-border--right grid-cell"
           >
-            99
+            999
           </div>
         );
       }
