@@ -141,8 +141,8 @@ const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) 
       secondaryText={(
         <div>
           <div className="space-between-content">
-            <div >{props.reservation.room ? 'Room: ' + props.reservation.room.toString() : ''}</div>
-            <div>{props.reservation.balance ? props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' }) : ''}</div>
+            <div >{props.reservation.room && 'Room: ' + props.reservation.room.toString()}</div>
+            <div>{props.reservation.balance && props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
           </div>
         </div>)}
       onClick={props.onClick}
@@ -211,9 +211,9 @@ const links = [{
   icon: <FontIcon>directions_walk</FontIcon>,
 }];
 
-const GridSection = (props: { primaryText: string, listClassName?: string, children: any[] }) => (
+const GridSection = (props: { primaryText: string, listClassName?: string, children: any[], isMobile: boolean }) => (
   <List className={props.listClassName ? props.listClassName : ''}>
-    <Subheader primaryText={props.primaryText} primary={true} />
+    {!props.isMobile && <Subheader primaryText={props.primaryText} primary={true} />}
     {props.children}
   </List>
 );
@@ -230,7 +230,7 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
 
     this.state = {
       title: '',
-      children: <Arrivals onClick={(e: any) => this.dialog.show(e)} listClassName={props.isMobile ? '' : 'md-cell md-paper md-paper--1'} />
+      children: <Arrivals onClick={(e: any) => this.dialog.show(e)} listClassName={props.isMobile ? '' : 'md-cell md-paper md-paper--1'} isMobile={props.isMobile} />
     };
   }
 
@@ -263,13 +263,13 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
     let children;
     switch (index) {
       case 1:
-        children = <Residents onClick={(e: any) => this.dialog.show(e)} />;
+        children = <Residents onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
         break;
       case 2:
-        children = <Departures onClick={(e: any) => this.dialog.show(e)} />;
+        children = <Departures onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
         break;
       default:
-        children = <Arrivals onClick={(e: any) => this.dialog.show(e)} />;
+        children = <Arrivals onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
     }
 
     this.setState({ title, children });
