@@ -87,6 +87,7 @@ const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) =>
   const r = props.reservation;
   return (
     <ListItem
+      className="md-divider-border md-divider-border--bottom"
       primaryText={(
         <ArrivalTopLine
           name={`${r.firstName} ${r.lastName}`}
@@ -110,6 +111,7 @@ const ResidentItem = (props: { reservation: ReservationData, onClick: (e: any) =
   const a = new Date(r.arrival);
   return (
     <ListItem
+      className="md-divider-border md-divider-border--bottom"
       primaryText={(
         <ResidentsTopLine
           name={`${r.firstName} ${r.lastName}`}
@@ -134,6 +136,7 @@ const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) 
   const r = props.reservation;
   return (
     <ListItem
+      className="md-divider-border md-divider-border--bottom"
       primaryText={(
         <DepartureTopLine
           name={`${r.firstName} ${r.lastName}`}
@@ -213,7 +216,7 @@ const links = [{
 
 const GridSection = (props: { primaryText: string, listClassName?: string, children: any[], isMobile: boolean }) => (
   <List className={props.listClassName ? props.listClassName : ''}>
-    {!props.isMobile && <Subheader primaryText={props.primaryText} primary={true} />}
+    {!props.isMobile && <Subheader primaryText={props.primaryText} primary={true} className="md-divider-border md-divider-border--bottom" />}
     {props.children}
   </List>
 );
@@ -222,7 +225,7 @@ const Arrivals = (props: any) => <GridSection primaryText="Arrivals" {...props}>
 const Residents = (props: any) => <GridSection primaryText="Residents" {...props}>{...residentList(props.onClick)}</ GridSection>;
 const Departures = (props: any) => <GridSection primaryText="Departures" {...props}>{...departureList(props.onClick)}</ GridSection>;
 
-class Guests extends React.Component<{ isMobile: boolean }, { title: string, children: any }> {
+class Guests extends React.Component<{ isMobile: boolean }, { title: string, currentList: any }> {
   dialog: ReservationDialog;
 
   constructor(props: any) {
@@ -230,7 +233,7 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
 
     this.state = {
       title: '',
-      children: <Arrivals onClick={(e: any) => this.dialog.show(e)} listClassName={props.isMobile ? '' : 'md-cell md-paper md-paper--1'} isMobile={props.isMobile} />
+      currentList: <Arrivals onClick={(e: any) => this.dialog.show(e)} listClassName={props.isMobile ? '' : 'md-cell md-paper md-paper--1'} isMobile={props.isMobile} />
     };
   }
 
@@ -247,12 +250,11 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
 
       );
     } else {
-
-      const { children } = this.state;
+      const { currentList } = this.state;
       return (
         <div>
           <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
-          {children}
+          {currentList}
           <BottomNavigation links={links} dynamic={false} onNavChange={e => this.handleNavChange(e)} />
         </div>);
     }
@@ -260,19 +262,19 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
 
   private handleNavChange(index: number): any {
     const title = links[index].label;
-    let children;
+    let currentList;
     switch (index) {
       case 1:
-        children = <Residents onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
+        currentList = <Residents onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
         break;
       case 2:
-        children = <Departures onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
+        currentList = <Departures onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
         break;
       default:
-        children = <Arrivals onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
+        currentList = <Arrivals onClick={(e: any) => this.dialog.show(e)} isMobile={true} />;
     }
 
-    this.setState({ title, children });
+    this.setState({ title, currentList });
   }
 }
 
