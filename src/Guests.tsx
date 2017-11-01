@@ -173,7 +173,7 @@ function addDays(date: Date, days: number) {
   return dat;
 }
 
-function residentList(f: any): {}[] {
+function residentList(onClick: (e: any) => void): {}[] {
   const residents = getResidents();
   const result: {}[] = [];
   for (let i = 0; i < residents.length; ++i) {
@@ -181,14 +181,14 @@ function residentList(f: any): {}[] {
       <ResidentItem
         key={i}
         reservation={residents[i]}
-        onClick={f}
+        onClick={onClick}
       />
     );
   }
   return result;
 }
 
-function departureList(f: any): {}[] {
+function departureList(f: (e: any) => void): {}[] {
   const residents = getDepartures();
   const result: {}[] = [];
   for (let i = 0; i < residents.length; ++i) {
@@ -229,7 +229,7 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
     return (
       <List className="md-cell md-paper md-paper--1">
         <a ><Subheader primaryText="Arrivals" primary={true} /></a>
-        {...arrivalsList(() => this.dialog.show(0))}
+        {...arrivalsList((e: any) => this.dialog.show(e))}
       </List>
     );
   }
@@ -238,7 +238,7 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
     return (
       <List className="md-cell md-paper md-paper--1">
         <Subheader primaryText="Residents" primary={true} />
-        {...residentList(() => this.dialog.show(0))}
+        {...residentList((e: any) => this.dialog.show(e))}
       </List>
     );
   }
@@ -247,7 +247,7 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
     return (
       <List className="md-cell md-paper md-paper--1">
         <Subheader primaryText="Departures" primary={true} />
-        {...departureList(() => this.dialog.show(0))}
+        {...departureList((e: any) => this.dialog.show(e))}
       </List>
     );
   }
