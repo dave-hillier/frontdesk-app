@@ -9,6 +9,12 @@ import {
 import { ReservationDialog } from './ReservationDialog';
 import { ReservationData, getArrivals, getResidents, getDepartures } from './Reservations';
 
+// TODO: swipe to navigate
+// TODO: animate change screen?
+// TODO: warning for no allocation, room state
+// TODO: billing warning for departure red/green?
+// TODO: ETA/ETD need to be added to data
+
 function formatDateRange(year: boolean, arrival?: Date, departure?: Date) {
   const arrivalShort = arrival ? arrival.toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -23,28 +29,19 @@ function formatDateRange(year: boolean, arrival?: Date, departure?: Date) {
   return arrivalShort + departureShort;
 }
 
-const ArrivalTopLine = (props: { name: string, time?: Date }): JSX.Element => {
-  const eta = props.time ? 'ETA: ' + props.time.toLocaleDateString('en-GB', {
-    hour: '2-digit',
-    minute: '2-digit'
-  }).substring(12) : '';
-  return (
-    <div className="space-between-content">
-      <div>{props.name}</div>
-      <div className="md-text--secondary">{eta}</div>
-    </div>)
-    ;
-};
+const ArrivalTopLine = (props: { name: string, time?: Date }): JSX.Element => DepartureTopLine({ name: props.name, time: props.time, label: 'ETA' });
 
-const DepartureTopLine = (props: { name: string, time?: Date }): JSX.Element => {
-  const etd = props.time ? 'ETD: ' + props.time.toLocaleDateString('en-GB', {
+const DepartureTopLine = (props: { name: string, time?: Date, label?: string }): JSX.Element => {
+  const label = props.label ? props.label : 'ETD';
+
+  const estimated = props.time ? label + ': ' + props.time.toLocaleDateString('en-GB', {
     hour: '2-digit',
     minute: '2-digit'
   }).substring(12) : '';
   return (
     <div className="space-between-content">
       <div>{props.name}</div>
-      <div className="md-text--secondary">{etd}</div>
+      <div className="md-text--secondary">{estimated}</div>
     </div>)
     ;
 };
@@ -58,6 +55,7 @@ const ResidentsTopLine = (props: { name: string, arrival: Date, departure: Date 
     ;
 };
 
+// TODO: tooltips for icons
 const People = (props: { adults: number, children: number, infants: number }): JSX.Element => {
   return (
     <div className="align-items-center">
@@ -92,7 +90,7 @@ const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) =>
       primaryText={(
         <ArrivalTopLine
           name={`${r.firstName} ${r.lastName}`}
-          // time={new Date()}
+        // time={new Date()}
         />)}
       secondaryText={(
         <div>
@@ -140,7 +138,7 @@ const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) 
       primaryText={(
         <DepartureTopLine
           name={`${r.firstName} ${r.lastName}`}
-          // time={new Date()}
+        // time={new Date()}
         />)}
       secondaryText={(
         <div>
