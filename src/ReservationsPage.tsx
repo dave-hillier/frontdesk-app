@@ -6,7 +6,7 @@ import {
   ExpansionPanel
 } from 'react-md';
 import { addDays } from './dateHelpers';
-import { ReservationData, getReservations } from './Reservations';
+import { ReservationData, getReservations } from './FakeReservations';
 const style = {
   maxWidth: 1024
 };

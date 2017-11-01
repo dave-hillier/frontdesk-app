@@ -7,7 +7,7 @@ import {
   FontIcon
 } from 'react-md';
 import { ReservationDialog } from './ReservationDialog';
-import { ReservationData, getArrivals, getResidents, getDepartures } from './Reservations';
+import { ReservationData, getArrivals, getResidents, getDepartures } from './FakeReservations';
 import { addDays } from './dateHelpers';
 
 // TODO: swipe to navigate

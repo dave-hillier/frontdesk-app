@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Allocations.css';
 
-import { getRoomTypesList } from './Reservations';
+import { getRoomTypesList } from './FakeReservations';
 import DateColumnHeaders from './DateColumnHeaders';
 
 const now = new Date('2017-10-25'); // new Date();
