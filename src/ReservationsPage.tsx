@@ -50,18 +50,30 @@ const ReservationsPanel = (props: { rez: ReservationData }) => (
   </ExpansionPanel>
 );
 
-const ReservationsPage = (props: { isMobile: boolean }) => {
-  const rez = getReservations();
-  rez.sort((a: ReservationData, b: ReservationData) => new Date(a.arrival).getTime() - new Date(b.arrival).getTime());
-  rez.splice(100);
-  const cards = rez.map(r => <ReservationsPanel rez={r} key={r.ref} />);
+class ReservationsPage extends React.Component<{ isMobile: boolean }, { reservations: ReservationData[] }> {
 
-  return (
-    <div>
-      <ExpansionList>
-        {...cards}
-      </ExpansionList>
-    </div>);
-};
+  constructor(props: any) {
+    super(props);
+    this.state = { reservations: [] };
+  }
+
+  componentWillMount() {
+    getReservations('').then(rez => {
+      rez.sort((a: ReservationData, b: ReservationData) => new Date(a.arrival).getTime() - new Date(b.arrival).getTime());
+      rez.splice(100);
+      this.setState({ reservations: rez });
+    });
+  }
+
+  render() {
+    const cards = this.state.reservations.map(r => <ReservationsPanel rez={r} key={r.ref} />);
+    return (
+      <div>
+        <ExpansionList>
+          {...cards}
+        </ExpansionList>
+      </div >);
+  }
+}
 
 export default ReservationsPage;

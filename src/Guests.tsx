@@ -216,10 +216,17 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, cur
     this.state = {
       title: '',
       currentSection: 0,
-      arrivals: getArrivals(),
-      residents: getResidents(),
-      departures: getDepartures()
+      arrivals: [],
+      residents: [],
+      departures: []
     };
+  }
+
+  componentWillMount() {
+    // TODO: merge these and provide filters 
+    getArrivals('').then(r => this.setState({ arrivals: r }));
+    getResidents('').then(r => this.setState({ residents: r }));
+    getDepartures('').then(r => this.setState({ departures: r }));
   }
 
   render() {

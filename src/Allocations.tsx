@@ -1,15 +1,15 @@
 import * as React from 'react';
 import './Allocations.css';
 
-import { roomTypesList } from './Reservations';
+import { getRoomTypesList } from './Reservations';
 import DateColumnHeaders from './DateColumnHeaders';
 
 const now = new Date('2017-10-25'); // new Date();
 const today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
 
-const RowHeaders = () => {
+const RowHeaders = (props: { roomTypesList: string[] }) => {
   const rows: {}[] = [];
-  const roomTypes: string[] = ['', ...roomTypesList];
+  const roomTypes: string[] = ['', ...props.roomTypesList];
 
   for (let i = 0; i < roomTypes.length; ++i) {
     rows.push(
@@ -23,13 +23,21 @@ const RowHeaders = () => {
   return <div className="grid-row-headers">{...rows}</div>;
 };
 
-export default class Allocations extends React.Component {
+export default class Allocations extends React.Component<{}, { roomTypesList: string[] }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { roomTypesList: [] };
+  }
+  componentWillMount() {
+    getRoomTypesList().then((rl: string[]) => this.setState({ roomTypesList: rl }));
+  }
+
   render() {
-    const rows = this.buildGridRows(roomTypesList.length, 40);
+    const rows = this.buildGridRows(this.state.roomTypesList.length, 40);
 
     return (
       <div className="grid-container">
-        <RowHeaders />
+        <RowHeaders roomTypesList={this.state.roomTypesList} />
         <div>
           <DateColumnHeaders start={today} days={40} />
           {...rows}

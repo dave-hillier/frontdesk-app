@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Planner.css';
-import { getReservationsByRoom, roomNames } from './Reservations';
+import { getReservationsByRoom, getRoomNames } from './Reservations';
 import { subtractDates, addDays } from './dateHelpers';
 import { ReservationDialog } from './ReservationDialog';
 import DateColumnHeaders from './DateColumnHeaders';
@@ -36,12 +36,21 @@ const EmptyCellBlock = (props: { days: number }): JSX.Element => {
     />);
 };
 
-export default class Planner extends React.Component<{ isMobile: boolean }, {}> {
-  dialog: ReservationDialog;
+export default class Planner extends React.Component<{ isMobile: boolean }, { lookup: any, roomNames: string[] }> {
+  private dialog: ReservationDialog;
+
+  constructor(props: any) {
+    super(props);
+    this.state = { roomNames: [], lookup: {} };
+  }
+
+  componentWillMount() {
+    // TODO: get hotel by prop?
+    getReservationsByRoom('').then((l: any) => this.setState({ lookup: l }));
+    getRoomNames().then((r: string[]) => this.setState({ roomNames: r }));
+  }
 
   render() {
-    const lookup = getReservationsByRoom();
-
     const rowStyle = {
       height: gridSize + 'px',
     };
@@ -58,7 +67,7 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
           style={rowHeaderStyle}
           className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header grid-cell"
         >
-          {roomNames[i]}
+          {this.state.roomNames[i]}
         </div>);
     }
 
@@ -66,8 +75,8 @@ export default class Planner extends React.Component<{ isMobile: boolean }, {}> 
 
     for (let i = 0; i < numberOfRooms; ++i) {
       let currentDate = today;
-      if (i in lookup) {
-        const roomReservations = lookup[i];
+      if (i in this.state.lookup) {
+        const roomReservations = this.state.lookup[i];
         const rez: {}[] = [];
         for (let j = 0; j < roomReservations.length; ++j) {
           const arrival = new Date(roomReservations[j].arrival);

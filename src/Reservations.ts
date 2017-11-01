@@ -7,10 +7,19 @@ today.setHours(0, 0, 0, 0);
 
 const roomCount = 100;
 
-export const roomTypesList: string[] = ['Double', 'Twin', 'Suite', 'Acc Double', 'Acc Twin', 'Acc Suite', 'Exec Doubl', 'Exec Twin', 'Exec Suite'];
+const roomTypesList: string[] = ['Double', 'Twin', 'Suite', 'Acc Double', 'Acc Twin', 'Acc Suite', 'Exec Doubl', 'Exec Twin', 'Exec Suite'];
 
-export const roomTypes: string[] = [];
-export const roomNames: string[] = []; // TODO: combine
+const roomTypes: string[] = [];
+const roomNames: string[] = []; // TODO: combine
+
+// TODO: get rid of this index exposure
+export async function getRoomNames() {
+  return roomNames;
+}
+
+export async function getRoomTypesList() {
+  return roomTypesList;
+}
 
 export interface ReservationData {
   firstName: string;
@@ -31,6 +40,7 @@ export interface ReservationData {
 
 let seed = 1;
 
+// TODO: move this generation into promise, seed off hotel name
 // Generate fake data 
 const chance = new Chance(seed);
 
@@ -38,6 +48,7 @@ function pseudoRandom() {
   return chance.d100() / 100;
 }
 
+// TODO: calculate in a promise/future
 const roomReservations: ReservationData[][] = [];
 
 for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
@@ -75,20 +86,22 @@ for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
   }
 }
 
-export function getReservations(): ReservationData[] {
+export async function getReservations(hotelSite: string): Promise<ReservationData[]> {
   return roomReservations.reduce((a, b) => a.concat(b), []);
 }
 
-export function getArrivals() {
-  return getReservations().filter(res => {
+export async function getArrivals(hotelSite: string) {
+  const rez = await getReservations(hotelSite);
+  return rez.filter(res => {
     const d = new Date(res.arrival);
     d.setHours(0, 0, 0, 0);
     return d.getTime() === today.getTime();
   });
 }
 
-export function getDepartures() {
-  return getReservations().filter(res => {
+export async function getDepartures(hotelSite: string) {
+  const rez = await getReservations(hotelSite);
+  return rez.filter(res => {
     const a = new Date(res.arrival);
     a.setHours(0, 0, 0, 0);
     const d = addDays(new Date(a), res.nights);
@@ -97,8 +110,9 @@ export function getDepartures() {
   });
 }
 
-export function getResidents() {
-  return getReservations().filter(res => {
+export async function getResidents(hotelSite: string) {
+  const rez = await getReservations(hotelSite);
+  return rez.filter(res => {
     const a = new Date(res.arrival);
     a.setHours(0, 0, 0, 0);
     const d = addDays(new Date(a), res.nights);
@@ -108,8 +122,9 @@ export function getResidents() {
   });
 }
 
-export function getReservationsByRoom(): any {
-  const rooms: any[] = getReservations().filter(r => r.room).map(r => { return { room: r.room, rez: r }; });
+export async function getReservationsByRoom(hotelSite: string) {
+  const rez = await getReservations(hotelSite);
+  const rooms: any[] = rez.filter(r => r.room).map(r => { return { room: r.room, rez: r }; });
 
   let lookup: any = {};
   for (let i = 0; i < rooms.length; ++i) {
