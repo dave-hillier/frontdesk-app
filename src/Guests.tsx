@@ -211,6 +211,17 @@ const links = [{
   icon: <FontIcon>directions_walk</FontIcon>,
 }];
 
+const GridSection = (props: { primaryText: string, listClassName?: string, children: any[] }) => (
+  <List className={props.listClassName ? props.listClassName : ''}>
+    <Subheader primaryText={props.primaryText} primary={true} />
+    {props.children}
+  </List>
+);
+
+const Arrivals = (props: any) => <GridSection primaryText="Arrivals" {...props}>{...arrivalsList(props.onClick)}</ GridSection>;
+const Residents = (props: any) => <GridSection primaryText="Residents" {...props}>{...residentList(props.onClick)}</ GridSection>;
+const Departures = (props: any) => <GridSection primaryText="Departures" {...props}>{...departureList(props.onClick)}</ GridSection>;
+
 class Guests extends React.Component<{ isMobile: boolean }, { title: string, children: any }> {
   dialog: ReservationDialog;
 
@@ -219,35 +230,8 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
 
     this.state = {
       title: '',
-      children: this.arrive()
+      children: <Arrivals onClick={(e: any) => this.dialog.show(e)} listClassName={props.isMobile ? '' : 'md-cell md-paper md-paper--1'} />
     };
-  }
-
-  arrive() {
-    return (
-      <List className="md-cell md-paper md-paper--1">
-        <a ><Subheader primaryText="Arrivals" primary={true} /></a>
-        {...arrivalsList((e: any) => this.dialog.show(e))}
-      </List>
-    );
-  }
-
-  resident() {
-    return (
-      <List className="md-cell md-paper md-paper--1">
-        <Subheader primaryText="Residents" primary={true} />
-        {...residentList((e: any) => this.dialog.show(e))}
-      </List>
-    );
-  }
-
-  depart() {
-    return (
-      <List className="md-cell md-paper md-paper--1">
-        <Subheader primaryText="Departures" primary={true} />
-        {...departureList((e: any) => this.dialog.show(e))}
-      </List>
-    );
   }
 
   render() {
@@ -256,9 +240,9 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
 
         <div className="md-grid">
           <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
-          {this.arrive()}
-          {this.resident()}
-          {this.depart()}
+          <Arrivals onClick={(e: any) => this.dialog.show(e)} listClassName={'md-cell md-paper md-paper--1'} />
+          <Residents onClick={(e: any) => this.dialog.show(e)} listClassName={'md-cell md-paper md-paper--1'} />
+          <Departures onClick={(e: any) => this.dialog.show(e)} listClassName={'md-cell md-paper md-paper--1'} />
         </div>
 
       );
@@ -266,7 +250,7 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
 
       const { children } = this.state;
       return (
-        <div className="md-grid">
+        <div>
           <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
           {children}
           <BottomNavigation links={links} dynamic={false} onNavChange={e => this.handleNavChange(e)} />
@@ -279,13 +263,13 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, chi
     let children;
     switch (index) {
       case 1:
-        children = this.resident();
+        children = <Residents onClick={(e: any) => this.dialog.show(e)} />;
         break;
       case 2:
-        children = this.depart();
+        children = <Departures onClick={(e: any) => this.dialog.show(e)} />;
         break;
       default:
-        children = this.arrive();
+        children = <Arrivals onClick={(e: any) => this.dialog.show(e)} />;
     }
 
     this.setState({ title, children });
