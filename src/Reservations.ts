@@ -20,10 +20,13 @@ export interface ReservationData {
   nights: number;
   roomType: string;
   ref: string;
+  rate: string;
+  adults: number;
+  children: number;
+  infants: number;
   balance?: number;
   room?: number;
   ledger?: string;
-  rate: string;
 }
 
 let seed = 1;
@@ -64,7 +67,9 @@ for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
       balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
       room: roomIndex,
       ledger: pseudoRandom() > 0.7 ? 'Ledger ' + chance.d100() : undefined,
-
+      adults: pseudoRandom() > 0.8 ? 1 : 2,
+      children: 0,
+      infants: 0
     };
     room.push(item);
   }

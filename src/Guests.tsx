@@ -130,7 +130,12 @@ const ResidentItem = (props: { reservation: ReservationData, onClick: (e: any) =
             roomType={props.reservation.roomType}
             nights={props.reservation.nights}
           />
-          <BottomLine balance={r.balance ? r.balance : 0} adults={1} children={0} infants={0} />
+          <BottomLine
+            balance={r.balance ? r.balance : 0}
+            adults={r.adults}
+            children={r.children}
+            infants={r.infants}
+          />
         </div>)}
       onClick={props.onClick}
     />
