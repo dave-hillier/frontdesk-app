@@ -68,12 +68,12 @@ const People = (props: { adults: number, children: number, infants: number }): J
   );
 };
 
-const MiddleLine = (props: { room: string, roomType: string, nights?: number }): JSX.Element => {
+const MiddleLine = (props: { roomName: string, roomType: string, nights?: number }): JSX.Element => {
   const nights = props.nights ? `${props.nights} nights` : '';
 
   return (
     <div className="space-between-content">
-      <div>{props.roomType} {props.room}</div>
+      <div>{props.roomType} {props.roomName}</div>
       <div className="md-text--secondary">{nights}</div>
     </div>);
 };
@@ -99,7 +99,7 @@ const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) =>
       secondaryText={(
         <div>
           <MiddleLine
-            room={props.reservation.room ? 'Room: ' + props.reservation.room.toString() : ''}
+            roomName={props.reservation.roomName() ? 'Room: ' + props.reservation.roomName().toString() : ''}
             roomType={props.reservation.roomType}
             nights={props.reservation.nights}
           />
@@ -126,7 +126,7 @@ const ResidentItem = (props: { reservation: ReservationData, onClick: (e: any) =
       secondaryText={(
         <div>
           <MiddleLine
-            room={props.reservation.room ? 'Room: ' + props.reservation.room.toString() : ''}
+            roomName={props.reservation.roomName() ? 'Room: ' + props.reservation.roomName().toString() : ''}
             roomType={props.reservation.roomType}
             nights={props.reservation.nights}
           />
@@ -155,7 +155,7 @@ const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) 
       secondaryText={(
         <div>
           <div className="space-between-content">
-            <div >{props.reservation.room && 'Room: ' + props.reservation.room.toString()}</div>
+            <div >{props.reservation.roomName() && 'Room: ' + props.reservation.roomName().toString()}</div>
             <div>{props.reservation.balance && props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
           </div>
         </div>)}

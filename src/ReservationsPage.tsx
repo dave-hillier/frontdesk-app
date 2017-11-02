@@ -15,7 +15,7 @@ const ReservationLabel = (props: { rez: ReservationData }) => {
   return (
     <div>{props.rez.ref} - {props.rez.firstName} {props.rez.lastName} -
       {new Date(props.rez.arrival).toDateString()} - {addDays(new Date(), props.rez.nights).toDateString()} ({props.rez.nights} Nights)<br />
-      Room: {props.rez.room} Rate: {props.rez.rate} Room Type: {props.rez.roomType} -
+      Room: {props.rez.roomName()} Rate: {props.rez.rate} Room Type: {props.rez.roomType} -
       Balance £{props.rez.balance}
     </div>
   );

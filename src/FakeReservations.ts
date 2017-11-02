@@ -19,6 +19,7 @@ export async function getRoomTypesList() {
   return roomTypesList;
 }
 
+// TODO: probably want to change this to some sensible model to hide network requests
 export interface ReservationData {
   firstName: string;
   lastName: string;
@@ -33,6 +34,7 @@ export interface ReservationData {
   infants: number;
   balance?: number;
   room?: number;
+  roomName: () => string;
   ledger?: string;
 }
 
@@ -77,6 +79,7 @@ for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
       rate: 'BAR',
       balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
       room: roomIndex,
+      roomName: () => roomIndex ? roomNames[roomIndex] : '',
       ledger: pseudoRandom() > 0.7 ? 'Ledger ' + chance.d100() : undefined,
       adults: pseudoRandom() > 0.8 ? 1 : 2,
       children: 0,
