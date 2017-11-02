@@ -92,7 +92,7 @@ function generateData(hotelCode: string): ReservationData[][] {
         arrival: arrival.toISOString(), // TODO: change to date?
         nights: nights,
         roomType: roomType,
-        ref: 'BK' + seededChance.ssn(),
+        ref: 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1',
         rate: 'BAR',
         balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
         room: roomIndex,
