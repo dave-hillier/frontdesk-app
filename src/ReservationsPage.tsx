@@ -57,14 +57,17 @@ class ReservationsPanel extends React.Component<{ reservation: ReservationData }
 
   render() {
     const r = this.props.reservation;
-    const style = {
-      padding: '10px'
+    const paddingAround = {
+      padding: '12px'
+    };
+    const paddingTop = {
+      paddingTop: '12px'
     };
     return (
-      <div style={style} className="md-divider-border md-divider-border--bottom">
+      <div style={paddingAround} className="md-divider-border md-divider-border--bottom">
         <ReservationMain collapsed={this.state.collapsed} reservation={r} onClick={() => this.toggle()} />
         <Collapse collapsed={this.state.collapsed}>
-          <div>
+          <div style={paddingTop}>
             <div>
               <p>
                 Contact Information:
