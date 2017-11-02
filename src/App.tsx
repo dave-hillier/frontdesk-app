@@ -30,12 +30,12 @@ function matchesMedia(min: number, max?: number) {
   return window.matchMedia(media).matches;
 }
 
-const mobile = matchesMedia(MobileMinWidth, TabletMinWidth - 1);
+const isMobile = matchesMedia(MobileMinWidth, TabletMinWidth - 1);
 const tablet = matchesMedia(TabletMinWidth, DesktopMinWidth);
 const desktop = matchesMedia(DesktopMinWidth);
 
 // tslint:disable-next-line:no-console
-console.log('Mobile', mobile, 'Tablet', tablet, 'desktop', desktop);
+console.log('Mobile', isMobile, 'Tablet', tablet, 'desktop', desktop);
 
 const hotelSites = ['Hotel Site A', 'Hotel Site B', 'Hotel Site C'];
 
@@ -140,8 +140,8 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                 />)}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : 'Guests'}</div>}
               toolbarActions={<div className="toolbar-actions">
-                <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={mobile} />
-                {!mobile ? <Avatar key="av">DH</Avatar> : null}
+                <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} />
+                {!isMobile ? <Avatar key="av">DH</Avatar> : null}
               </div>}
               navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
             >
@@ -150,11 +150,11 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                   exact={true}
                   path="/"
                   location={location}
-                  component={() => <Guests isMobile={mobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                  component={() => <Guests isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
                 />
-                <Route path="/planner" location={location} component={() => <Planner isMobile={mobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
-                <Route path="/availability" location={location} component={() => (<Allocations isMobile={mobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)} />
-                <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={mobile} />} />
+                <Route path="/planner" location={location} component={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
+                <Route path="/availability" location={location} component={() => (<Allocations isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)} />
+                <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={isMobile} />} />
               </Switch>
             </NavigationDrawer>
           )}

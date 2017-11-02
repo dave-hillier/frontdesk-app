@@ -132,3 +132,20 @@
 i.medium-icon {
   font-size: medium;
 }
+
+.reservation-list-item.expanded {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  
+}
+
+.reservation-list-item {
+  margin-top: -1px;
+  margin-bottom: 0;
+  transition: 0.3s;
+
+  padding: 12px;
+  background: $md-white-base;
+  min-width: 260px;
+  @include md-box-shadow(1);
+}

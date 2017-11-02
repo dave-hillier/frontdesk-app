@@ -15,10 +15,10 @@ class ReservationMain extends React.Component<{ collapsed: boolean, reservation:
   render() {
     const r = this.props.reservation;
     const a = new Date(r.arrival);
-    const wide = { width: '100%' };
+    const wide = { width: '100%', minWidth: 200 };
 
     return (
-      <div onClick={this.props.onClick} className="flex-box">
+      <div className="flex-box">
         <div style={wide}>
           <ResidentsTopLine
             name={`${r.firstName} ${r.lastName}`}
@@ -38,7 +38,9 @@ class ReservationMain extends React.Component<{ collapsed: boolean, reservation:
           />
         </div>
         <div className="align-flex-end">
-          {this.props.collapsed ? <Button icon={true}>keyboard_arrow_down</Button> : <Button icon={true}>keyboard_arrow_up</Button>}
+          {this.props.collapsed ?
+            <Button icon={true} onClick={this.props.onClick} >keyboard_arrow_down</Button> :
+            <Button icon={true} onClick={this.props.onClick} >keyboard_arrow_up</Button>}
         </div>
       </div>
     );
@@ -57,14 +59,14 @@ class ReservationsPanel extends React.Component<{ reservation: ReservationData }
 
   render() {
     const r = this.props.reservation;
-    const paddingAround = {
-      padding: '12px'
-    };
     const paddingTop = {
       paddingTop: '12px'
     };
+    const cn = ' md-divider-border md-divider-border--top md-divider-border--bottom md-divider-border--left md-divider-border--right reservation-list-item'
+      + (!this.state.collapsed ? ' expanded' : ' collapsed');
     return (
-      <div style={paddingAround} className="md-divider-border md-divider-border--bottom">
+
+      <div className={cn} >
         <ReservationMain collapsed={this.state.collapsed} reservation={r} onClick={() => this.toggle()} />
         <Collapse collapsed={this.state.collapsed}>
           <div style={paddingTop}>
@@ -109,9 +111,17 @@ class ReservationsPage extends React.Component<{ isMobile: boolean }, { reservat
 
   render() {
     const cards = this.state.reservations.map(r => <ReservationsPanel reservation={r} key={r.ref} />);
+    if (this.props.isMobile) {
+      return (
+        <div>
+          {...cards}
+        </div>);
+    }
     return (
-      <div>
-        {...cards}
+      <div className="md-grid">
+        <div className="md-cell md-cell--12">
+          {...cards}
+        </div>
       </div >);
   }
 }
