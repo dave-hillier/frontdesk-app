@@ -136,7 +136,6 @@ i.medium-icon {
 .reservation-list-item.expanded {
   margin-top: 20px;
   margin-bottom: 20px;
-  
 }
 
 .reservation-list-item {
@@ -148,4 +147,18 @@ i.medium-icon {
   background: $md-white-base;
   min-width: 260px;
   @include md-box-shadow(1);
+}
+
+.tooltip-container {
+  line-height: 18px;
+  height: 18px;
+}
+
+.tooltip-container > span {
+  display: none;
+}
+
+.tooltip-container:hover > span {
+  display: inline-block;
+  position: absolute;
 }

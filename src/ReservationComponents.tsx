@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Tooltip from './Tooltip';
 
 const today = new Date('2017-10-25');
 today.setHours(0, 0, 0, 0);
@@ -47,9 +48,18 @@ export const ResidentsTopLine = (props: { name: string, arrival: Date, departure
 export const People = (props: { adults: number, children: number, infants: number }): JSX.Element => {
   return (
     <div className="align-items-center">
-      <i className="material-icons medium-icon">person</i>&nbsp;{props.adults}&nbsp;&nbsp;
-      <i className="material-icons medium-icon">child_care</i>&nbsp;{props.children}&nbsp;&nbsp;
-      <i className="material-icons medium-icon">child_friendly</i>&nbsp;{props.infants}
+      <Tooltip label="Adults">
+        <i className="material-icons medium-icon">person</i>
+      </Tooltip>
+      &nbsp;{props.adults}&nbsp;&nbsp;
+      <Tooltip label="Children">
+        <i className="material-icons medium-icon">child_care</i>
+      </Tooltip>
+      &nbsp;{props.children}&nbsp;&nbsp;
+      <Tooltip label="Infants">
+        <i className="material-icons medium-icon">child_friendly</i>
+      </Tooltip>
+      &nbsp;{props.infants}&nbsp;&nbsp;
     </div>
   );
 };
@@ -68,6 +78,6 @@ export const BottomLine = (props: { balance: number, adults: number, children: n
   return (
     <div className="space-between-content">
       <People {...props} />
-      <div>{props.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
+      <Tooltip label="Balance">{props.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Tooltip>
     </div>);
 };
