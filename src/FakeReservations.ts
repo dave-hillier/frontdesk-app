@@ -11,11 +11,11 @@ const roomTypesList: string[] = ['Double', 'Twin', 'Suite', 'Acc Double', 'Acc T
 const roomTypes: string[] = [];
 const roomNames: string[] = [];
 
-export async function getRoomNames() {
+export async function getRoomNames(hotelSiteCode: string) {
   return roomNames;
 }
 
-export async function getRoomTypesList() {
+export async function getRoomTypesList(hotelSiteCode: string) {
   return roomTypesList;
 }
 

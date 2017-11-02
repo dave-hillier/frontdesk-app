@@ -23,13 +23,13 @@ const RowHeaders = (props: { roomTypesList: string[] }) => {
   return <div className="grid-row-headers">{...rows}</div>;
 };
 
-export default class Allocations extends React.Component<{}, { roomTypesList: string[] }> {
+export default class Allocations extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { roomTypesList: string[] }> {
   constructor(props: any) {
     super(props);
     this.state = { roomTypesList: [] };
   }
   componentWillMount() {
-    getRoomTypesList().then((rl: string[]) => this.setState({ roomTypesList: rl }));
+    getRoomTypesList(this.props.hotelSiteCode).then((rl: string[]) => this.setState({ roomTypesList: rl }));
   }
 
   render() {

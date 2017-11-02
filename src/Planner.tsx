@@ -36,7 +36,7 @@ const EmptyCellBlock = (props: { days: number }): JSX.Element => {
     />);
 };
 
-export default class Planner extends React.Component<{ isMobile: boolean }, { lookup: any, roomNames: string[] }> {
+export default class Planner extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { lookup: any, roomNames: string[] }> {
   private dialog: ReservationDialog;
 
   constructor(props: any) {
@@ -46,8 +46,8 @@ export default class Planner extends React.Component<{ isMobile: boolean }, { lo
 
   componentWillMount() {
     // TODO: get hotel by prop?
-    getReservationsByRoom('').then((l: any) => this.setState({ lookup: l }));
-    getRoomNames().then((r: string[]) => this.setState({ roomNames: r }));
+    getReservationsByRoom(this.props.hotelSiteCode).then((l: any) => this.setState({ lookup: l }));
+    getRoomNames(this.props.hotelSiteCode).then((r: string[]) => this.setState({ roomNames: r }));
   }
 
   render() {

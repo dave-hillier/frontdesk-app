@@ -152,15 +152,15 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                   location={location}
                   component={() => <Guests isMobile={mobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
                 />
-                <Route path="/planner" location={location} component={() => <Planner isMobile={mobile} />} />
-                <Route path="/availability" location={location} component={Allocations} />
+                <Route path="/planner" location={location} component={() => <Planner isMobile={mobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
+                <Route path="/availability" location={location} component={() => (<Allocations isMobile={mobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)} />
                 <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={mobile} />} />
               </Switch>
             </NavigationDrawer>
-          )}
+              )}
         /></div>
-    );
-  }
+          );
+        }
 }
 
 export default App;
