@@ -38,91 +38,80 @@ export interface ReservationData {
   ledger?: string;
 }
 
-let seed = 1;
+function hashCode(str: string) {
+  let hash: number = 0, i, chr;
+  if (str.length === 0) {
+    return hash;
+  }
 
-// TODO: move this generation into promise, seed off hotel name
-// Generate fake data 
-const chance = new Chance(seed);
-
-function pseudoRandom() {
-  return chance.d100() / 100;
+  for (i = 0; i < str.length; i++) {
+    chr = str.charCodeAt(i);
+    // tslint:disable-next-line:no-bitwise
+    hash = ((hash << 5) - hash) + chr;
+    // tslint:disable-next-line:no-bitwise
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
 }
 
-// TODO: calculate in a promise/future
-const roomReservations: ReservationData[][] = [];
-
-for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
-  const roomType = roomTypesList[roomTypesList.length * roomIndex / roomCount];
-  roomTypes.push(roomType);
-  const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
-  const roomNumber = (roomIndex % (roomCount / floors)) + 1;
-  roomNames.push(`${currentFloor}${('0' + roomNumber).slice(-2)}`);
-
-  const room: ReservationData[] = roomReservations[roomIndex] = [];
-  let currentDate = addDays(today, -5); // Start 5 days before
-  for (let num = Math.floor(pseudoRandom() * 10); num > 0; --num) {
-    const dayBefore = Math.floor(pseudoRandom() * 8);
-    const nights = 1 + Math.floor(pseudoRandom() * 7);
-    currentDate = addDays(currentDate, dayBefore);
-    const departure = addDays(currentDate, nights);
-    const arrival = currentDate;
-    currentDate = departure;
-
-    const item: ReservationData = {
-      firstName: chance.first(),
-      lastName: chance.last(),
-      email: chance.email(),
-      arrival: arrival.toISOString(), // TODO: change to date?
-      nights: nights,
-      roomType: roomType,
-      ref: 'BK' + chance.ssn(),
-      rate: 'BAR',
-      balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
-      room: roomIndex,
-      roomName: () => roomIndex ? roomNames[roomIndex] : '',
-      ledger: pseudoRandom() > 0.7 ? 'Ledger ' + chance.d100() : undefined,
-      adults: pseudoRandom() > 0.8 ? 1 : 2,
-      children: 0,
-      infants: 0
-    };
-    room.push(item);
+const generated: any = {};
+function generateData(hotelCode: string): ReservationData[][] {
+  if (hotelCode in generated) {
+    return generated[hotelCode];
   }
+
+  const seed = hashCode(hotelCode);
+  const seededChance = new Chance(seed);
+  const pseudoRandom = () => {
+    return seededChance.d100() / 100;
+  };
+  // TODO: calculate in a promise/future in a worker
+  const rez: ReservationData[][] = [];
+
+  for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
+    const roomType = roomTypesList[roomTypesList.length * roomIndex / roomCount];
+    roomTypes.push(roomType);
+    const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
+    const roomNumber = (roomIndex % (roomCount / floors)) + 1;
+    roomNames.push(`${currentFloor}${('0' + roomNumber).slice(-2)}`);
+
+    const room: ReservationData[] = rez[roomIndex] = [];
+    let currentDate = addDays(today, -5); // Start 5 days before
+    for (let num = Math.floor(pseudoRandom() * 10); num > 0; --num) {
+      const dayBefore = Math.floor(pseudoRandom() * 8);
+      const nights = 1 + Math.floor(pseudoRandom() * 7);
+      currentDate = addDays(currentDate, dayBefore);
+      const departure = addDays(currentDate, nights);
+      const arrival = currentDate;
+      currentDate = departure;
+
+      const item: ReservationData = {
+        firstName: seededChance.first(),
+        lastName: seededChance.last(),
+        email: seededChance.email(),
+        arrival: arrival.toISOString(), // TODO: change to date?
+        nights: nights,
+        roomType: roomType,
+        ref: 'BK' + seededChance.ssn(),
+        rate: 'BAR',
+        balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
+        room: roomIndex,
+        roomName: () => roomIndex ? roomNames[roomIndex] : '',
+        ledger: pseudoRandom() > 0.7 ? 'Ledger ' + seededChance.d100() : undefined,
+        adults: pseudoRandom() > 0.8 ? 1 : 2,
+        children: 0,
+        infants: 0
+      };
+      room.push(item);
+    }
+  }
+  generated[hotelCode] = rez;
+  return rez;
 }
 
 export async function getReservations(hotelSite: string): Promise<ReservationData[]> {
+  const roomReservations = generateData(hotelSite);
   return roomReservations.reduce((a, b) => a.concat(b), []);
-}
-
-export async function getArrivals(hotelSite: string) {
-  const rez = await getReservations(hotelSite);
-  return rez.filter(res => {
-    const d = new Date(res.arrival);
-    d.setHours(0, 0, 0, 0);
-    return d.getTime() === today.getTime();
-  });
-}
-
-export async function getDepartures(hotelSite: string) {
-  const rez = await getReservations(hotelSite);
-  return rez.filter(res => {
-    const a = new Date(res.arrival);
-    a.setHours(0, 0, 0, 0);
-    const d = addDays(new Date(a), res.nights);
-
-    return d.getTime() === today.getTime();
-  });
-}
-
-export async function getResidents(hotelSite: string) {
-  const rez = await getReservations(hotelSite);
-  return rez.filter(res => {
-    const a = new Date(res.arrival);
-    a.setHours(0, 0, 0, 0);
-    const d = addDays(new Date(a), res.nights);
-
-    return d.getTime() > today.getTime() &&
-      a.getTime() < today.getTime();
-  });
 }
 
 export async function getReservationsByRoom(hotelSite: string) {

@@ -7,8 +7,40 @@ import {
   FontIcon
 } from 'react-md';
 import { ReservationDialog } from './ReservationDialog';
-import { ReservationData, getArrivals, getResidents, getDepartures } from './FakeReservations';
+import { ReservationData, getReservations } from './FakeReservations';
 import { addDays } from './dateHelpers';
+
+const today = new Date('2017-10-25');
+today.setHours(0, 0, 0, 0);
+
+function filterArrivals(rez: ReservationData[]) {
+  return rez.filter(res => {
+    const d = new Date(res.arrival);
+    d.setHours(0, 0, 0, 0);
+    return d.getTime() === today.getTime();
+  });
+}
+
+function filterDepartures(rez: ReservationData[]) {
+  return rez.filter(res => {
+    const a = new Date(res.arrival);
+    a.setHours(0, 0, 0, 0);
+    const d = addDays(new Date(a), res.nights);
+
+    return d.getTime() === today.getTime();
+  });
+}
+
+function filterResidents(rez: ReservationData[]) {
+  return rez.filter(res => {
+    const a = new Date(res.arrival);
+    a.setHours(0, 0, 0, 0);
+    const d = addDays(new Date(a), res.nights);
+
+    return d.getTime() > today.getTime() &&
+      a.getTime() < today.getTime();
+  });
+}
 
 // TODO: swipe to navigate
 // TODO: animate change screen?
@@ -207,7 +239,7 @@ const links = [{
   icon: <FontIcon>directions_walk</FontIcon>,
 }];
 
-class Guests extends React.Component<{ isMobile: boolean }, { title: string, currentSection: number, arrivals: ReservationData[], residents: ReservationData[], departures: ReservationData[] }> {
+class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { title: string, currentSection: number, arrivals: ReservationData[], residents: ReservationData[], departures: ReservationData[] }> {
   dialog: ReservationDialog;
 
   constructor(props: any) {
@@ -224,9 +256,13 @@ class Guests extends React.Component<{ isMobile: boolean }, { title: string, cur
 
   componentWillMount() {
     // TODO: merge these and provide filters 
-    getArrivals('').then(r => this.setState({ arrivals: r }));
-    getResidents('').then(r => this.setState({ residents: r }));
-    getDepartures('').then(r => this.setState({ departures: r }));
+    getReservations(this.props.hotelSiteCode).then(rez => {
+      this.setState({
+        arrivals: filterArrivals(rez),
+        residents: filterResidents(rez),
+        departures: filterDepartures(rez)
+      });
+    });
   }
 
   render() {

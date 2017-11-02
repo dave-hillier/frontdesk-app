@@ -39,7 +39,7 @@ console.log('Mobile', mobile, 'Tablet', tablet, 'desktop', desktop);
 
 const hotelSites = ['Hotel Site A', 'Hotel Site B', 'Hotel Site C'];
 
-class DrawerHeader extends React.Component {
+class DrawerHeader extends React.Component<{ hotelSiteIndex: number, onChange: (value: string, index: number, event: any) => void }, {}> {
   render() {
     return (
       <div className="drawer-header">
@@ -49,8 +49,8 @@ class DrawerHeader extends React.Component {
           className="md-title md-select-field--toolbar"
           menuItems={hotelSites}
           simplifiedMenu={false}
-          closeOnOutsideClick={true}
-          defaultValue={hotelSites[0]}
+          defaultValue={hotelSites[this.props.hotelSiteIndex]}
+          onChange={this.props.onChange}
         />
       </div>
 
@@ -109,10 +109,13 @@ const titles = {
   '/reservations': 'Reservations'
 };
 
-class App extends React.Component<{}, { loaded: boolean }> {
+class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number }> {
   constructor(props: {}) {
     super(props);
-    this.state = { loaded: false };
+    this.state = {
+      loaded: false,
+      hotelSiteIndex: 0
+    };
   }
 
   componentWillMount() {
@@ -130,7 +133,11 @@ class App extends React.Component<{}, { loaded: boolean }> {
           render={({ location }) => (
             <NavigationDrawer
               className="nav-drawer"
-              drawerTitle={<DrawerHeader />}
+              drawerTitle={(
+                <DrawerHeader
+                  hotelSiteIndex={this.state.hotelSiteIndex}
+                  onChange={(v, i, e) => this.setState({ hotelSiteIndex: i })}
+                />)}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : 'Guests'}</div>}
               toolbarActions={<div className="toolbar-actions">
                 <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={mobile} />
@@ -139,7 +146,12 @@ class App extends React.Component<{}, { loaded: boolean }> {
               navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
             >
               <Switch key={location.key}>
-                <Route exact={true} path="/" location={location} component={() => <Guests isMobile={mobile} />} />
+                <Route
+                  exact={true}
+                  path="/"
+                  location={location}
+                  component={() => <Guests isMobile={mobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                />
                 <Route path="/planner" location={location} component={() => <Planner isMobile={mobile} />} />
                 <Route path="/availability" location={location} component={Allocations} />
                 <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={mobile} />} />
