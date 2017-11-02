@@ -85,6 +85,7 @@ function generateData(hotelCode: string): ReservationData[][] {
       const arrival = currentDate;
       currentDate = departure;
 
+      const adults = seededChance.d6() > 3 ? 2 : 1;
       const item: ReservationData = {
         firstName: seededChance.first(),
         lastName: seededChance.last(),
@@ -98,9 +99,9 @@ function generateData(hotelCode: string): ReservationData[][] {
         room: roomIndex,
         roomName: () => roomIndex ? roomNames[roomIndex] : '',
         ledger: pseudoRandom() > 0.7 ? 'Ledger ' + seededChance.d100() : undefined,
-        adults: pseudoRandom() > 0.8 ? 1 : 2,
-        children: 0,
-        infants: 0
+        adults: adults,
+        children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
+        infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
       };
       room.push(item);
     }
