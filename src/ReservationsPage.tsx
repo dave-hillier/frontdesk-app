@@ -66,7 +66,7 @@ class ReservationsPanel extends React.Component<{ reservation: ReservationData }
       + (!this.state.collapsed ? ' expanded' : ' collapsed');
     return (
 
-      <div className={cn} >
+      <div className={cn} onClick={() => this.state.collapsed && this.toggle()}>
         <ReservationMain collapsed={this.state.collapsed} reservation={r} onClick={() => this.toggle()} />
         <Collapse collapsed={this.state.collapsed}>
           <div style={paddingTop}>
