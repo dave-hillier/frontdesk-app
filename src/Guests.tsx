@@ -7,6 +7,7 @@ import {
   FontIcon
 } from 'react-md';
 import { ReservationDialog } from './ReservationDialog';
+import { ArrivalTopLine, ResidentsTopLine, DepartureTopLine, BottomLine, MiddleLine } from './ReservationComponents';
 import { ReservationData, getReservations } from './FakeReservations';
 import { addDays } from './dateHelpers';
 
@@ -49,74 +50,6 @@ function filterResidents(rez: ReservationData[]) {
 // TODO: ETA/ETD need to be added to data
 // TODO: using routes for mobile subsections
 // TODO: react-transition-group betweeen tabs
-function formatDateRange(arrival: Date, departure?: Date) {
-  const arrivalShort = arrival ? arrival.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short'
-  }) : '';
-
-  const departureShort = departure ? (' - ' + departure.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short'
-  })) : '';
-
-  return arrivalShort + departureShort;
-}
-
-const ArrivalTopLine = (props: { name: string, time?: Date }) => DepartureTopLine({ name: props.name, time: props.time, label: 'ETA' });
-
-const DepartureTopLine = (props: { name: string, time?: Date, label?: string }): JSX.Element => {
-  const label = props.label ? props.label : 'ETD';
-  const estimated = props.time ? label + ': ' + props.time.toLocaleTimeString('en-GB', {
-    hour: '2-digit',
-    minute: '2-digit'
-  }) : '';
-
-  return (
-    <div className="space-between-content">
-      <div>{props.name}</div>
-      <div className="md-text--secondary">{estimated}</div>
-    </div>)
-    ;
-};
-
-const ResidentsTopLine = (props: { name: string, arrival: Date, departure: Date }): JSX.Element => {
-  return (
-    <div className="space-between-content">
-      <div>{props.name}</div>
-      <div className="md-text--secondary">{formatDateRange(props.arrival, props.departure)}</div>
-    </div>)
-    ;
-};
-
-// TODO: tooltips for icons
-const People = (props: { adults: number, children: number, infants: number }): JSX.Element => {
-  return (
-    <div className="align-items-center">
-      <i className="material-icons medium-icon">person</i>&nbsp;{props.adults}&nbsp;&nbsp;
-      <i className="material-icons medium-icon">child_care</i>&nbsp;{props.children}&nbsp;&nbsp;
-      <i className="material-icons medium-icon">child_friendly</i>&nbsp;{props.infants}
-    </div>
-  );
-};
-
-const MiddleLine = (props: { roomName: string, roomType: string, nights?: number }): JSX.Element => {
-  const nights = props.nights ? `${props.nights} nights` : '';
-
-  return (
-    <div className="space-between-content">
-      <div>{props.roomType} {props.roomName}</div>
-      <div className="md-text--secondary">{nights}</div>
-    </div>);
-};
-
-const BottomLine = (props: { balance: number, adults: number, children: number, infants: number }): JSX.Element => {
-  return (
-    <div className="space-between-content">
-      <People {...props} />
-      <div>{props.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
-    </div>);
-};
 
 const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
@@ -255,7 +188,6 @@ class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string 
   }
 
   componentWillMount() {
-    // TODO: merge these and provide filters 
     getReservations(this.props.hotelSiteCode).then(rez => {
       this.setState({
         arrivals: filterArrivals(rez),
