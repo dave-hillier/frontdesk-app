@@ -1,54 +1,93 @@
 import * as React from 'react';
-
 import {
-  Button,
-  ExpansionList,
-  ExpansionPanel
+  Collapse,
+  Button
 } from 'react-md';
+
 import { addDays } from './dateHelpers';
 import { ReservationData, getReservations } from './FakeReservations';
-const style = {
-  maxWidth: 1024
-};
+import { ResidentsTopLine, BottomLine, MiddleLine } from './ReservationComponents';
 
-const ReservationLabel = (props: { rez: ReservationData }) => {
-  return (
-    <div>{props.rez.ref} - {props.rez.firstName} {props.rez.lastName} -
-      {new Date(props.rez.arrival).toDateString()} - {addDays(new Date(), props.rez.nights).toDateString()} ({props.rez.nights} Nights)<br />
-      Room: {props.rez.roomName()} Rate: {props.rez.rate} Room Type: {props.rez.roomType} -
-      Balance £{props.rez.balance}
-    </div>
-  );
-};
+import './ReservationsPage.css';
 
-const ReservationsPanel = (props: { rez: ReservationData }) => (
-  <ExpansionPanel
-    className="md-block-centered"
-    style={style}
-    label={<ReservationLabel rez={props.rez} />}
-    footer={null}
-  >
-    <p>
-      Adults: 1 Children: 0 Infants: 0<br />
-    </p>
-    <p>
-      Contact Information:
-      </p>
-    <p>
-      Line1<br />
-      Line2<br />
-      Line3<br />
-      Line4<br />
-      Line5<br />
-    </p>
-    <p>
-      <Button raised={true} primary={true}>Reservation</Button>&nbsp;
-      <Button raised={true} primary={true}>Check in</Button>&nbsp;
-      <Button raised={true} primary={true}>Deallocate</Button>&nbsp;
-      <Button raised={true} primary={true}>Room Billing</Button>&nbsp;
-    </p>
-  </ExpansionPanel>
-);
+class ReservationMain extends React.Component<{ collapsed: boolean, reservation: ReservationData, onClick: any }, { collapsed: boolean }> {
+
+  render() {
+    const r = this.props.reservation;
+    const a = new Date(r.arrival);
+    const wide = { width: '100%' };
+
+    return (
+      <div onClick={this.props.onClick} className="flex-box">
+        <div style={wide}>
+          <ResidentsTopLine
+            name={`${r.firstName} ${r.lastName}`}
+            arrival={a}
+            departure={new Date(addDays(a, r.nights))}
+          />
+          <MiddleLine
+            roomName={r.roomName() ? 'Room: ' + r.roomName().toString() : ''}
+            roomType={r.roomType}
+            nights={r.nights}
+          />
+          <BottomLine
+            balance={r.balance ? r.balance : 0}
+            adults={r.adults}
+            children={r.children}
+            infants={r.infants}
+          />
+        </div>
+        <div className="align-flex-end">
+          {this.props.collapsed ? <Button icon={true}>keyboard_arrow_down</Button> : <Button icon={true}>keyboard_arrow_up</Button>}
+        </div>
+      </div>
+    );
+  }
+}
+
+class ReservationsPanel extends React.Component<{ reservation: ReservationData }, { collapsed: boolean }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { collapsed: true };
+  }
+
+  toggle() {
+    this.setState({ collapsed: !this.state.collapsed });
+  }
+
+  render() {
+    const r = this.props.reservation;
+    const style = {
+      padding: '10px'
+    };
+    return (
+      <div style={style} className="md-divider-border md-divider-border--bottom">
+        <ReservationMain collapsed={this.state.collapsed} reservation={r} onClick={() => this.toggle()} />
+        <Collapse collapsed={this.state.collapsed}>
+          <div>
+            <div>
+              <p>
+                Contact Information:
+            </p>
+              <p>
+                Line1<br />
+                Line2<br />
+                Line3<br />
+                Line4<br />
+                Line5<br />
+              </p>
+            </div>
+            <div className="space-between-content">
+              <Button raised={true} primary={true}>Reservation</Button>
+              <Button raised={true} primary={true}>Check in</Button>
+              <Button raised={true} primary={true}>Deallocate</Button>
+              <Button raised={true} primary={true}>Room Billing</Button>
+            </div>
+          </div>
+        </Collapse>
+      </div>);
+  }
+}
 
 class ReservationsPage extends React.Component<{ isMobile: boolean }, { reservations: ReservationData[] }> {
 
@@ -66,12 +105,10 @@ class ReservationsPage extends React.Component<{ isMobile: boolean }, { reservat
   }
 
   render() {
-    const cards = this.state.reservations.map(r => <ReservationsPanel rez={r} key={r.ref} />);
+    const cards = this.state.reservations.map(r => <ReservationsPanel reservation={r} key={r.ref} />);
     return (
       <div>
-        <ExpansionList>
-          {...cards}
-        </ExpansionList>
+        {...cards}
       </div >);
   }
 }

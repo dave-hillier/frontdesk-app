@@ -64,6 +64,10 @@ const navItems = [{
   to: '/',
   icon: 'home',
 }, {
+  label: 'Reservations',
+  to: '/reservations',
+  icon: 'print',
+}, {
   label: 'Planner',
   to: '/planner',
   icon: 'list',
@@ -71,10 +75,6 @@ const navItems = [{
   label: 'Availability',
   to: '/availability',
   icon: 'library_add',
-}, {
-  label: 'Reservations',
-  to: '/reservations',
-  icon: 'print',
 }];
 
 class NavLink extends React.Component<{ to: string, exact?: boolean, icon: string, label: string }, {}> {
@@ -157,10 +157,10 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                 <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={mobile} />} />
               </Switch>
             </NavigationDrawer>
-              )}
+          )}
         /></div>
-          );
-        }
+    );
+  }
 }
 
 export default App;

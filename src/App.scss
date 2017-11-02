@@ -110,10 +110,24 @@
   justify-content: space-between;
 }
 
+.flex-box {
+  display: flex;
+}
+
+
 .align-items-center {
   align-items: center;
   display: flex;
 }
+
+.align-flex-end {
+  align-self: flex-end;
+}
+
+.align-flex-start {
+  align-self: flex-start;
+}
+
 
 i.medium-icon {
   font-size: medium;
