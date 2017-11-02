@@ -110,8 +110,14 @@ function generateData(hotelCode: string): ReservationData[][] {
 }
 
 export async function getReservations(hotelSite: string): Promise<ReservationData[]> {
-  const roomReservations = generateData(hotelSite);
-  return roomReservations.reduce((a, b) => a.concat(b), []);
+  async function inner(): Promise<ReservationData[]> {
+    const roomReservations = generateData(hotelSite);
+    return roomReservations.reduce((a, b) => a.concat(b), []);
+  }
+
+  return new Promise<ReservationData[]>((resolve, reject) => {
+    setTimeout(function () { resolve(inner()); }, 100);
+  });
 }
 
 export async function getReservationsByRoom(hotelSite: string) {
