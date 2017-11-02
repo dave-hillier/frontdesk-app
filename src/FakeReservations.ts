@@ -5,14 +5,12 @@ import { Chance } from 'chance';
 const today = new Date('2017-10-25');
 today.setHours(0, 0, 0, 0);
 
+const floors = 5;
 const roomCount = 100;
-
 const roomTypesList: string[] = ['Double', 'Twin', 'Suite', 'Acc Double', 'Acc Twin', 'Acc Suite', 'Exec Doubl', 'Exec Twin', 'Exec Suite'];
-
 const roomTypes: string[] = [];
-const roomNames: string[] = []; // TODO: combine
+const roomNames: string[] = [];
 
-// TODO: get rid of this index exposure
 export async function getRoomNames() {
   return roomNames;
 }
@@ -54,7 +52,9 @@ const roomReservations: ReservationData[][] = [];
 for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
   const roomType = roomTypesList[roomTypesList.length * roomIndex / roomCount];
   roomTypes.push(roomType);
-  roomNames.push(`Room ${roomIndex + 1}`);
+  const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
+  const roomNumber = (roomIndex % (roomCount / floors)) + 1;
+  roomNames.push(`${currentFloor}${('0' + roomNumber).slice(-2)}`);
 
   const room: ReservationData[] = roomReservations[roomIndex] = [];
   let currentDate = addDays(today, -5); // Start 5 days before
