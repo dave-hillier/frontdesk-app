@@ -59,7 +59,7 @@ export interface Reservation {
   readonly requestedRoomTypes: string[];
   readonly allocations: Room[];
   readonly balance: number;
-  readonly state: 'provisional' | 'confirmed';
+  readonly state: 'provisional' | 'confirmed' | 'resident' | 'noshow' | 'departed' | 'cancelled' | 'waitlist';
   readonly rate: string;
 }
 
