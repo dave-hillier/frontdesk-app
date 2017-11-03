@@ -5,12 +5,12 @@ import {
 } from 'react-md';
 
 import { addDays } from './dateHelpers';
-import { ReservationData, getReservations } from './FakeReservations';
+import { Reservation, getReservations } from './FakeReservations';
 import { ResidentsTopLine, BottomLine, MiddleLine } from './ReservationComponents';
 
 import './ReservationsPage.css';
 
-class ReservationMain extends React.Component<{ collapsed: boolean, reservation: ReservationData, onClick: any }, { collapsed: boolean }> {
+class ReservationMain extends React.Component<{ collapsed: boolean, reservation: Reservation, onClick: any }, { collapsed: boolean }> {
 
   render() {
     const r = this.props.reservation;
@@ -21,13 +21,13 @@ class ReservationMain extends React.Component<{ collapsed: boolean, reservation:
       <div className="flex-box">
         <div style={wide}>
           <ResidentsTopLine
-            name={`${r.firstName} ${r.lastName}`}
+            name={`${r.profile.firstName} ${r.profile.lastName}`}
             arrival={a}
             departure={new Date(addDays(a, r.nights))}
           />
           <MiddleLine
-            roomName={r.roomName() ? 'Room: ' + r.roomName().toString() : ''}
-            roomType={r.roomType}
+            roomName={r.allocations[0].name ? 'Room: ' + r.allocations[0].name.toString() : ''}
+            roomType={r.allocations[0].type}
             nights={r.nights}
           />
           <BottomLine
@@ -47,7 +47,7 @@ class ReservationMain extends React.Component<{ collapsed: boolean, reservation:
   }
 }
 
-class ReservationsPanel extends React.Component<{ reservation: ReservationData }, { collapsed: boolean }> {
+class ReservationsPanel extends React.Component<{ reservation: Reservation }, { collapsed: boolean }> {
   constructor(props: any) {
     super(props);
     this.state = { collapsed: true };
@@ -94,7 +94,7 @@ class ReservationsPanel extends React.Component<{ reservation: ReservationData }
   }
 }
 
-class ReservationsPage extends React.Component<{ isMobile: boolean }, { reservations: ReservationData[] }> {
+class ReservationsPage extends React.Component<{ isMobile: boolean }, { reservations: Reservation[] }> {
 
   constructor(props: any) {
     super(props);
@@ -103,7 +103,7 @@ class ReservationsPage extends React.Component<{ isMobile: boolean }, { reservat
 
   componentWillMount() {
     getReservations('').then(rez => {
-      rez.sort((a: ReservationData, b: ReservationData) => new Date(a.arrival).getTime() - new Date(b.arrival).getTime());
+      rez.sort((a: Reservation, b: Reservation) => new Date(a.arrival).getTime() - new Date(b.arrival).getTime());
       rez.splice(100);
       this.setState({ reservations: rez });
     });

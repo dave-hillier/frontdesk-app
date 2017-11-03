@@ -7,7 +7,17 @@ today.setHours(0, 0, 0, 0);
 
 const floors = 5;
 const roomCount = 100;
-const roomTypesList: string[] = ['Double', 'Twin', 'Suite', 'Acc Double', 'Acc Twin', 'Acc Suite', 'Exec Doubl', 'Exec Twin', 'Exec Suite'];
+const roomTypesList: string[] = [
+  'Double',
+  'Twin',
+  'Suite',
+  'Acc Double',
+  'Acc Twin',
+  'Acc Suite',
+  'Exec Double',
+  'Exec Twin',
+  'Exec Suite'
+];
 const roomTypes: string[] = [];
 const roomNames: string[] = [];
 
@@ -19,23 +29,39 @@ export async function getRoomTypesList(hotelSiteCode: string) {
   return roomTypesList;
 }
 
-// TODO: probably want to change this to some sensible model to hide network requests
-export interface ReservationData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  arrival: string;
-  nights: number;
-  roomType: string;
-  ref: string;
-  rate: string;
-  adults: number;
-  children: number;
-  infants: number;
-  balance?: number;
-  room?: number;
-  roomName: () => string;
-  ledger?: string;
+export interface Room {
+  readonly name: string;
+  readonly type: string;
+}
+
+export interface Ledger {
+  readonly name: string;
+}
+
+export interface Profile {
+  readonly title: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly email: string;
+
+  // TODO: address, phone
+}
+
+export interface Reservation {
+  readonly ref: string;
+
+  readonly profile: Profile;
+  readonly ledger?: Ledger;
+  readonly arrival: Date;
+  readonly nights: number;
+  readonly adults: number;
+  readonly children: number;
+  readonly infants: number;
+  readonly requestedRoomTypes: string[];
+  readonly allocations: Room[];
+  readonly balance: number;
+  readonly state: 'provisional' | 'confirmed';
+  readonly rate: string;
 }
 
 function hashCode(str: string) {
@@ -55,7 +81,7 @@ function hashCode(str: string) {
 }
 
 const generated: any = {};
-function generateData(hotelCode: string): ReservationData[][] {
+function generateData(hotelCode: string): Reservation[][] {
   if (hotelCode in generated) {
     return generated[hotelCode];
   }
@@ -66,7 +92,7 @@ function generateData(hotelCode: string): ReservationData[][] {
     return seededChance.d100() / 100;
   };
   // TODO: calculate in a promise/future in a worker
-  const rez: ReservationData[][] = [];
+  const rez: Reservation[][] = [];
 
   for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
     const roomType = roomTypesList[roomTypesList.length * roomIndex / roomCount];
@@ -75,7 +101,7 @@ function generateData(hotelCode: string): ReservationData[][] {
     const roomNumber = (roomIndex % (roomCount / floors)) + 1;
     roomNames.push(`${currentFloor}${('0' + roomNumber).slice(-2)}`);
 
-    const room: ReservationData[] = rez[roomIndex] = [];
+    const room: Reservation[] = rez[roomIndex] = [];
     let currentDate = addDays(today, -5); // Start 5 days before
     for (let num = Math.floor(pseudoRandom() * 10); num > 0; --num) {
       const dayBefore = Math.floor(pseudoRandom() * 8);
@@ -86,22 +112,30 @@ function generateData(hotelCode: string): ReservationData[][] {
       currentDate = departure;
 
       const adults = seededChance.d6() > 3 ? 2 : 1;
-      const item: ReservationData = {
-        firstName: seededChance.first(),
-        lastName: seededChance.last(),
-        email: seededChance.email(),
-        arrival: arrival.toISOString(), // TODO: change to date?
+      const item: Reservation = {
+        profile: {
+          title: 'Mr',
+          firstName: seededChance.first(),
+          lastName: seededChance.last(),
+          email: seededChance.email(),
+        },
+        arrival: arrival, // TODO: change to date?
         nights: nights,
-        roomType: roomType,
+        allocations: [{
+          name: roomIndex ? roomNames[roomIndex] : '',
+          type: roomType
+        }],
+        requestedRoomTypes: [roomType],
         ref: 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1',
         rate: 'BAR',
         balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
-        room: roomIndex,
-        roomName: () => roomIndex ? roomNames[roomIndex] : '',
-        ledger: pseudoRandom() > 0.7 ? 'Ledger ' + seededChance.d100() : undefined,
+        ledger: pseudoRandom() > 0.7 ? {
+          name: 'Ledger ' + seededChance.d100()
+        } : undefined,
         adults: adults,
         children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
         infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
+        state: 'provisional'
       };
       room.push(item);
     }
@@ -110,20 +144,20 @@ function generateData(hotelCode: string): ReservationData[][] {
   return rez;
 }
 
-export async function getReservations(hotelSite: string): Promise<ReservationData[]> {
-  async function inner(): Promise<ReservationData[]> {
+export async function getReservations(hotelSite: string): Promise<Reservation[]> {
+  async function inner(): Promise<Reservation[]> {
     const roomReservations = generateData(hotelSite);
     return roomReservations.reduce((a, b) => a.concat(b), []);
   }
 
-  return new Promise<ReservationData[]>((resolve, reject) => {
+  return new Promise<Reservation[]>((resolve, reject) => {
     setTimeout(function () { resolve(inner()); }, 100);
   });
 }
 
 export async function getReservationsByRoom(hotelSite: string) {
   const rez = await getReservations(hotelSite);
-  const rooms: any[] = rez.filter(r => r.room).map(r => { return { room: r.room, rez: r }; });
+  const rooms: any[] = rez.filter(r => r.allocations[0]).map(r => { return { room: r.allocations[0], rez: r }; });
 
   let lookup: any = {};
   for (let i = 0; i < rooms.length; ++i) {

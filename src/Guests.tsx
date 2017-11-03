@@ -8,13 +8,13 @@ import {
 } from 'react-md';
 import { ReservationDialog } from './ReservationDialog';
 import { ArrivalTopLine, ResidentsTopLine, DepartureTopLine, BottomLine, MiddleLine } from './ReservationComponents';
-import { ReservationData, getReservations } from './FakeReservations';
+import { Reservation, getReservations } from './FakeReservations';
 import { addDays } from './dateHelpers';
 
 const today = new Date('2017-10-25');
 today.setHours(0, 0, 0, 0);
 
-function filterArrivals(rez: ReservationData[]) {
+function filterArrivals(rez: Reservation[]) {
   return rez.filter(res => {
     const d = new Date(res.arrival);
     d.setHours(0, 0, 0, 0);
@@ -22,7 +22,7 @@ function filterArrivals(rez: ReservationData[]) {
   });
 }
 
-function filterDepartures(rez: ReservationData[]) {
+function filterDepartures(rez: Reservation[]) {
   return rez.filter(res => {
     const a = new Date(res.arrival);
     a.setHours(0, 0, 0, 0);
@@ -32,7 +32,7 @@ function filterDepartures(rez: ReservationData[]) {
   });
 }
 
-function filterResidents(rez: ReservationData[]) {
+function filterResidents(rez: Reservation[]) {
   return rez.filter(res => {
     const a = new Date(res.arrival);
     a.setHours(0, 0, 0, 0);
@@ -51,7 +51,7 @@ function filterResidents(rez: ReservationData[]) {
 // TODO: using routes for mobile subsections
 // TODO: react-transition-group betweeen tabs
 
-const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) => void }): JSX.Element => {
+const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
 
   return (
@@ -59,13 +59,14 @@ const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) =>
       className="md-divider-border md-divider-border--bottom"
       primaryText={(
         <ArrivalTopLine
-          name={`${r.firstName} ${r.lastName}`}
+          name={`${r.profile.firstName} ${r.profile.lastName}`}
         />)}
       secondaryText={(
         <div>
           <MiddleLine
-            roomName={props.reservation.roomName() ? 'Room: ' + props.reservation.roomName().toString() : ''}
-            roomType={props.reservation.roomType}
+            roomName={props.reservation.allocations[0].name ? 'Room: '
+              + props.reservation.allocations[0].name.toString() : ''}
+            roomType={props.reservation.allocations[0].type}
             nights={props.reservation.nights}
           />
           <BottomLine
@@ -80,7 +81,7 @@ const ArrivalItem = (props: { reservation: ReservationData, onClick: (e: any) =>
   );
 };
 
-const ResidentItem = (props: { reservation: ReservationData, onClick: (e: any) => void }): JSX.Element => {
+const ResidentItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
   const a = new Date(r.arrival);
 
@@ -89,15 +90,15 @@ const ResidentItem = (props: { reservation: ReservationData, onClick: (e: any) =
       className="md-divider-border md-divider-border--bottom"
       primaryText={(
         <ResidentsTopLine
-          name={`${r.firstName} ${r.lastName}`}
+          name={`${r.profile.firstName} ${r.profile.lastName}`}
           arrival={a}
           departure={new Date(addDays(a, r.nights))}
         />)}
       secondaryText={(
         <div>
           <MiddleLine
-            roomName={props.reservation.roomName() ? 'Room: ' + props.reservation.roomName().toString() : ''}
-            roomType={props.reservation.roomType}
+            roomName={props.reservation.allocations[0].name ? 'Room: ' + props.reservation.allocations[0].name.toString() : ''}
+            roomType={props.reservation.allocations[0].type}
             nights={props.reservation.nights}
           />
           <BottomLine
@@ -112,7 +113,7 @@ const ResidentItem = (props: { reservation: ReservationData, onClick: (e: any) =
   );
 };
 
-const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) => void }): JSX.Element => {
+const DepartureItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
 
   return (
@@ -120,12 +121,12 @@ const DepartureItem = (props: { reservation: ReservationData, onClick: (e: any) 
       className="md-divider-border md-divider-border--bottom"
       primaryText={(
         <DepartureTopLine
-          name={`${r.firstName} ${r.lastName}`}
+          name={`${r.profile.firstName} ${r.profile.lastName}`}
         />)}
       secondaryText={(
         <div>
           <div className="space-between-content">
-            <div >{props.reservation.roomName() && 'Room: ' + props.reservation.roomName().toString()}</div>
+            <div >{props.reservation.allocations[0].name && 'Room: ' + props.reservation.allocations[0].name.toString()}</div>
             <div>{props.reservation.balance && props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
           </div>
         </div>)}
@@ -143,7 +144,7 @@ const GridSection = (props: { primaryText: string, listClassName: string, childr
 
 interface Props {
   listClassName: string;
-  items: ReservationData[];
+  items: Reservation[];
   onClick: (e: any, r: any) => void;
   isMobile: boolean;
 }
@@ -177,7 +178,7 @@ const links = [{
   icon: <FontIcon>directions_walk</FontIcon>,
 }];
 
-class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { title: string, currentSection: number, arrivals: ReservationData[], residents: ReservationData[], departures: ReservationData[] }> {
+class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { title: string, currentSection: number, arrivals: Reservation[], residents: Reservation[], departures: Reservation[] }> {
   dialog: ReservationDialog;
 
   constructor(props: any) {

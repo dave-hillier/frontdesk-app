@@ -75,8 +75,8 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
 
     for (let i = 0; i < numberOfRooms; ++i) {
       let currentDate = today;
-      if (i in this.state.lookup) {
-        const roomReservations = this.state.lookup[i];
+      if (this.state.roomNames[i] in this.state.lookup) {
+        const roomReservations = this.state.lookup[this.state.roomNames[i]];
         const rez: {}[] = [];
         for (let j = 0; j < roomReservations.length; ++j) {
           const arrival = new Date(roomReservations[j].arrival);
