@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Planner.css';
-import { getReservationsByRoom, getRoomNames } from './FakeReservations';
+import { getReservationsByRoom, getRooms, Room } from './FakeReservations';
 import { subtractDates, addDays } from './dateHelpers';
 import { ReservationDialog } from './ReservationDialog';
 import DateColumnHeaders from './DateColumnHeaders';
@@ -47,7 +47,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
   componentWillMount() {
     // TODO: get hotel by prop?
     getReservationsByRoom(this.props.hotelSiteCode).then((l: any) => this.setState({ lookup: l }));
-    getRoomNames(this.props.hotelSiteCode).then((r: string[]) => this.setState({ roomNames: r }));
+    getRooms(this.props.hotelSiteCode).then((r: Room[]) => this.setState({ roomNames: r.map(n => n.name) }));
   }
 
   render() {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Allocations.css';
 
-import { getRoomTypesList } from './FakeReservations';
+import { getRooms, Room } from './FakeReservations';
 import DateColumnHeaders from './DateColumnHeaders';
 
 const now = new Date('2017-10-25'); // new Date();
@@ -29,7 +29,7 @@ export default class Allocations extends React.Component<{ isMobile: boolean, ho
     this.state = { roomTypesList: [] };
   }
   componentWillMount() {
-    getRoomTypesList(this.props.hotelSiteCode).then((rl: string[]) => this.setState({ roomTypesList: rl }));
+    getRooms(this.props.hotelSiteCode).then((rl: Room[]) => this.setState({ roomTypesList: rl.map(x => x.type) }));
   }
 
   render() {

@@ -18,15 +18,10 @@ const roomTypesList: string[] = [
   'Exec Twin',
   'Exec Suite'
 ];
-const roomTypes: string[] = [];
-const roomNames: string[] = [];
 
-export async function getRoomNames(hotelSiteCode: string) {
-  return roomNames;
-}
-
-export async function getRoomTypesList(hotelSiteCode: string) {
-  return roomTypesList;
+export async function getRooms(hotelCode: string): Promise<Room[]> {
+  await generateData(hotelCode);
+  return allRooms;
 }
 
 export interface Room {
@@ -80,6 +75,7 @@ function hashCode(str: string) {
   return hash;
 }
 
+const allRooms: Room[] = [];
 const generated: any = {};
 function generateData(hotelCode: string): Reservation[][] {
   if (hotelCode in generated) {
@@ -96,10 +92,15 @@ function generateData(hotelCode: string): Reservation[][] {
 
   for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
     const roomType = roomTypesList[roomTypesList.length * roomIndex / roomCount];
-    roomTypes.push(roomType);
+
     const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
     const roomNumber = (roomIndex % (roomCount / floors)) + 1;
-    roomNames.push(`${currentFloor}${('0' + roomNumber).slice(-2)}`);
+
+    const theRoom = {
+      name: `${currentFloor}${('0' + roomNumber).slice(-2)}`,
+      type: roomType
+    };
+    allRooms.push(theRoom);
 
     const room: Reservation[] = rez[roomIndex] = [];
     let currentDate = addDays(today, -5); // Start 5 days before
@@ -121,10 +122,7 @@ function generateData(hotelCode: string): Reservation[][] {
         },
         arrival: arrival, // TODO: change to date?
         nights: nights,
-        allocations: [{
-          name: roomIndex ? roomNames[roomIndex] : '',
-          type: roomType
-        }],
+        allocations: [theRoom],
         requestedRoomTypes: [roomType],
         ref: 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1',
         rate: 'BAR',
