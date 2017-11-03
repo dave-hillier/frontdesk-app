@@ -21,7 +21,7 @@ const roomTypesList: string[] = [
 
 export async function getRooms(hotelCode: string): Promise<Room[]> {
   await generateData(hotelCode);
-  return allRooms;
+  return allRooms[hotelCode];
 }
 
 export async function getRoomTypes(hotelCode: string): Promise<string[]> {
@@ -37,13 +37,32 @@ export interface Ledger {
   readonly name: string;
 }
 
+export interface Address {
+  streetNumber?: string; // Street number and postfix 101A
+  buildingName?: string;
+  streetName: string;
+  area?: string;
+  townCity: string;
+  countyState: string;
+  country: string;
+  postCode: string;
+}
+
+export interface Note {
+  body: string;
+}
+
 export interface Profile {
-  readonly title: string;
+  readonly title?: string;
   readonly firstName: string;
   readonly lastName: string;
   readonly email: string;
-
-  // TODO: address, phone
+  readonly address?: Address;
+  readonly phone: {
+    type: string,
+    number: string
+  }[];
+  readonly notes: Note[];
 }
 
 export interface Reservation {
@@ -79,7 +98,7 @@ function hashCode(str: string) {
   return hash;
 }
 
-const allRooms: Room[] = [];
+const allRooms: { [code: string]: Room[] } = {};
 const allProfiles: Profile[] = [];
 
 const generated: any = {};
@@ -106,7 +125,10 @@ function generateData(hotelCode: string): Reservation[][] {
       name: `${currentFloor}${('0' + roomNumber).slice(-2)}`,
       type: roomType
     };
-    allRooms.push(theRoom);
+    if (!(hotelCode in allRooms)) {
+      allRooms[hotelCode] = [];
+    }
+    allRooms[hotelCode].push(theRoom);
 
     const room: Reservation[] = rez[theRoom.name] = [];
     let currentDate = addDays(today, -5); // Start 5 days before
@@ -118,10 +140,22 @@ function generateData(hotelCode: string): Reservation[][] {
       const arrival = currentDate;
       currentDate = departure;
       const profile = {
-        title: 'Mr', // TODO: fix
         firstName: seededChance.first(),
         lastName: seededChance.last(),
         email: seededChance.email(),
+        phone: [{
+          type: 'mobile',
+          number: seededChance.phone()
+        }],
+        address: {
+          streetNumber: seededChance.d100().toString(),
+          streetName: seededChance.street(),
+          townCity: seededChance.city(),
+          country: seededChance.country(),
+          countyState: seededChance.state(),
+          postCode: seededChance.zip()
+        },
+        notes: []
       };
       allProfiles.push(profile);
       const adults = seededChance.d6() > 3 ? 2 : 1;
@@ -140,7 +174,8 @@ function generateData(hotelCode: string): Reservation[][] {
         adults: adults,
         children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
         infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
-        state: 'provisional'
+        state: 'provisional',
+
       };
       room.push(item);
     }
@@ -148,10 +183,10 @@ function generateData(hotelCode: string): Reservation[][] {
   generated[hotelCode] = rez;
 
   // tslint:disable-next-line:no-console
-  console.log('Rooms', allRooms);
+  console.log('Rooms generated', allRooms);
 
   // tslint:disable-next-line:no-console
-  console.log('Profiles', allProfiles);
+  console.log('Profiles generated', hotelCode, allProfiles);
 
   return rez;
 }

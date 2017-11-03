@@ -136,7 +136,11 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
               drawerTitle={(
                 <DrawerHeader
                   hotelSiteIndex={this.state.hotelSiteIndex}
-                  onChange={(v, i, e) => this.setState({ hotelSiteIndex: i })}
+                  onChange={(v, i, e) => {
+                    this.setState({ hotelSiteIndex: i });
+                    // tslint:disable-next-line:no-console
+                    console.log('updating site', i);
+                  }}
                 />)}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : 'Guests'}</div>}
               toolbarActions={<div className="toolbar-actions">
@@ -154,7 +158,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                 />
                 <Route path="/planner" location={location} component={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
                 <Route path="/availability" location={location} component={() => (<Allocations isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)} />
-                <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={isMobile} />} />
+                <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
               </Switch>
             </NavigationDrawer>
           )}

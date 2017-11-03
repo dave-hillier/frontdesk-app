@@ -94,7 +94,7 @@ class ReservationsPanel extends React.Component<{ reservation: Reservation }, { 
   }
 }
 
-class ReservationsPage extends React.Component<{ isMobile: boolean }, { reservations: Reservation[] }> {
+class ReservationsPage extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { reservations: Reservation[] }> {
 
   constructor(props: any) {
     super(props);
@@ -102,7 +102,7 @@ class ReservationsPage extends React.Component<{ isMobile: boolean }, { reservat
   }
 
   componentWillMount() {
-    getReservations('').then(rez => {
+    getReservations(this.props.hotelSiteCode).then(rez => {
       rez.sort((a: Reservation, b: Reservation) => new Date(a.arrival).getTime() - new Date(b.arrival).getTime());
       rez.splice(100);
       this.setState({ reservations: rez });
