@@ -1,6 +1,7 @@
 
 import { addDays } from './dateHelpers';
 import { Chance } from 'chance';
+import { Room, Reservation, Profile } from './Model';
 
 const today = new Date('2017-10-25');
 today.setHours(0, 0, 0, 0);
@@ -26,60 +27,6 @@ export async function getRooms(hotelCode: string): Promise<Room[]> {
 
 export async function getRoomTypes(hotelCode: string): Promise<string[]> {
   return roomTypesList;
-}
-
-export interface Room {
-  readonly name: string;
-  readonly type: string;
-}
-
-export interface Ledger {
-  readonly name: string;
-}
-
-export interface Address {
-  streetNumber?: string; // Street number and postfix 101A
-  buildingName?: string;
-  streetName: string;
-  area?: string;
-  townCity: string;
-  countyState: string;
-  country: string;
-  postCode: string;
-}
-
-export interface Note {
-  body: string;
-}
-
-export interface Profile {
-  readonly title?: string;
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly email: string;
-  readonly address?: Address;
-  readonly phone: {
-    type: string,
-    number: string
-  }[];
-  readonly notes: Note[];
-}
-
-export interface Reservation {
-  readonly ref: string;
-
-  readonly profile: Profile;
-  readonly ledger?: Ledger;
-  readonly arrival: Date;
-  readonly nights: number;
-  readonly adults: number;
-  readonly children: number;
-  readonly infants: number;
-  readonly requestedRoomTypes: string[];
-  readonly allocations: Room[];
-  readonly balance: number;
-  readonly state: 'provisional' | 'confirmed' | 'resident' | 'noshow' | 'departed' | 'cancelled' | 'waitlist';
-  readonly rate: string;
 }
 
 function hashCode(str: string) {
@@ -120,10 +67,12 @@ function generateData(hotelCode: string): Reservation[][] {
 
     const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
     const roomNumber = (roomIndex % (roomCount / floors)) + 1;
-
+    const cleaningStatus: 'cleaningRequired' = 'cleaningRequired';
     const theRoom = {
       name: `${currentFloor}${('0' + roomNumber).slice(-2)}`,
-      type: roomType
+      type: roomType,
+      cleaningStatus,
+      occupied: true
     };
     if (!(hotelCode in allRooms)) {
       allRooms[hotelCode] = [];

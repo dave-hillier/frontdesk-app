@@ -8,8 +8,9 @@ import {
 } from 'react-md';
 import { ReservationDialog } from './ReservationDialog';
 import { ArrivalTopLine, ResidentsTopLine, DepartureTopLine, BottomLine, MiddleLine } from './ReservationComponents';
-import { Reservation, getReservations } from './FakeReservations';
+import { getReservations } from './FakeReservations';
 import { addDays } from './dateHelpers';
+import { Reservation } from './Model';
 
 const today = new Date('2017-10-25');
 today.setHours(0, 0, 0, 0);

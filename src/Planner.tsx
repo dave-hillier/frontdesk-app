@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './Planner.css';
-import { getReservationsByRoom, getRooms, Room } from './FakeReservations';
+import { getReservationsByRoom, getRooms } from './FakeReservations';
+import { Room } from './Model';
 import { subtractDates, addDays } from './dateHelpers';
 import { ReservationDialog } from './ReservationDialog';
 import DateColumnHeaders from './DateColumnHeaders';

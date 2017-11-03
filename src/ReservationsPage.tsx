@@ -5,8 +5,9 @@ import {
 } from 'react-md';
 
 import { addDays } from './dateHelpers';
-import { Reservation, getReservations } from './FakeReservations';
+import { getReservations } from './FakeReservations';
 import { ResidentsTopLine, BottomLine, MiddleLine } from './ReservationComponents';
+import { Reservation } from './Model';
 
 import './ReservationsPage.css';
 

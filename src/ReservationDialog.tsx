@@ -112,6 +112,7 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
         {...this.props}
         ref={self => this.dialog = self}
       >
+        <div>{r}</div>
         {this.renderGrid(r)}
       </StandardDialog>);
   }
