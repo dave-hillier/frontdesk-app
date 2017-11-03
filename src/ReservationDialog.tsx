@@ -68,18 +68,37 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
     this.state = { reservation: null };
   }
   renderGrid(r: any) {
-    const wide = { width: 100 };
-
+    const header = { width: '120px' };
+    const flexDirection: 'row' = 'row';
+    const row = {
+      width: '100%', display: 'flex', flexDirection
+    };
     const rows: JSX.Element[] = [];
+    const borders = 'md-divider-border md-divider-border--top md-divider-border--right md-divider-border--bottom md-divider-border--left';
     for (let key in r) {
-      if (r.hasOwnProperty(key)) {
-        rows.push(
-          <div key={key} className="grid-row">
-            <div style={wide} className="grid-cell grid-row-header">{key}</div>
-            <div className="grid-cell">
-              {(typeof r[key] === 'function') ? r[key]() : ((typeof r[key] === 'object') ? <div>{this.renderGrid(r[key])}</div> : r[key])}
-            </div>
-          </div>);
+      if (Array.isArray(r[key])) {
+        const a = r[key].map((e: any) => (
+          <div key="xxx">{(typeof r[key] === 'object') ? this.renderGrid(e) : e}</div>));
+        rows.push(<div>{...a}</div>);
+      } else if (r.hasOwnProperty(key)) {
+        if (typeof r[key] === 'object') {
+          rows.push(
+            <div key={key} style={row} >
+              <div style={header} className={borders}>{key}</div>
+              <div className={borders}>
+                {this.renderGrid(r[key])}
+              </div>
+            </div>);
+        } else {
+          rows.push(
+            <div key={key} style={row} >
+              <div style={header} className={borders}>{key}</div>
+              <div className={borders}>
+                {r[key]}
+              </div>
+            </div>);
+        }
+
       }
     }
     return rows;
