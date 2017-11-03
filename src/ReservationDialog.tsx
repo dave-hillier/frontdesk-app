@@ -77,7 +77,12 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
         rows.push(
           <div key={key} className="grid-row">
             <div style={wide} className="grid-cell grid-row-header">{key}</div>
-            <div className="grid-cell">{(typeof r[key] === 'function') ? r[key]() : r[key]}</div>
+            <div className="grid-cell">
+              {
+                (typeof r[key] === 'function') ? r[key]() :
+                  ((typeof r[key] === 'object') ? JSON.stringify(r[key]) : r[key])
+              }
+            </div>
           </div>);
       }
     }

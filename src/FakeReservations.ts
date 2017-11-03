@@ -24,6 +24,10 @@ export async function getRooms(hotelCode: string): Promise<Room[]> {
   return allRooms;
 }
 
+export async function getRoomTypes(hotelCode: string): Promise<string[]> {
+  return roomTypesList;
+}
+
 export interface Room {
   readonly name: string;
   readonly type: string;
@@ -76,6 +80,8 @@ function hashCode(str: string) {
 }
 
 const allRooms: Room[] = [];
+const allProfiles: Profile[] = [];
+
 const generated: any = {};
 function generateData(hotelCode: string): Reservation[][] {
   if (hotelCode in generated) {
@@ -91,7 +97,7 @@ function generateData(hotelCode: string): Reservation[][] {
   const rez: Reservation[][] = [];
 
   for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
-    const roomType = roomTypesList[roomTypesList.length * roomIndex / roomCount];
+    const roomType = roomTypesList[Math.floor(roomTypesList.length * roomIndex / roomCount)];
 
     const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
     const roomNumber = (roomIndex % (roomCount / floors)) + 1;
@@ -102,7 +108,7 @@ function generateData(hotelCode: string): Reservation[][] {
     };
     allRooms.push(theRoom);
 
-    const room: Reservation[] = rez[roomIndex] = [];
+    const room: Reservation[] = rez[theRoom.name] = [];
     let currentDate = addDays(today, -5); // Start 5 days before
     for (let num = Math.floor(pseudoRandom() * 10); num > 0; --num) {
       const dayBefore = Math.floor(pseudoRandom() * 8);
@@ -111,15 +117,16 @@ function generateData(hotelCode: string): Reservation[][] {
       const departure = addDays(currentDate, nights);
       const arrival = currentDate;
       currentDate = departure;
-
+      const profile = {
+        title: 'Mr', // TODO: fix
+        firstName: seededChance.first(),
+        lastName: seededChance.last(),
+        email: seededChance.email(),
+      };
+      allProfiles.push(profile);
       const adults = seededChance.d6() > 3 ? 2 : 1;
       const item: Reservation = {
-        profile: {
-          title: 'Mr',
-          firstName: seededChance.first(),
-          lastName: seededChance.last(),
-          email: seededChance.email(),
-        },
+        profile,
         arrival: arrival, // TODO: change to date?
         nights: nights,
         allocations: [theRoom],
@@ -139,6 +146,13 @@ function generateData(hotelCode: string): Reservation[][] {
     }
   }
   generated[hotelCode] = rez;
+
+  // tslint:disable-next-line:no-console
+  console.log('Rooms', allRooms);
+
+  // tslint:disable-next-line:no-console
+  console.log('Profiles', allProfiles);
+
   return rez;
 }
 
@@ -155,14 +169,14 @@ export async function getReservations(hotelSite: string): Promise<Reservation[]>
 
 export async function getReservationsByRoom(hotelSite: string) {
   const rez = await getReservations(hotelSite);
-  const rooms: any[] = rez.filter(r => r.allocations[0]).map(r => { return { room: r.allocations[0], rez: r }; });
+  const roomNameToResPairs: any[] = rez.filter(r => r.allocations[0]).map(r => { return { room: r.allocations[0].name, rez: r }; });
 
   let lookup: any = {};
-  for (let i = 0; i < rooms.length; ++i) {
-    if (rooms[i].room in lookup) {
-      lookup[rooms[i].room].push(rooms[i].rez);
+  for (let i = 0; i < roomNameToResPairs.length; ++i) {
+    if (roomNameToResPairs[i].room in lookup) {
+      lookup[roomNameToResPairs[i].room].push(roomNameToResPairs[i].rez);
     } else {
-      lookup[rooms[i].room] = [rooms[i].rez];
+      lookup[roomNameToResPairs[i].room] = [roomNameToResPairs[i].rez];
     }
   }
 

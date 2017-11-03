@@ -58,7 +58,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
       ...rowStyle,
       width: 2 * gridSize + 'px'
     };
-    const numberOfRooms = 100;
+    const numberOfRooms = this.state.roomNames.length;
     const rowHeaders = [];
     for (let i = 0; i < numberOfRooms; ++i) {
       rowHeaders.push(
@@ -109,7 +109,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
                 onClick={e => this.dialog.show(e, roomReservations[j])}
                 className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header grid-cell rez-cell"
               >
-                {roomReservations[j].lastName}
+                {roomReservations[j].profile.lastName}
               </div>);
             currentDate = departure;
           }
