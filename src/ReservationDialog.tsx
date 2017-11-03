@@ -67,10 +67,9 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
     super(props);
     this.state = { reservation: null };
   }
-
-  render() {
-    const r = this.state.reservation;
+  renderGrid(r: any) {
     const wide = { width: 100 };
+
     const rows: JSX.Element[] = [];
     for (let key in r) {
       if (r.hasOwnProperty(key)) {
@@ -78,22 +77,23 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
           <div key={key} className="grid-row">
             <div style={wide} className="grid-cell grid-row-header">{key}</div>
             <div className="grid-cell">
-              {
-                (typeof r[key] === 'function') ? r[key]() :
-                  ((typeof r[key] === 'object') ? JSON.stringify(r[key]) : r[key])
-              }
+              {(typeof r[key] === 'function') ? r[key]() : ((typeof r[key] === 'object') ? <div>{this.renderGrid(r[key])}</div> : r[key])}
             </div>
           </div>);
       }
     }
+    return rows;
+  }
 
+  render() {
+    const r = this.state.reservation;
     return (
       <StandardDialog
         title="Reservation"
         {...this.props}
         ref={self => this.dialog = self}
       >
-        {rows}
+        {this.renderGrid(r)}
       </StandardDialog>);
   }
 
