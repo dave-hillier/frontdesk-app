@@ -6,6 +6,7 @@ import {
 
 import { addDays } from './dateHelpers';
 import { getReservations } from './FakeReservations';
+import { renderGrid } from './ReservationDialog';
 import { ResidentsTopLine, BottomLine, MiddleLine } from './ReservationComponents';
 import { Reservation } from './Model';
 
@@ -72,16 +73,7 @@ class ReservationsPanel extends React.Component<{ reservation: Reservation }, { 
         <Collapse collapsed={this.state.collapsed}>
           <div style={paddingTop}>
             <div>
-              <p>
-                Contact Information:
-            </p>
-              <p>
-                Line1<br />
-                Line2<br />
-                Line3<br />
-                Line4<br />
-                Line5<br />
-              </p>
+              {renderGrid(r)}
             </div>
             <div className="space-between-content">
               <Button raised={true} primary={true}>Reservation</Button>

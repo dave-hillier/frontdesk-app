@@ -60,44 +60,45 @@ class StandardDialog extends React.Component<{ title: any, isMobile?: boolean, i
   }
 }
 
+export function renderGrid(r: any) {
+  if (typeof r === 'string') {
+    return r;
+  } else if (Array.isArray(r)) {
+    const values: any[] = r.map((v: any) => renderGrid(v));
+    return <div>{...values}</div>;
+  }
+  const flexDirection: 'row' = 'row';
+  const row = {
+    width: '100%', display: 'flex', flexDirection
+  };
+  const header = {
+    width: '150px'
+  };
+  const rows: JSX.Element[] = [];
+  const borders = 'md-divider-border md-divider-border--top md-divider-border--right md-divider-border--bottom md-divider-border--left';
+  for (let key in r) {
+    if (r.hasOwnProperty(key)) {
+      let value = r[key];
+      if (typeof r[key] === 'object') {
+        value = renderGrid(value);
+      }
+      const rx = (
+        <div key={key} style={row} className={borders}>
+          <div style={header}>{key}</div>
+          <div>{value}</div>
+        </div>);
+      rows.push(rx);
+    }
+  }
+  return rows;
+}
+
 export class ReservationDialog extends React.Component<{ isMobile?: boolean, isDesktop?: boolean }, { reservation: any }> {
   private dialog: StandardDialog | null;
 
   constructor(props: any) {
     super(props);
     this.state = { reservation: null };
-  }
-  renderGrid(r: any) {
-    if (typeof r === 'string') {
-      return r;
-    } else if (Array.isArray(r)) {
-      const values: any[] = r.map((v: any) => this.renderGrid(v));
-      return <div>{...values}</div>;
-    }
-    const flexDirection: 'row' = 'row';
-    const row = {
-      width: '100%', display: 'flex', flexDirection
-    };
-    const header = {
-      width: '120px'
-    };
-    const rows: JSX.Element[] = [];
-    const borders = 'md-divider-border md-divider-border--top md-divider-border--right md-divider-border--bottom md-divider-border--left';
-    for (let key in r) {
-      if (r.hasOwnProperty(key)) {
-        let value = r[key];
-        if (typeof r[key] === 'object') {
-          value = this.renderGrid(value);
-        }
-        const rx = (
-          <div key={key} style={row} className={borders}>
-            <div style={header}>{key}</div>
-            <div>{value}</div>
-          </div>);
-        rows.push(rx);
-      }
-    }
-    return rows;
   }
 
   render() {
@@ -108,7 +109,7 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
         {...this.props}
         ref={self => this.dialog = self}
       >
-        {this.renderGrid(r)}
+        {renderGrid(r)}
       </StandardDialog>);
   }
 
