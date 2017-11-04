@@ -68,37 +68,33 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
     this.state = { reservation: null };
   }
   renderGrid(r: any) {
-    const header = { width: '120px' };
+    if (typeof r === 'string') {
+      return r;
+    } else if (Array.isArray(r)) {
+      const values: any[] = r.map((v: any) => this.renderGrid(v));
+      return <div>{...values}</div>;
+    }
     const flexDirection: 'row' = 'row';
     const row = {
       width: '100%', display: 'flex', flexDirection
     };
+    const header = {
+      width: '120px'
+    };
     const rows: JSX.Element[] = [];
     const borders = 'md-divider-border md-divider-border--top md-divider-border--right md-divider-border--bottom md-divider-border--left';
     for (let key in r) {
-      if (Array.isArray(r[key])) {
-        const a = r[key].map((e: any) => (
-          <div key="xxx">{(typeof r[key] === 'object') ? this.renderGrid(e) : e}</div>));
-        rows.push(<div>{...a}</div>);
-      } else if (r.hasOwnProperty(key)) {
+      if (r.hasOwnProperty(key)) {
+        let value = r[key];
         if (typeof r[key] === 'object') {
-          rows.push(
-            <div key={key} style={row} >
-              <div style={header} className={borders}>{key}</div>
-              <div className={borders}>
-                {this.renderGrid(r[key])}
-              </div>
-            </div>);
-        } else {
-          rows.push(
-            <div key={key} style={row} >
-              <div style={header} className={borders}>{key}</div>
-              <div className={borders}>
-                {r[key]}
-              </div>
-            </div>);
+          value = this.renderGrid(value);
         }
-
+        const rx = (
+          <div key={key} style={row} className={borders}>
+            <div style={header}>{key}</div>
+            <div>{value}</div>
+          </div>);
+        rows.push(rx);
       }
     }
     return rows;
@@ -112,7 +108,6 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
         {...this.props}
         ref={self => this.dialog = self}
       >
-        <div>{r}</div>
         {this.renderGrid(r)}
       </StandardDialog>);
   }
