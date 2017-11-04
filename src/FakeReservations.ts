@@ -120,9 +120,11 @@ function generateData(hotelCode: string): Reservation[][] {
         ledger: pseudoRandom() > 0.7 ? {
           name: 'Ledger ' + seededChance.d100()
         } : undefined,
-        adults: adults,
-        children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
-        infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
+        guests: {
+          adults: adults,
+          children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
+          infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
+        },
         state: 'provisional',
 
       };

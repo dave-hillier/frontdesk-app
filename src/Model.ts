@@ -44,9 +44,11 @@ export interface Reservation {
   readonly ledger?: Ledger;
   readonly arrival: Date;
   readonly nights: number;
-  readonly adults: number;
-  readonly children: number;
-  readonly infants: number;
+  readonly guests: {
+    readonly adults: number;
+    readonly children: number;
+    readonly infants: number;
+  }
   readonly requestedRoomTypes: string[];
   readonly allocations: Room[];
   readonly balance: number;

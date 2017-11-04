@@ -72,9 +72,9 @@ const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => voi
           />
           <BottomLine
             balance={r.balance ? r.balance : 0}
-            adults={r.adults}
-            children={r.children}
-            infants={r.infants}
+            adults={r.guests.adults}
+            children={r.guests.children}
+            infants={r.guests.infants}
           />
         </div>)}
       onClick={props.onClick}
@@ -104,9 +104,9 @@ const ResidentItem = (props: { reservation: Reservation, onClick: (e: any) => vo
           />
           <BottomLine
             balance={r.balance ? r.balance : 0}
-            adults={r.adults}
-            children={r.children}
-            infants={r.infants}
+            adults={r.guests.adults}
+            children={r.guests.children}
+            infants={r.guests.infants}
           />
         </div>)}
       onClick={props.onClick}

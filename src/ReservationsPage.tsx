@@ -34,9 +34,9 @@ class ReservationMain extends React.Component<{ collapsed: boolean, reservation:
           />
           <BottomLine
             balance={r.balance ? r.balance : 0}
-            adults={r.adults}
-            children={r.children}
-            infants={r.infants}
+            adults={r.guests.adults}
+            children={r.guests.children}
+            infants={r.guests.infants}
           />
         </div>
         <div className="align-flex-end">
@@ -72,15 +72,16 @@ class ReservationsPanel extends React.Component<{ reservation: Reservation }, { 
         <ReservationMain collapsed={this.state.collapsed} reservation={r} onClick={() => this.toggle()} />
         <Collapse collapsed={this.state.collapsed}>
           <div style={paddingTop}>
-            <div>
-              {renderGrid(r)}
-            </div>
             <div className="space-between-content">
               <Button raised={true} primary={true}>Reservation</Button>
               <Button raised={true} primary={true}>Check in</Button>
               <Button raised={true} primary={true}>Deallocate</Button>
               <Button raised={true} primary={true}>Room Billing</Button>
             </div>
+            <div>
+              {renderGrid(r)}
+            </div>
+
           </div>
         </Collapse>
       </div>);
