@@ -6,10 +6,6 @@ import { subtractDates, addDays } from './dateHelpers';
 import { ReservationDialog } from './ReservationDialog';
 import DateColumnHeaders from './DateColumnHeaders';
 
-function randomHsl() {
-  return 'hsla(' + (Math.random() * 360) + ', 100%, 50%, 1)';
-}
-
 // TODO: break this up!
 // TODO: limit how many we do per row up front, fetch more
 // TODO: transparent create reservation...?
@@ -100,15 +96,14 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
           const size = (daysTillNext < 0 && daysTillDeparture > 0) ? ((nights + daysTillNext) * gridSize + 'px') : (nights * gridSize + 'px');
           if (daysTillNext < 0 && daysTillDeparture > 0 || daysTillNext >= 0) {
             const rs = {
-              width: size,
-              background: randomHsl()
+              width: size
             };
             rez.push(
               <div
                 key={'rez' + '_' + j + '_' + i}
                 style={rs}
                 onClick={e => this.dialog.show(e, roomReservations[j])}
-                className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header grid-cell rez-cell"
+                className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-cell rez-cell"
               >
                 {roomReservations[j].profile.lastName}
               </div>);
