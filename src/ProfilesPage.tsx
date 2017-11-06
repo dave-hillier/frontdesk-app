@@ -34,7 +34,7 @@ class ProfilesPage extends React.Component<{ isMobile: boolean, hotelSiteCode: s
     }
 
     const list = (
-      <List>
+      <List className="md-paper md-paper--1 sticky-top">
         {this.state.profiles.map(r => (
           <ListItem
             primaryText={`${r.firstName} ${r.lastName}`}

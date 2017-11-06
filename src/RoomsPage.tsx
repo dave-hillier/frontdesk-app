@@ -10,7 +10,8 @@ import {
 import { getRooms } from './FakeReservations';
 import { Room } from './Model';
 
-class RoomsPage extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { rooms: Room[], isLoading: boolean }> {
+class RoomsPage extends React.Component<{ isMobile: boolean, hotelSiteCode: string },
+  { rooms: Room[], isLoading: boolean, selected?: Room }> {
 
   constructor(props: any) {
     super(props);
@@ -30,16 +31,27 @@ class RoomsPage extends React.Component<{ isMobile: boolean, hotelSiteCode: stri
     }
 
     const list = (
-      <List>
+      <List className="md-paper md-paper--1">
         {this.state.rooms.map(r => (
           <ListItem
-            primaryText={r.name}
-            secondaryText={r.type}
+            primaryText={`Room: ${r.name} - ${r.type}`}
+            secondaryText={`Status: Vacant\nHouse Keeping: Clean`}
+            threeLines={true}
+            onClick={e => this.setState({ selected: r })}
           />))}
       </List>
     );
 
-    return !this.props.isMobile ? <Grid><Cell>{list}</Cell></Grid> : list;
+    return !this.props.isMobile ? (
+      <Grid>
+        <Cell>{list}</Cell>
+        {this.state.selected && <Cell size={8}>
+          <div className="md-paper md-paper--1 sticky-top">
+            {this.state.selected.name} - {this.state.selected.type}
+          </div>
+        </Cell>}
+      </Grid>)
+      : list;
   }
 }
 
