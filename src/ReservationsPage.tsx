@@ -104,15 +104,27 @@ class ReservationsPage extends React.Component<{ isMobile: boolean, hotelSiteCod
   }
 
   render() {
+    const position: 'fixed' = 'fixed';
+    const display: 'block' = 'block';
+    const fabStyle = {
+      position,
+      bottom: '16px',
+      right: '16px',
+      display,
+      zIndex: 99
+    };
+
     const cards = this.state.reservations.map(r => <ReservationsPanel reservation={r} key={r.ref} />);
     if (this.props.isMobile) {
       return (
         <div>
+          <Button floating={true} secondary={true} style={fabStyle}>add</Button>
           {...cards}
         </div>);
     }
     return (
       <div className="md-grid">
+        <Button floating={true} secondary={true} style={fabStyle}>add</Button>
         <div className="md-cell md-cell--12">
           {...cards}
         </div>
