@@ -46,7 +46,7 @@ class RoomsPage extends React.Component<{ isMobile: boolean, hotelSiteCode: stri
       <Grid>
         <Cell>{list}</Cell>
         {this.state.selected && <Cell size={8}>
-          <div className="md-paper md-paper--1 sticky-top">
+          <div className="md-paper md-paper--1 sticky-top md-list">
             {this.state.selected.name} - {this.state.selected.type}
           </div>
         </Cell>}
