@@ -20,6 +20,8 @@ const roomTypesList: string[] = [
   'Exec Suite'
 ];
 
+// TODO: audit log
+
 export async function getRooms(hotelCode: string): Promise<Room[]> {
   await generateData(hotelCode);
   return allRooms[hotelCode];
@@ -97,12 +99,11 @@ function generateData(hotelCode: string): Reservation[][] {
           number: seededChance.phone()
         }],
         address: {
-          streetNumber: seededChance.d100().toString(),
-          streetName: seededChance.street(),
-          townCity: seededChance.city(),
-          country: seededChance.country(),
-          countyState: seededChance.state(),
-          postCode: seededChance.zip()
+          organisation: '',
+          streetAddress: seededChance.address(),
+          postalTown: seededChance.city(),
+          postCode: seededChance.zip(),
+          countryRegion: seededChance.country()
         },
         notes: []
       };
@@ -126,7 +127,6 @@ function generateData(hotelCode: string): Reservation[][] {
           infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
         },
         state: 'provisional',
-
       };
       room.push(item);
     }

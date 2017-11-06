@@ -9,15 +9,13 @@ export interface Ledger {
   readonly name: string;
 }
 
+// TODO: probably needs to change based on country
 export interface Address {
-  streetNumber?: string; // Street number and postfix 101A
-  buildingName?: string;
-  streetName: string;
-  area?: string;
-  townCity: string;
-  countyState: string;
-  country: string;
+  organisation: string;
+  streetAddress: string;
+  postalTown: string;
   postCode: string;
+  countryRegion: string;
 }
 
 export interface Note {
@@ -29,7 +27,7 @@ export interface Profile {
   readonly firstName: string;
   readonly lastName: string;
   readonly email: string;
-  readonly address?: Address;
+  readonly address: Address;
   readonly phone: {
     type: string,
     number: string
@@ -48,7 +46,7 @@ export interface Reservation {
     readonly adults: number;
     readonly children: number;
     readonly infants: number;
-  }
+  };
   readonly requestedRoomTypes: string[];
   readonly allocations: Room[];
   readonly balance: number;
