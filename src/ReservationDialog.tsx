@@ -10,6 +10,10 @@ import {
   TableBody,
   TableRow,
   TableColumn,
+  List,
+  ListItem,
+  FontIcon,
+  Subheader
 } from 'react-md';
 
 import { Address, Reservation, Profile } from './Model';
@@ -109,31 +113,44 @@ function formatAddress(address: Address): string {
 }
 
 const ProfileShortPanel = (props: { profile: Profile }) => {
-  const alignItems: 'center' = 'center';
-  const alignCenter = {
-    alignItems
-  };
   return (
-
     <Cell>
-      <div className="space-between-content" style={alignCenter}>
-        <div className="md-font-bold ">Profile</div>
-        <Button flat={true} primary={true}>Edit</Button>
-      </div>
-      <div className="space-between-content" style={alignCenter}>
-        <div>Name: {props.profile.firstName} {props.profile.lastName}</div>
-      </div>
-      <div className="space-between-content" style={alignCenter}>
-        <div>Address: {formatAddress(props.profile.address)}</div>
-      </div>
-      <div className="space-between-content" style={alignCenter}>
-        <div>Email: {props.profile.email}</div>
-      </div>
-      {props.profile.phone.map(p => <div key={p.type}>{p.type} {p.number}</div>)}
+      <List>
+        <Subheader primaryText="Profile" />
+        <ListItem
+          leftIcon={<FontIcon>person</FontIcon>}
+          primaryText="Name"
+          secondaryText={`${props.profile.firstName} ${props.profile.lastName}`}
+        />
+        <ListItem
+          leftIcon={<FontIcon>person_pin_circle</FontIcon>}
+          primaryText="Email"
+          secondaryText={props.profile.email}
+        />
+        <ListItem
+          leftIcon={<FontIcon>mail</FontIcon>}
+          primaryText="Address"
+          secondaryText={formatAddress(props.profile.address)}
+        />
 
+        {props.profile.phone.map(p => (
+          <ListItem
+            key={p.type}
+            leftIcon={<FontIcon>phone</FontIcon>}
+            primaryText="Phone"
+            secondaryText={p.number}
+          />))}
+      </List>
     </Cell>
   );
 };
+
+const ReservationLine = (props: { title: string, contents: string }) => (
+  <ListItem
+    primaryText={props.title}
+    secondaryText={props.contents}
+  />
+);
 
 const ReservationPanel = (props: { reservation: Reservation }) => {
   const arrival = props.reservation.arrival.toLocaleDateString();
@@ -142,11 +159,13 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
     <div>
       <Grid>
         <Cell>
-          <div>Reference: {props.reservation.ref}</div>
-          <div>Status: {props.reservation.state}</div>
-          <div>Ledger: {props.reservation.ledger ? props.reservation.ledger.name : ''}</div>
-          <div>ETA: 00:00</div>
-          <div>ETD: 12:00</div>
+          <List>
+            <ReservationLine title="Reference" contents={props.reservation.ref} />
+            <ReservationLine title="Status" contents={props.reservation.state} />
+            <ReservationLine title="Ledger" contents={props.reservation.ledger ? props.reservation.ledger.name : ' '} />
+            <ReservationLine title="ETA" contents="00:00" />
+            <ReservationLine title="ETD" contents="00:00" />
+          </List>
         </Cell>
         <ProfileShortPanel profile={props.reservation.profile} />
       </Grid>
