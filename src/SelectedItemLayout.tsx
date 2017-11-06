@@ -5,9 +5,12 @@ import {
   Cell,
   LinearProgress,
   CircularProgress,
-  Button
+  Button,
+  Card
 } from 'react-md';
+import { StandardDialog } from './StandardDialog';
 
+// component?: React.ComponentType<RouteComponentProps<any> | {}>;
 export class SelectItemLayout<Item> extends React.Component<
   {
     isMobile: boolean,
@@ -21,6 +24,7 @@ export class SelectItemLayout<Item> extends React.Component<
     isLoading: boolean,
     selected?: Item
   }> {
+  dialog: StandardDialog | null;
 
   constructor(props: any) {
     super(props);
@@ -46,25 +50,47 @@ export class SelectItemLayout<Item> extends React.Component<
 
     const list = (
       <List className="md-paper md-paper--1">
-        {this.state.items.map(r => this.props.renderItem(r, (x: any) => this.setState({ selected: r })))}
+        {this.state.items.map(r => this.props.renderItem(r, (e: any) => {
+          this.setState({ selected: r });
+          if (this.dialog) {
+            this.dialog.show(e);
+          }
+        }))}
       </List>
+    );
+
+    const selectedPanel = this.state.selected && (
+      <Cell size={8}>
+        <Card className="md-paper md-paper--1 sticky-top md-list" style={{ padding: '8px' }}>
+          {this.props.renderSelectedItem(this.state.selected)}
+        </Card>
+      </Cell>);
+
+    const mobileLayout = (
+      <StandardDialog
+        title="Reservation"
+        id="reservation-dialog"
+        {...this.props}
+        ref={self => this.dialog = self}
+      >
+        {this.state.selected && this.props.renderSelectedItem(this.state.selected)}
+      </StandardDialog>
     );
 
     return (
       <div>
         <div className="fab">
-          <Button floating={true} secondary={true} primary={true}>share</Button>
+          <Button floating={true} secondary={true} primary={true}>add</Button>
         </div>
         {!this.props.isMobile ? (
           <Grid>
             <Cell>{list}</Cell>
-            {this.state.selected && <Cell size={8}>
-              <div className="md-paper md-paper--1 sticky-top md-list">
-                {this.props.renderSelectedItem(this.state.selected)}
-              </div>
-            </Cell>}
+            {selectedPanel}
           </Grid>)
-          : list}
+          : <div>
+            {mobileLayout}
+            {list}
+          </div>}
       </div>);
   }
 }

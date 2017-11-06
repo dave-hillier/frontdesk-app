@@ -1,8 +1,5 @@
 import * as React from 'react';
 import {
-  Button,
-  DialogContainer,
-  Toolbar,
   Grid,
   Cell,
   DataTable,
@@ -18,59 +15,12 @@ import {
 
 import { Address, Reservation, Profile } from './Model';
 import { addDays } from './dateHelpers';
+import { StandardDialog } from './StandardDialog';
 
-class StandardDialog extends React.Component<{ title: any, isMobile?: boolean, isDesktop?: boolean }, { pageX?: number, pageY?: number, visible: boolean }> {
-  constructor(props: any) {
-    super(props);
-    this.state = { visible: false };
-  }
-
-  show = (e: any) => {
-    let { pageX, pageY } = e;
-    if (e.changedTouches) {
-      pageX = e.changedTouches[0].pageX;
-      pageY = e.changedTouches[0].pageY;
-    }
-
-    this.setState({ visible: true, pageX, pageY });
-  }
-
-  hide = () => {
-    this.setState({ visible: false });
-  }
-
-  render() {
-    const { visible, pageX, pageY } = this.state;
-    const width = this.props.isDesktop ? 1024 : (!this.props.isMobile ? 800 : undefined); // min tablet 768
-    const height = this.props.isDesktop ? 768 : (!this.props.isMobile ? 600 : undefined);
-    return (
-      <div>
-        <DialogContainer
-          id="reservation-dialog"
-          visible={visible}
-          pageX={pageX}
-          pageY={pageY}
-          fullPage={this.props.isMobile}
-          onHide={this.hide}
-          width={width}
-          height={height}
-          aria-labelledby="reservation-dialog-title"
-        >
-          <Toolbar
-            fixed={true}
-            colored={true}
-            title={this.props.title}
-            titleId="reservation-dialog-title"
-            nav={<Button icon={true} onClick={this.hide}>close</Button>}
-            actions={<Button flat={true} onClick={this.hide}>Save</Button>}
-          />
-          <section className="md-toolbar-relative">
-            {this.props.children}
-          </section>
-        </DialogContainer>
-      </div>
-    );
-  }
+function toCaps(s: string) {
+  return s.replace(/([A-Z])/g, ' $1')
+    // uppercase the first character
+    .replace(/^./, function (str: string) { return str.toUpperCase(); });
 }
 
 export function renderGrid(r: any) {
@@ -96,9 +46,9 @@ export function renderGrid(r: any) {
         value = renderGrid(value);
       }
       const rx = (
-        <div key={key} style={row} className={borders}>
-          <div style={header}>{key}</div>
-          <div>{value}</div>
+        <div key={key} style={row} className={borders + 'md-tile-content'}>
+          <div style={header} className="md-tile-text--primary md-text">{toCaps(key)}</div>
+          <div className="md-tile-text--secondary md-text--secondary">{value}</div>
         </div>);
       rows.push(rx);
     }
@@ -225,6 +175,7 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
     return (
       <StandardDialog
         title="Reservation"
+        id="reservation-dialog"
         {...this.props}
         ref={self => this.dialog = self}
       >

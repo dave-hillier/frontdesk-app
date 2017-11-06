@@ -10,11 +10,41 @@ function formatAddress(address: Address): string {
   return parts.filter(p => p.length > 0).join(', ');
 }
 
+function toCaps(s: string) {
+  return s.replace(/([A-Z])/g, ' $1')
+    // uppercase the first character
+    .replace(/^./, function (str: string) { return str.toUpperCase(); });
+}
+const renderGrid = (object: any) => {
+  const r: any = [];
+  for (let key in object) {
+    if (object.hasOwnProperty(key)) {
+      let value = object[key]; // typeof profile[key] === 'string' ? toCaps(profile[key]) : ' ';
+
+      if (typeof value === 'object') {
+        value = renderGrid(value);
+      } else if (Array.isArray(value)) {
+        const inner = value.map(v => renderGrid(v));
+        r.push(
+          <div key={key} className="md-tile-content">
+            <div className="md-tile-text--primary md-text">{toCaps(key)}</div>
+            <div className="md-tile-text--secondary md-text--secondary">{inner}</div>
+          </div>);
+      }
+
+      r.push(
+        <div key={key} className="md-tile-content">
+          <div className="md-tile-text--primary md-text">{toCaps(key)}</div>
+          <div className="md-tile-text--secondary md-text--secondary">{value}</div>
+        </div>);
+    }
+  }
+  return r;
+};
+
 class ProfilePanel extends React.PureComponent<{ profile: Profile }, {}> {
   render() {
-    return (
-      <div>{this.props.profile.firstName}</div>
-    );
+    return <div>{renderGrid(this.props.profile)}</div>;
   }
 }
 
