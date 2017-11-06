@@ -1,63 +1,55 @@
 import * as React from 'react';
-import {
-  List,
-  ListItem,
-  Grid,
-  Cell
-
-} from 'react-md';
 
 import { getProfiles } from './FakeReservations';
 import { Profile, Address } from './Model';
+import { SelectItemLayout } from './SelectedItemLayout';
+import { ListItem } from 'react-md';
 
 function formatAddress(address: Address): string {
   const parts = [address.organisation, address.streetAddress, address.postalTown, address.postCode, address.countryRegion];
   return parts.filter(p => p.length > 0).join(', ');
 }
 
-class ProfilesPage extends React.Component<{ isMobile: boolean, hotelSiteCode: string },
-  { profiles: Profile[], isLoading: boolean, selected?: Profile }> {
+class ProfilePanel extends React.PureComponent<{ profile: Profile }, {}> {
+  render() {
+    return (
+      <div>{this.props.profile.firstName}</div>
+    );
+  }
+}
 
-  constructor(props: any) {
-    super(props);
-    this.state = { profiles: [], isLoading: true };
+class PageLayout extends SelectItemLayout<Profile> { }
+
+export class ProfilesPage extends React.PureComponent<{
+  isMobile: boolean,
+  hotelSiteCode: string
+}> {
+
+  renderItem(item: Profile, onClick: (x: any) => void): JSX.Element {
+
+    return (
+      <ListItem
+        key={`${item.firstName} ${item.lastName} ${item.created}`}
+        className="md-divider-border md-divider-border--bottom"
+        primaryText={`${item.firstName} ${item.lastName}`}
+        secondaryText={`${formatAddress(item.address)}\n${item.email}`}
+        threeLines={true}
+        onClick={onClick}
+      />);
   }
 
-  componentWillMount() {
-    const isLoading = false;
-    getProfiles().then((profiles: Profile[]) => {
-      this.setState({ profiles, isLoading });
-    });
+  renderSelectedItem(item: Profile): JSX.Element {
+    return <ProfilePanel profile={item} />;
   }
 
   render() {
-    if (this.state.isLoading) {
-      return <div>Loading</div>;
-    }
-
-    const list = (
-      <List className="md-paper md-paper--1">
-        {this.state.profiles.map(r => (
-          <ListItem
-            className="md-divider-border md-divider-border--bottom"
-            primaryText={`${r.firstName} ${r.lastName}`}
-            secondaryText={`${formatAddress(r.address)}\n${r.email}`}
-            threeLines={true}
-            onClick={e => this.setState({ selected: r })}
-          />))}
-      </List>
-    );
-
-    return !this.props.isMobile ? (
-      <Grid>
-        <Cell>{list}</Cell>
-        {this.state.selected && <Cell size={8}>
-          <div className="md-paper md-paper--1 sticky-top md-list">
-            {this.state.selected.firstName} {this.state.selected.lastName}
-          </div>
-        </Cell>}
-      </Grid>)
-      : list;
+    return (
+      <PageLayout
+        {...this.props}
+        getItems={getProfiles}
+        renderItem={this.renderItem}
+        renderSelectedItem={this.renderSelectedItem}
+      />);
   }
 }
 

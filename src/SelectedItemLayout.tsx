@@ -3,7 +3,9 @@ import {
   List,
   Grid,
   Cell,
-  LinearProgress
+  LinearProgress,
+  CircularProgress,
+  Button
 } from 'react-md';
 
 export class SelectItemLayout<Item> extends React.Component<
@@ -14,7 +16,11 @@ export class SelectItemLayout<Item> extends React.Component<
     renderItem: (item: Item, onClickCallback: (x: any) => void) => JSX.Element,
     renderSelectedItem: (item: Item) => JSX.Element
   },
-  { items: Item[], isLoading: boolean, selected?: Item }> {
+  {
+    items: Item[],
+    isLoading: boolean,
+    selected?: Item
+  }> {
 
   constructor(props: any) {
     super(props);
@@ -29,7 +35,13 @@ export class SelectItemLayout<Item> extends React.Component<
 
   render() {
     if (this.state.isLoading) {
-      return <div style={{ marginTop: '10px' }}><LinearProgress id="loading progress" /></div>;
+      // TODO: animate
+      return (
+        <div style={{ marginTop: '80px' }}>
+          {this.props.isMobile ?
+            <CircularProgress id="loading-progress" /> :
+            <LinearProgress id="loading-progress" />}
+        </div>);
     }
 
     const list = (
@@ -38,15 +50,21 @@ export class SelectItemLayout<Item> extends React.Component<
       </List>
     );
 
-    return !this.props.isMobile ? (
-      <Grid>
-        <Cell>{list}</Cell>
-        {this.state.selected && <Cell size={8}>
-          <div className="md-paper md-paper--1 sticky-top md-list">
-            {this.props.renderSelectedItem(this.state.selected)}
-          </div>
-        </Cell>}
-      </Grid>)
-      : list;
+    return (
+      <div>
+        <div className="fab">
+          <Button floating={true} secondary={true} primary={true}>share</Button>
+        </div>
+        {!this.props.isMobile ? (
+          <Grid>
+            <Cell>{list}</Cell>
+            {this.state.selected && <Cell size={8}>
+              <div className="md-paper md-paper--1 sticky-top md-list">
+                {this.props.renderSelectedItem(this.state.selected)}
+              </div>
+            </Cell>}
+          </Grid>)
+          : list}
+      </div>);
   }
 }

@@ -109,7 +109,8 @@ function generateData(hotelCode: string): Reservation[][] {
           postCode: seededChance.zip(),
           countryRegion: seededChance.country()
         },
-        notes: []
+        notes: [],
+        created: new Date()
       };
       allProfiles.push(profile);
       const adults = seededChance.d6() > 3 ? 2 : 1;
@@ -131,6 +132,7 @@ function generateData(hotelCode: string): Reservation[][] {
           infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
         },
         state: 'provisional',
+        created: new Date()
       };
       room.push(item);
     }

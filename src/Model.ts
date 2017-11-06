@@ -33,6 +33,7 @@ export interface Profile {
     number: string
   }[];
   readonly notes: Note[];
+  readonly created: Date;
 }
 
 export interface Reservation {
@@ -52,4 +53,5 @@ export interface Reservation {
   readonly balance: number;
   readonly state: 'provisional' | 'confirmed' | 'resident' | 'noshow' | 'departed' | 'cancelled' | 'waitlist';
   readonly rate: string;
+  readonly created: Date;
 }

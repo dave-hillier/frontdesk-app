@@ -7,6 +7,37 @@ import { SelectItemLayout } from './SelectedItemLayout';
 
 class PageLayout extends SelectItemLayout<Reservation> { }
 
+class ReservationPanel extends React.PureComponent<{ reservation: Reservation }> {
+
+  render() {
+    const r = this.props.reservation;
+
+    return (
+      <div>
+        <div className="md-tile-content">
+          <div className="md-tile-text--primary md-text">Reference</div>
+          <div className="md-tile-text--secondary md-text--secondary">{r.ref}</div>
+        </div>
+        <div className="md-tile-content">
+          <div className="md-tile-text--primary md-text">Status</div>
+          <div className="md-tile-text--secondary md-text--secondary">{r.state}</div>
+        </div>
+        <div className="md-tile-content">
+          <div className="md-tile-text--primary md-text">Ledger</div>
+          <div className="md-tile-text--secondary md-text--secondary">{r.ledger ? r.ledger.name : ' '}</div>
+        </div>
+        <div className="md-tile-content">
+          <div className="md-tile-text--primary md-text">ETA</div>
+          <div className="md-tile-text--secondary md-text--secondary">00:00</div>
+        </div>
+        <div className="md-tile-content">
+          <div className="md-tile-text--primary md-text">ETD</div>
+          <div className="md-tile-text--secondary md-text--secondary">00:00</div>
+        </div>
+      </div>);
+  }
+}
+
 export class ReservationsPage extends React.PureComponent<{
   isMobile: boolean,
   hotelSiteCode: string
@@ -18,7 +49,7 @@ export class ReservationsPage extends React.PureComponent<{
   }
 
   renderSelectedItem(item: Reservation): JSX.Element {
-    return <div>{JSON.stringify(item)}</div>;
+    return <ReservationPanel reservation={item} />;
   }
 
   render() {

@@ -17,6 +17,7 @@ export class RoomsPage extends React.PureComponent<{
     return (
       <ListItem
         key={item.name}
+        className="md-divider-border md-divider-border--bottom"
         primaryText={`Room: ${item.name} - ${item.type}`}
         secondaryText={`Status: Vacant\nHouse Keeping: Clean`}
         threeLines={true}
