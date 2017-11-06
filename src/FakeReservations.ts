@@ -20,7 +20,10 @@ const roomTypesList: string[] = [
   'Exec Suite'
 ];
 
-// TODO: audit log
+// TODO: must be called after generated.
+export async function getProfiles(): Promise<Profile[]> {
+  return allProfiles;
+}
 
 export async function getRooms(hotelCode: string): Promise<Room[]> {
   await generateData(hotelCode);
@@ -65,7 +68,7 @@ function generateData(hotelCode: string): Reservation[][] {
   const rez: Reservation[][] = [];
 
   for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
-    const roomType = roomTypesList[Math.floor(roomTypesList.length * roomIndex / roomCount)];
+    const roomType = roomTypesList[roomIndex % roomTypesList.length];
 
     const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
     const roomNumber = (roomIndex % (roomCount / floors)) + 1;

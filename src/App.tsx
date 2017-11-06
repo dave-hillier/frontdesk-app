@@ -14,7 +14,9 @@ import Allocations from './Allocations';
 import Planner from './Planner';
 import SearchBox from './SearchBox';
 import LaunchScreen from './LaunchScreen';
+import RoomsPage from './RoomsPage';
 import ReservationsPage from './ReservationsPage';
+import ProfilesPage from './ProfilesPage';
 
 const logo = require('./logo.svg');
 export const MobileMinWidth = 320;
@@ -66,7 +68,7 @@ const navItems = [{
 }, {
   label: 'Reservations',
   to: '/reservations',
-  icon: 'print',
+  icon: 'receipt',
 }, {
   label: 'Planner',
   to: '/planner',
@@ -75,6 +77,14 @@ const navItems = [{
   label: 'Availability',
   to: '/availability',
   icon: 'library_add',
+}, {
+  label: 'Rooms',
+  to: '/rooms',
+  icon: 'room',
+}, {
+  label: 'Profiles',
+  to: '/profiles',
+  icon: 'contacts',
 }];
 
 class NavLink extends React.Component<{ to: string, exact?: boolean, icon: string, label: string }, {}> {
@@ -106,7 +116,9 @@ class NavLink extends React.Component<{ to: string, exact?: boolean, icon: strin
 const titles = {
   '/planner': 'Planner',
   '/allocations': 'Allocations',
-  '/reservations': 'Reservations'
+  '/reservations': 'Reservations',
+  '/rooms': 'Rooms',
+  '/profiles': 'Profiles'
 };
 
 class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number }> {
@@ -159,6 +171,8 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                 <Route path="/planner" location={location} component={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
                 <Route path="/availability" location={location} component={() => (<Allocations isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)} />
                 <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
+                <Route path="/rooms" location={location} component={() => <RoomsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
+                <Route path="/profiles" location={location} component={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
               </Switch>
             </NavigationDrawer>
           )}
