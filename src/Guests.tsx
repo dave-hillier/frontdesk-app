@@ -7,7 +7,7 @@ import {
   FontIcon
 } from 'react-md';
 import { ReservationDialog } from './ReservationDialog';
-import { ArrivalTopLine, ResidentsTopLine, DepartureTopLine, BottomLine, MiddleLine } from './ReservationComponents';
+import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentItem } from './ReservationComponents';
 import { getReservations } from './FakeReservations';
 import { addDays } from './dateHelpers';
 import { Reservation } from './Model';
@@ -67,38 +67,6 @@ const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => voi
           <MiddleLine
             roomName={props.reservation.allocations[0].name ? 'Room: '
               + props.reservation.allocations[0].name.toString() : ''}
-            roomType={props.reservation.allocations[0].type}
-            nights={props.reservation.nights}
-          />
-          <BottomLine
-            balance={r.balance ? r.balance : 0}
-            adults={r.guests.adults}
-            children={r.guests.children}
-            infants={r.guests.infants}
-          />
-        </div>)}
-      onClick={props.onClick}
-    />
-  );
-};
-
-const ResidentItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
-  const r = props.reservation;
-  const a = new Date(r.arrival);
-
-  return (
-    <ListItem
-      className="md-divider-border md-divider-border--bottom"
-      primaryText={(
-        <ResidentsTopLine
-          name={`${r.profile.firstName} ${r.profile.lastName}`}
-          arrival={a}
-          departure={new Date(addDays(a, r.nights))}
-        />)}
-      secondaryText={(
-        <div>
-          <MiddleLine
-            roomName={props.reservation.allocations[0].name ? 'Room: ' + props.reservation.allocations[0].name.toString() : ''}
             roomType={props.reservation.allocations[0].type}
             nights={props.reservation.nights}
           />

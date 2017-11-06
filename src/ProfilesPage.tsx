@@ -39,6 +39,7 @@ class ProfilesPage extends React.Component<{ isMobile: boolean, hotelSiteCode: s
       <List className="md-paper md-paper--1">
         {this.state.profiles.map(r => (
           <ListItem
+            className="md-divider-border md-divider-border--bottom"
             primaryText={`${r.firstName} ${r.lastName}`}
             secondaryText={`${formatAddress(r.address)}\n${r.email}`}
             threeLines={true}

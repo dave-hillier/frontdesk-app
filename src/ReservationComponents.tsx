@@ -1,5 +1,8 @@
 import * as React from 'react';
 import Tooltip from './Tooltip';
+import { ListItem } from 'react-md';
+import { addDays } from './dateHelpers';
+import { Reservation } from './Model';
 
 const today = new Date('2017-10-25');
 today.setHours(0, 0, 0, 0);
@@ -80,4 +83,36 @@ export const BottomLine = (props: { balance: number, adults: number, children: n
       <People {...props} />
       <Tooltip label="Balance">{props.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Tooltip>
     </div>);
+};
+
+export const ResidentItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
+  const r = props.reservation;
+  const a = new Date(r.arrival);
+
+  return (
+    <ListItem
+      className="md-divider-border md-divider-border--bottom"
+      primaryText={(
+        <ResidentsTopLine
+          name={`${r.profile.firstName} ${r.profile.lastName}`}
+          arrival={a}
+          departure={new Date(addDays(a, r.nights))}
+        />)}
+      secondaryText={(
+        <div>
+          <MiddleLine
+            roomName={props.reservation.allocations[0].name ? 'Room: ' + props.reservation.allocations[0].name.toString() : ''}
+            roomType={props.reservation.allocations[0].type}
+            nights={props.reservation.nights}
+          />
+          <BottomLine
+            balance={r.balance ? r.balance : 0}
+            adults={r.guests.adults}
+            children={r.guests.children}
+            infants={r.guests.infants}
+          />
+        </div>)}
+      onClick={props.onClick}
+    />
+  );
 };
