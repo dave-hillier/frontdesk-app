@@ -141,7 +141,7 @@ const links = [{
   icon: <FontIcon>room_service</FontIcon>,
 }, {
   label: 'Residents',
-  icon: <FontIcon>receipt</FontIcon>,
+  icon: <FontIcon>local_hotel</FontIcon>,
 }, {
   label: 'Departures',
   icon: <FontIcon>directions_walk</FontIcon>,
