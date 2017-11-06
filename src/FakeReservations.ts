@@ -22,6 +22,7 @@ const roomTypesList: string[] = [
 
 // TODO: must be called after generated.
 export async function getProfiles(): Promise<Profile[]> {
+  await generateData('0');
   return allProfiles;
 }
 
