@@ -60,6 +60,7 @@ export class RoomsPage extends React.PureComponent<{
     return (
       <PageLayout
         {...this.props}
+        title="Room"
         getItems={getRooms}
         renderItem={this.renderItem}
         renderSelectedItem={this.renderSelectedItem}

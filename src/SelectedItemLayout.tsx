@@ -15,6 +15,7 @@ export class SelectItemLayout<Item> extends React.Component<
   {
     isMobile: boolean,
     hotelSiteCode: string,
+    title: string,
     getItems: (code: string) => Promise<Item[]>,
     renderItem: (item: Item, onClickCallback: (x: any) => void) => JSX.Element,
     renderSelectedItem: (item: Item) => JSX.Element
@@ -33,7 +34,7 @@ export class SelectItemLayout<Item> extends React.Component<
 
   componentWillMount() {
     this.props.getItems(this.props.hotelSiteCode).then(items => {
-      this.setState({ items: items, isLoading: false });
+      this.setState({ items: items.slice(100), isLoading: false }); // TODO: fix me!
     });
   }
 
@@ -68,7 +69,7 @@ export class SelectItemLayout<Item> extends React.Component<
 
     const mobileLayout = (
       <StandardDialog
-        title="Reservation"
+        title={this.props.title}
         id="reservation-dialog"
         {...this.props}
         ref={self => this.dialog = self}

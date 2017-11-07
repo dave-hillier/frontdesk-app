@@ -3,48 +3,89 @@ import * as React from 'react';
 import { getProfiles } from './FakeReservations';
 import { Profile, Address } from './Model';
 import { SelectItemLayout } from './SelectedItemLayout';
-import { ListItem } from 'react-md';
+import { ListItem, TextField, FontIcon } from 'react-md';
 
 function formatAddress(address: Address): string {
   const parts = [address.organisation, address.streetAddress, address.postalTown, address.postCode, address.countryRegion];
   return parts.filter(p => p.length > 0).join(', ');
 }
 
-function toCaps(s: string) {
-  return s.replace(/([A-Z])/g, ' $1')
-    // uppercase the first character
-    .replace(/^./, function (str: string) { return str.toUpperCase(); });
-}
-const renderGrid = (object: any) => {
-  const r: any = [];
-  for (let key in object) {
-    if (object.hasOwnProperty(key)) {
-      let value = object[key]; // typeof profile[key] === 'string' ? toCaps(profile[key]) : ' ';
+export class ProfilePanel extends React.PureComponent<{ profile: Profile }, {}> {
 
-      if (typeof value === 'object') {
-        value = renderGrid(value);
-      } else if (Array.isArray(value)) {
-        const inner = value.map(v => renderGrid(v));
-        r.push(
-          <div key={key} className="md-tile-content">
-            <div className="md-tile-text--primary md-text">{toCaps(key)}</div>
-            <div className="md-tile-text--secondary md-text--secondary">{inner}</div>
-          </div>);
-      }
-
-      r.push(
-        <div key={key} className="md-tile-content">
-          <div className="md-tile-text--primary md-text">{toCaps(key)}</div>
-          <div className="md-tile-text--secondary md-text--secondary">{value}</div>
-        </div>);
-    }
-  }
-  return r;
-};
-
-class ProfilePanel extends React.PureComponent<{ profile: Profile }, {}> {
   render() {
-    return <div>{renderGrid(this.props.profile)}</div>;
+    const p = this.props.profile;
+    return (
+      <div>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div className="md-cell md-cell--bottom">
+            <div className="md-text--primary">First Name</div>
+            <div className="md-text--secondary">{p.firstName}</div>
+          </div>
+          <div className="md-cell md-cell--bottom">
+            <div className="md-text--primary">Last Name</div>
+            <div className="md-text--secondary">{p.lastName}</div>
+          </div>
+        </div>
+
+        <div className="md-cell md-cell--bottom">
+          <div className="md-text--primary">Address</div>
+          <div className="md-text--secondary">{formatAddress(p.address)}</div>
+        </div>
+        <div className="md-cell md-cell--bottom">
+          <div className="md-text--primary">Email</div>
+          <div className="md-text--secondary">{p.email}</div>
+        </div>
+      </div>);
+  }
+}
+export class EditProfilePanel extends React.PureComponent<{ profile: Profile }, {}> {
+
+  render() {
+    return (
+      <div>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <TextField
+            id="profile-firstname"
+            label="First Name"
+            defaultValue={this.props.profile.firstName}
+            className="md-cell md-cell--bottom md-cell--6"
+            leftIcon={<FontIcon>person</FontIcon>}
+          />
+          <TextField
+            id="profile-lastname"
+            label="Last Name"
+            defaultValue={this.props.profile.lastName}
+            className="md-cell md-cell--bottom md-cell--6"
+          />
+        </div>
+        <div>
+          <TextField
+            id="profile-email"
+            label="Email"
+            defaultValue={this.props.profile.email}
+            className="md-cell md-cell--bottom md-cell--12"
+            leftIcon={<FontIcon>mail</FontIcon>}
+          />
+        </div>
+        <div>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <TextField
+              id="profile-phone-type"
+              label="Type"
+              defaultValue={this.props.profile.phone[0].type}
+              className="md-cell md-cell--bottom md-cell--2"
+              leftIcon={<FontIcon>phone</FontIcon>}
+            />
+            <TextField
+              id="profile-phone-number"
+              label="Number"
+              defaultValue={this.props.profile.phone[0].number}
+              className="md-cell md-cell--bottom md-cell--8"
+            />
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 
@@ -76,6 +117,7 @@ export class ProfilesPage extends React.PureComponent<{
     return (
       <PageLayout
         {...this.props}
+        title="Profile"
         getItems={getProfiles}
         renderItem={this.renderItem}
         renderSelectedItem={this.renderSelectedItem}
