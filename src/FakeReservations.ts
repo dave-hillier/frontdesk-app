@@ -138,13 +138,6 @@ function generateData(hotelCode: string): Reservation[][] {
     }
   }
   generated[hotelCode] = rez;
-
-  // tslint:disable-next-line:no-console
-  console.log('Rooms generated', allRooms);
-
-  // tslint:disable-next-line:no-console
-  console.log('Profiles generated', hotelCode, allProfiles);
-
   return rez;
 }
 
