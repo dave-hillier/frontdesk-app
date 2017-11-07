@@ -10,21 +10,6 @@ import {
 } from 'react-md';
 import { StandardDialog } from './StandardDialog';
 
-function trickle(allItems: any[], batchSize: number = 100, interval: number = 50) {
-  return (callback: (batch: any[], last: boolean) => void) => {
-    const timer = () => {
-      // tslint:disable-next-line:no-console
-      console.log('tick');
-
-      callback(allItems.splice(0, batchSize), allItems.length === 0);
-      if (allItems.length > 0) {
-        setTimeout(timer, interval);
-      }
-    };
-    setTimeout(timer, interval);
-  };
-}
-
 export class SelectItemLayout<Item> extends React.Component<
   {
     isMobile: boolean,
@@ -48,10 +33,9 @@ export class SelectItemLayout<Item> extends React.Component<
 
   componentWillMount() {
     this.props.getItems(this.props.hotelSiteCode).then(items => {
-      const ticker = trickle(items);
-      ticker((batch, last) => {
-        this.setState({ items: batch, isLoading: !last });
-      });
+      this.setState({ items: items });
+      // Slight delay to remove loading...
+      setTimeout(() => this.setState({ isLoading: false }), 100);
     });
   }
 
