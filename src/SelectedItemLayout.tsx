@@ -10,7 +10,6 @@ import {
 } from 'react-md';
 import { StandardDialog } from './StandardDialog';
 
-// component?: React.ComponentType<RouteComponentProps<any> | {}>;
 export class SelectItemLayout<Item> extends React.Component<
   {
     isMobile: boolean,
@@ -34,7 +33,7 @@ export class SelectItemLayout<Item> extends React.Component<
 
   componentWillMount() {
     this.props.getItems(this.props.hotelSiteCode).then(items => {
-      this.setState({ items: items.slice(100), isLoading: false }); // TODO: fix me!
+      this.setState({ items: items, isLoading: false });
     });
   }
 

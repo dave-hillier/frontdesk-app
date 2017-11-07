@@ -14,24 +14,25 @@ export class ProfilePanel extends React.PureComponent<{ profile: Profile }, {}> 
 
   render() {
     const p = this.props.profile;
+    const minWidth = '150px';
     return (
       <div>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div className="md-cell md-cell--bottom">
+          <div className="md-cell md-cell--bottom" style={{ minWidth }}>
             <div className="md-text--primary">First Name</div>
             <div className="md-text--secondary">{p.firstName}</div>
           </div>
-          <div className="md-cell md-cell--bottom">
+          <div className="md-cell md-cell--bottom" style={{ minWidth }}>
             <div className="md-text--primary">Last Name</div>
             <div className="md-text--secondary">{p.lastName}</div>
           </div>
         </div>
 
-        <div className="md-cell md-cell--bottom">
+        <div className="md-cell md-cell--bottom" style={{ minWidth }}>
           <div className="md-text--primary">Address</div>
           <div className="md-text--secondary">{formatAddress(p.address)}</div>
         </div>
-        <div className="md-cell md-cell--bottom">
+        <div className="md-cell md-cell--bottom" style={{ minWidth }}>
           <div className="md-text--primary">Email</div>
           <div className="md-text--secondary">{p.email}</div>
         </div>
