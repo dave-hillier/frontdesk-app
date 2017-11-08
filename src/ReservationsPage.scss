@@ -1,12 +1,16 @@
-.res-row-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 60px;
-  background: white;
+@mixin res-grid {
+    display: grid;
+    grid-template-columns: 140px 140px 100px 50px 100px 140px 100px 40px 40px 40px 40px 80px 80px 120px 100px 100px 120px;
+    align-items: center;
+    height: 60px;
+    background: white;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-$offset: -100px;
+.res-row-container {
+ @include res-grid;
+}
 
 .res-row-container > .actions {
   display: none;
@@ -17,141 +21,15 @@ $offset: -100px;
   background: #eee;
 }
 
-
 .res-row-container:hover > .actions {
   margin-left: auto;
   display: block;
   padding-right: 24px;
 }
 
-.res-grid-b02 {
-  display: none;
-}
-.res-grid-b03 {
-  display: none;
-}
-.res-grid-b04 {
-  display: none;
-}
-.res-grid-b05 {
-  display: none;
-}
-.res-grid-b06 {
-  display: none;
-}
-.res-grid-b07 {
-  display: none;
-}
-.res-grid-b08 {
-  display: none;
-}
-.res-grid-b09 {
-  display: none;
-}
-.res-grid-b10 {
-  display: none;
-}
-.res-grid-b11 {
-  display: none;
-}
-.res-grid-b12 {
-  display: none;
-}
-.res-grid-b13 {
-  display: none;
-}
-.res-grid-b14 {
-  display: none;
-}
-.res-grid-b15 {
-  display: none;
-}
-.res-grid-b16 {
-  display: none;
-}
-
-// TODO: hide if narrow
 .res-header-container  {
   position: sticky;
-  top: 65px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 60px;
-  background: white;
-}
-
-
-@media screen and (min-width: 440px) {
-  .res-grid-b02 {
-    display: block;
-  }
-
-
-}
-@media screen and (min-width: 540px) {
-  .res-grid-b03 {
-    display: block;
-  }
-}
-@media screen and (min-width: 600px) {
-  .res-grid-b04 {
-    display: block;
-  }
-}
-@media screen and (min-width: 670px) {
-  .res-grid-b05 {
-    display: block;
-  }
-}
-@media screen and (min-width: 835px) {
-  .res-grid-b06 {
-    display: block;
-  }
-}
-@media screen and (min-width: 1200px) {
-  .res-grid-b07 {
-    display: block;
-  }
-}
-
-@media screen and (min-width: 1400px) {
-  .res-grid-b08 {
-    display: block;
-  }
-  .res-grid-b09 {
-    display: block;
-  }
-  .res-grid-b10 {
-    display: block;
-  }
-}
-
-@media screen and (min-width: 1600px) {
-
-  .res-grid-b11 {
-    display: block;
-  }
-  .res-grid-b12 {
-    display: block;
-  }
-}
-@media screen and (min-width: 1750px) {
-  
-  .res-grid-b13 {
-    display: block;
-  }
-  .res-grid-b14 {
-    display: block;
-  }
-}
-
-@media screen and (min-width: 1950px) {
-  .res-grid-b15 {
-    display: block;
-  }
-  .res-grid-b16 {
-    display: block;
-  }
+  top: 64px;
+  @include res-grid;
 }
 

@@ -8,29 +8,9 @@ import { ProfilePanel } from './ProfilesPage';
 
 import './ReservationsPage.css';
 import { addDays } from './dateHelpers';
-import { Button } from 'react-md';
+import { Button, Paper } from 'react-md';
 
 class PageLayout extends SelectItemLayout<Reservation> { }
-const widerColumn = {
-  marginLeft: '5px',
-  marginRight: '5px',
-  minWidth: '150px'
-};
-const mediumColumn = {
-  marginLeft: '5px',
-  marginRight: '5px',
-  minWidth: '80px'
-};
-const narrowColumn = {
-  marginLeft: '5px',
-  marginRight: '5px',
-  minWidth: '40px'
-};
-const flexDirection: 'row' = 'row';
-const horizontal = {
-  display: 'flex',
-  flexDirection
-};
 
 class ReservationPanel extends React.PureComponent<{ reservation: Reservation }> {
 
@@ -97,25 +77,24 @@ const Row = (props: { reservation: Reservation }) => {
   // TODO: booking reference first?
   return (
     <div className="res-row-container md-divider-border md-divider-border--bottom">
-      <div className="col" style={horizontal}>
-        <div className="res-grid-b01" style={widerColumn}>{props.reservation.profile.firstName} {props.reservation.profile.lastName}</div>
-        <div className="res-grid-b02" style={widerColumn} />
-        <div className="res-grid-b03" style={mediumColumn}>{props.reservation.arrival.toLocaleDateString()}</div>
-        <div className="res-grid-b04" style={narrowColumn}>{props.reservation.nights}</div>
-        <div className="res-grid-b05" style={mediumColumn}>{addDays(props.reservation.arrival, props.reservation.nights).toLocaleDateString()}</div>
-        <div className="res-grid-b06" style={widerColumn}>{props.reservation.ref}</div>
-        <div className="res-grid-b07" style={mediumColumn}>{props.reservation.state}</div>
-        <div className="res-grid-b08" style={narrowColumn}>{props.reservation.guests.adults}</div>
-        <div className="res-grid-b09" style={narrowColumn}>{props.reservation.guests.children}</div>
-        <div className="res-grid-b10" style={narrowColumn}>{props.reservation.guests.infants}</div>
-        <div className="res-grid-b11" style={mediumColumn}>{props.reservation.rate}</div>
-        <div className="res-grid-b12" style={mediumColumn}>{props.reservation.requestedRoomTypes[0]}</div>
-        <div className="res-grid-b13" style={mediumColumn}>{props.reservation.allocations[0].name}</div>
-        <div className="res-grid-b14" style={widerColumn}>{props.reservation.ledger ? props.reservation.ledger.name : ''}</div>
-        <div className="res-grid-b15" style={mediumColumn}>{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
-        <div className="res-grid-b16" style={mediumColumn}>{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
 
-      </div>
+      <div className="res-grid-b01">{props.reservation.profile.firstName} {props.reservation.profile.lastName}</div>
+      <div className="res-grid-b02" />
+      <div className="res-grid-b03">{props.reservation.arrival.toLocaleDateString()}</div>
+      <div className="res-grid-b04">{props.reservation.nights}</div>
+      <div className="res-grid-b05">{addDays(props.reservation.arrival, props.reservation.nights).toLocaleDateString()}</div>
+      <div className="res-grid-b06">{props.reservation.ref}</div>
+      <div className="res-grid-b07">{props.reservation.state}</div>
+      <div className="res-grid-b08">{props.reservation.guests.adults}</div>
+      <div className="res-grid-b09">{props.reservation.guests.children}</div>
+      <div className="res-grid-b10">{props.reservation.guests.infants}</div>
+      <div className="res-grid-b11">{props.reservation.rate}</div>
+      <div className="res-grid-b12">{props.reservation.requestedRoomTypes[0]}</div>
+      <div className="res-grid-b13">{props.reservation.allocations[0].name}</div>
+      <div className="res-grid-b14">{props.reservation.ledger ? props.reservation.ledger.name : ''}</div>
+      <div className="res-grid-b15">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
+      <div className="res-grid-b16">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
+
       <div className="actions">
         <Button icon={true}>edit</Button>
         <Button icon={true}>more_vert</Button>
@@ -150,30 +129,29 @@ export class ReservationsPage1 extends React.PureComponent<
 
   render() {
     return (
-      <div>
+      <Paper zIndex={1} style={{ margin: '20px' }}>
         <div className="res-header-container md-divider-border md-divider-border--bottom sticky-top">
-          <div className="col" style={horizontal}>
-            <div className="res-grid-b01" style={widerColumn}>Guest</div>
-            <div className="res-grid-b02" style={widerColumn}>Contact</div>
-            <div className="res-grid-b03" style={mediumColumn}>Arrival</div>
-            <div className="res-grid-b04" style={narrowColumn}>Nights</div>
-            <div className="res-grid-b05" style={mediumColumn}>Departure</div>
-            <div className="res-grid-b06" style={widerColumn}>Booking Ref</div>
-            <div className="res-grid-b07" style={mediumColumn}>Status</div>
-            <div className="res-grid-b08" style={narrowColumn}>Ad</div>
-            <div className="res-grid-b09" style={narrowColumn}>Ch</div>
-            <div className="res-grid-b10" style={narrowColumn}>Inf</div>
-            <div className="res-grid-b11" style={mediumColumn}>Rate</div>
-            <div className="res-grid-b12" style={mediumColumn}>Room Type</div>
-            <div className="res-grid-b13" style={mediumColumn}>Room</div>
-            <div className="res-grid-b14" style={widerColumn}>Ledger</div>
-            <div className="res-grid-b15" style={mediumColumn}>Net</div>
-            <div className="res-grid-b16" style={mediumColumn}>Gross</div>
-          </div>
+
+          <div className="res-grid-b01">Guest</div>
+          <div className="res-grid-b02">Contact</div>
+          <div className="res-grid-b03">Arrival</div>
+          <div className="res-grid-b04">Nights</div>
+          <div className="res-grid-b05">Departure</div>
+          <div className="res-grid-b06">Booking Ref</div>
+          <div className="res-grid-b07">Status</div>
+          <div className="res-grid-b08">Ad</div>
+          <div className="res-grid-b09">Ch</div>
+          <div className="res-grid-b10">Inf</div>
+          <div className="res-grid-b11">Rate</div>
+          <div className="res-grid-b12">Room Type</div>
+          <div className="res-grid-b13">Room</div>
+          <div className="res-grid-b14">Ledger</div>
+          <div className="res-grid-b15">Net</div>
+          <div className="res-grid-b16">Gross</div>
+
         </div>
         {this.state.reservations.map(i => <Row key={i.ref} reservation={i} />)}
-      </div>
-    );
+      </Paper>);
   }
 }
 
