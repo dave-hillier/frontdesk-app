@@ -1,9 +1,9 @@
 @import 'globals';
 
 $md-light-theme: true; // optional for light theme
-$md-primary-color: $md-light-blue-a-400;//$md-grey-800;
-$md-secondary-color: $md-red-600; //#E53B5C;//$md-pink-a-400;
-// #00b9f0
+$md-primary-color: $md-light-blue-600;
+$md-secondary-color: $md-red-a-400;
+
 
 @include react-md-everything;
 
