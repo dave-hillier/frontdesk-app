@@ -139,7 +139,7 @@ export class ReservationsPage1 extends React.PureComponent<
           <div className="col-status">Status</div>
           <div className="col-adult">Ad</div>
           <div className="col-child">Ch</div>
-          <div className="col-rate">Inf</div>
+          <div className="col-infant">Inf</div>
           <div className="col-rate">Rate</div>
           <div className="col-roomtype">Room Type</div>
           <div className="col-room">Room</div>
