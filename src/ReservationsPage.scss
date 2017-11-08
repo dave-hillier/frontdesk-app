@@ -1,3 +1,5 @@
+$res-grid-width: 40px;
+
 @mixin res-grid {
     display: grid;
     grid-template-columns: repeat(60, 40px);
@@ -6,10 +8,17 @@
     background: white;
     padding-left: 10px;
     padding-right: 10px;
+    grid-column-gap: 5px;
+}
+
+@mixin text-elipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .res-row-container {
- @include res-grid;
+  @include res-grid;
 }
 
 .res-row-container > .actions {
@@ -38,10 +47,12 @@
 }
 .col-guest {
   grid-column: span 4;
+  @include text-elipsis;
 }
 
 .col-contact {
   grid-column: span 4;
+  @include text-elipsis;
 }
 
 .col-arrival {
@@ -89,6 +100,7 @@
 
 .col-ledger {
   grid-column: span 4;
+  @include text-elipsis;
 }
 
 .col-net {

@@ -77,9 +77,8 @@ const Row = (props: { reservation: Reservation }) => {
   // TODO: booking reference first?
   return (
     <div className="res-row-container md-divider-border md-divider-border--bottom">
-
       <div className="col-guest">{props.reservation.profile.firstName} {props.reservation.profile.lastName}</div>
-      <div className="col-contact">Contact Contact</div>
+      <div className="col-contact">ContactContact ContactContact</div>
       <div className="col-arrival">{props.reservation.arrival.toLocaleDateString()}</div>
       <div className="col-nights">{props.reservation.nights}</div>
       <div className="col-departure">{addDays(props.reservation.arrival, props.reservation.nights).toLocaleDateString()}</div>
