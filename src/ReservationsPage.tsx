@@ -11,6 +11,26 @@ import { addDays } from './dateHelpers';
 import { Button } from 'react-md';
 
 class PageLayout extends SelectItemLayout<Reservation> { }
+const widerColumn = {
+  marginLeft: '5px',
+  marginRight: '5px',
+  minWidth: '150px'
+};
+const mediumColumn = {
+  marginLeft: '5px',
+  marginRight: '5px',
+  minWidth: '80px'
+};
+const narrowColumn = {
+  marginLeft: '5px',
+  marginRight: '5px',
+  minWidth: '40px'
+};
+const flexDirection: 'row' = 'row';
+const horizontal = {
+  display: 'flex',
+  flexDirection
+};
 
 class ReservationPanel extends React.PureComponent<{ reservation: Reservation }> {
 
@@ -74,26 +94,7 @@ export class ReservationsPage extends React.PureComponent<{
 }
 
 const Row = (props: { reservation: Reservation }) => {
-  const widerColumn = {
-    marginLeft: '5px',
-    marginRight: '5px',
-    minWidth: '150px'
-  };
-  const mediumColumn = {
-    marginLeft: '5px',
-    marginRight: '5px',
-    minWidth: '80px'
-  };
-  const narrowColumn = {
-    marginLeft: '5px',
-    marginRight: '5px',
-    minWidth: '40px'
-  };
-  const flexDirection: 'row' = 'row';
-  const horizontal = {
-    display: 'flex',
-    flexDirection
-  };
+
   return (
     <div className="res-row-container">
       <div className="col" style={horizontal}>
@@ -147,8 +148,23 @@ export class ReservationsPage1 extends React.PureComponent<
   render() {
     return (
       <div>
-        <div>
-          Headers
+        <div className="res-row-container">
+          <div className="col" style={horizontal}>
+            <div style={widerColumn}>Guest</div>
+            <div style={widerColumn}>Contact</div>
+            <div style={mediumColumn}>Arrival</div>
+            <div style={narrowColumn}>Nights</div>
+            <div style={mediumColumn}>Departure</div>
+            <div style={widerColumn}>Booking Ref</div>
+            <div style={narrowColumn}>Ad</div>
+            <div style={narrowColumn}>Ch</div>
+            <div style={narrowColumn}>Inf</div>
+            <div style={mediumColumn}>Rate</div>
+            <div style={mediumColumn}>Room Type</div>
+            <div style={mediumColumn}>Room</div>
+            <div style={widerColumn}>Ledger</div>
+            <div>Balance</div>
+          </div>
         </div>
         {this.state.reservations.map(i => <Row key={i.ref} reservation={i} />)}
       </div>
