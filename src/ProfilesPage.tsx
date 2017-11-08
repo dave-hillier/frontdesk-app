@@ -40,7 +40,6 @@ export class ProfilePanel extends React.PureComponent<{ profile: Profile }, {}> 
   }
 }
 export class EditProfilePanel extends React.PureComponent<{ profile: Profile }, {}> {
-
   render() {
     return (
       <div>
