@@ -173,10 +173,10 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                     console.log('updating site', i);
                   }}
                 />)}
-              toolbarChildren={<ToolbarChildSearch placeholder={`Search ${titles[location.pathname] ? titles[location.pathname] : ''}`} />}
+              toolbarChildren={!isMobile ? <ToolbarChildSearch placeholder={`Search ${titles[location.pathname] ? titles[location.pathname] : ''}`} /> : null}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : ''}</div>}
               toolbarActions={<div className="toolbar-actions">
-                <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} />
+                {isMobile ? <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} /> : null}
                 {!isMobile ? <Avatar key="av">DH</Avatar> : null}
               </div>}
               navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
