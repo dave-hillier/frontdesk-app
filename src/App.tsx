@@ -4,7 +4,9 @@ import {
   FontIcon,
   ListItem,
   Avatar,
-  SelectField
+  SelectField,
+  TextField,
+  Button
 } from 'react-md';
 import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
@@ -121,6 +123,23 @@ const titles = {
   '/profiles': 'Profiles'
 };
 
+const ToolbarChildSearch = (props: { placeholder: string }) => {
+  return (
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row', padding: '8px', justifyContent: 'center' }}>
+      <div style={{ width: '685px', height: '100%', display: 'flex', flexDirection: 'row', background: '#007ac1', borderRadius: '2px' }} >
+        <Button icon={true} style={{ opacity: 0.8, alignSelf: 'center' }}>search</Button>
+        <TextField
+          id="search-box"
+          placeholder={props.placeholder}
+          block={true}
+          style={{ alignSelf: 'center' }}
+          inputStyle={{ fontSize: '16px' }}
+        />
+        <Button icon={true} style={{ opacity: 0.8, alignSelf: 'center' }}>cancel</Button>
+      </div>
+    </div>);
+};
+
 class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number }> {
   constructor(props: {}) {
     super(props);
@@ -154,7 +173,8 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                     console.log('updating site', i);
                   }}
                 />)}
-              toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : 'Guests'}</div>}
+              toolbarChildren={<ToolbarChildSearch placeholder={`Search ${titles[location.pathname] ? titles[location.pathname] : ''}`} />}
+              toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : ''}</div>}
               toolbarActions={<div className="toolbar-actions">
                 <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} />
                 {!isMobile ? <Avatar key="av">DH</Avatar> : null}
