@@ -23,19 +23,17 @@ $res-grid-width: 40px;
   @include res-grid;
 }
 
-.res-row-container > .actions {
+.res-row-container > .col-actions {
   display: none;
-  min-width: 50px;
+  grid-column: span 3;
+}
+.res-row-container:hover > .col-actions {
+  display: block;
+  grid-column: span 3;
 }
 
 .res-row-container:hover {
   background: #eee;
-}
-
-.res-row-container:hover > .actions {
-  margin-left: auto;
-  display: block;
-  padding-right: 24px;
 }
 
 .res-header-container  {
@@ -65,10 +63,6 @@ $screen-small: 768px;
   .res-header-container  {
     top: 64px; 
   }
-}
-
-.col-actions {
-  grid-column: span 3;
 }
 
 .col-guest {
