@@ -1,9 +1,19 @@
+.res-header-container  {
+  position: sticky;
+  top: 65px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 60px;
+  background: white;
+}
 
 .res-row-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  min-height: 40px;
+  height: 60px;
+  background: white;
 }
 
 $offset: -100px;
@@ -17,6 +27,11 @@ $col-width: 300px;
   display: none;
   min-width: 50px;
 }
+
+.res-row-container:hover {
+  background: #eee;
+}
+
 
 .res-row-container:hover > .actions {
   margin-left: auto;
