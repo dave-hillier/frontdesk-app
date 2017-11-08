@@ -1,6 +1,6 @@
 @mixin res-grid {
     display: grid;
-    grid-template-columns: 140px 140px 100px 50px 100px 140px 100px 40px 40px 40px 40px 80px 80px 120px 100px 100px 120px;
+    grid-template-columns: repeat(60, 40px);
     align-items: center;
     height: 60px;
     background: white;
@@ -32,4 +32,73 @@
   top: 64px;
   @include res-grid;
 }
+
+.col-actions {
+  grid-column: span 3;
+}
+.col-guest {
+  grid-column: span 4;
+}
+
+.col-contact {
+  grid-column: span 4;
+}
+
+.col-arrival {
+  grid-column: span 3;
+}
+
+.col-nights {
+  grid-column: span 1;
+}
+
+.col-departure {
+  grid-column: span 3;
+}
+
+.col-ref {
+  grid-column: span 4;
+}
+
+.col-status {
+  grid-column: span 3;
+}
+
+.col-ad {
+  grid-column: span 1;
+}
+
+.col-ch {
+  grid-column: span 1;
+}
+
+.col-inf {
+  grid-column: span 1;
+}
+
+.col-rate {
+  grid-column: span 1;
+}
+
+.col-roomtype {
+  grid-column: span 2;
+}
+.col-room {
+  grid-column: span 2;
+}
+
+.col-ledger {
+  grid-column: span 4;
+}
+
+.col-net {
+  grid-column: span 2;
+}
+
+.col-gross {
+  grid-column: span 2;
+}
+
+
+
 
