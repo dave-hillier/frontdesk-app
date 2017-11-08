@@ -45,72 +45,134 @@ $res-grid-width: 40px;
 .col-actions {
   grid-column: span 3;
 }
+
 .col-guest {
   grid-column: span 4;
   @include text-elipsis;
 }
 
-.col-contact {
-  grid-column: span 4;
-  @include text-elipsis;
+.col-contact, 
+.col-arrival, 
+.col-nights, 
+.col-departure,
+.col-ref,
+.col-rate,
+.col-roomtype,
+.col-adult,
+.col-child,
+.col-infant,
+.col-room,
+.col-net,
+.col-gross,
+.col-ledger,
+.col-status,
+ {
+  display: none;
 }
 
-.col-arrival {
-  grid-column: span 3;
+@media screen and (min-width: 520px) {
+  .col-contact {
+    display: block;
+    grid-column: span 4;
+    @include text-elipsis;
+  }
 }
 
-.col-nights {
-  grid-column: span 1;
+@media screen and (min-width: 700px) {
+  .col-arrival {
+    display: block;
+    grid-column: span 3;
+  }
 }
 
-.col-departure {
-  grid-column: span 3;
+@media screen and (min-width: 700px) {
+  .col-nights {
+    display: block;
+    grid-column: span 1;
+  }
 }
 
-.col-ref {
-  grid-column: span 4;
+@media screen and (min-width: 1080px) {
+  .col-departure {
+    display: block;
+    grid-column: span 3;
+  }
 }
 
-.col-status {
-  grid-column: span 3;
+@media screen and (min-width: 1260px) {
+  .col-ref {
+    display: block;
+    grid-column: span 4;
+  }
 }
 
-.col-ad {
-  grid-column: span 1;
+@media screen and (min-width: 1400px) {
+  .col-status {
+    display: block;
+    grid-column: span 3;
+  }
 }
 
-.col-ch {
-  grid-column: span 1;
+@media screen and (min-width: 1525px) {
+  .col-adult {
+    display: block;
+    grid-column: span 1;
+  }
 }
 
-.col-inf {
-  grid-column: span 1;
+@media screen and (min-width: 1525px) {
+  .col-child {
+    display: block;
+    grid-column: span 1;
+  }
 }
 
-.col-rate {
-  grid-column: span 2;
+@media screen and (min-width: 1525px) {
+  .col-infant {
+    display: block;
+    grid-column: span 1;
+  }
 }
 
-.col-roomtype {
-  grid-column: span 2;
-}
-.col-room {
-  grid-column: span 2;
-}
-
-.col-ledger {
-  grid-column: span 4;
-  @include text-elipsis;
+@media screen and (min-width: 1615px) { 
+  .col-rate {
+    display: block;
+    grid-column: span 2;
+  }
 }
 
-.col-net {
-  grid-column: span 2;
+@media screen and (min-width: 1705px) {
+  .col-roomtype {
+    display: block;
+    grid-column: span 2;
+  }
 }
 
-.col-gross {
-  grid-column: span 2;
+@media screen and (min-width: 1800px) {
+  .col-room {
+    display: block;
+    grid-column: span 2;
+  }
 }
 
+@media screen and (min-width: 1980px) {
+    .col-ledger {
+    display: block;
+    grid-column: span 4;
+    @include text-elipsis;
+  }
+}
 
+@media screen and (min-width: 2160px) {
+  .col-net {
+    display: block;
+    grid-column: span 2;
+  }
+}
 
-
+@media screen and (min-width: 2160px) {
+  .col-gross {
+    display: block;
+    grid-column: span 2;
+  }
+}
