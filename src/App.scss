@@ -29,30 +29,7 @@
   to { transform: rotate(360deg); }
 }
 
-// TODO: move to own file
-.toolbar-tabs {
-  background: $md-grey-800;//#00b9f0;
-  bottom: 0;
-  position: absolute;
-  right: 0;
-}
-
-.md-title--toolbar {
-  ~ .toolbar-tabs {
-    left: 0;
-  }
-}
-
-.md-title--permanent-offset,
-.md-title--persistent-offset {
-  ~ .toolbar-tabs {
-    left: $md-drawer-tablet-width;
-  }
-}
-
-.nav-drawer > .md-toolbar--prominent {
-  height: 110px;
-}
+// TODO: move all this stuff elsewhere
 
 .md-drawer--fixed > header {
   height: 144px; // relies on fixed with

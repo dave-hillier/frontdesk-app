@@ -173,7 +173,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                     console.log('updating site', i);
                   }}
                 />)}
-              toolbarChildren={!isMobile ? <ToolbarChildSearch placeholder={`Search ${titles[location.pathname] ? titles[location.pathname] : ''}`} /> : null}
+              toolbarChildren={!isMobile ? <ToolbarChildSearch placeholder={`Search ${titles[location.pathname] ? titles[location.pathname].toLowerCase() : ''}`} /> : null}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : ''}</div>}
               toolbarActions={<div className="toolbar-actions">
                 {isMobile ? <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} /> : null}
