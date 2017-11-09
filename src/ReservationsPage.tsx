@@ -127,6 +127,10 @@ export class ReservationsPage1 extends React.PureComponent<
   }
 
   render() {
+    if (this.props.isMobile) {
+      return <ReservationsPage {...this.props} />;
+    }
+
     return (
       <Paper zindex={1} style={{ margin: '20px' }}>
         <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom sticky-top">
