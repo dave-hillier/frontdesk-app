@@ -76,10 +76,12 @@ export class ReservationsPage extends React.PureComponent<{
 const Row = (props: { reservation: Reservation }) => {
   // TODO: booking reference first?
   const room = props.reservation.bookingLines[0].allocatedRoom;
+  const leadGuest = props.reservation.leadGuest ? props.reservation.leadGuest.firstName + ' ' + props.reservation.leadGuest.lastName : '';
+
   return (
     <div className="res-row-container md-divider-border md-divider-border--bottom">
-      <div className="col-guest">{props.reservation.contact.firstName} {props.reservation.contact.lastName}</div>
-      <div className="col-contact">ContactContact ContactContact</div>
+      <div className="col-contact">{props.reservation.contact.firstName} {props.reservation.contact.lastName}</div>
+      <div className="col-guest">{leadGuest}</div>
       <div className="col-arrival">{props.reservation.bookingLines[0].arrival.toLocaleDateString()}</div>
       <div className="col-nights">{props.reservation.bookingLines[0].nights}</div>
       <div className="col-departure">{addDays(props.reservation.bookingLines[0].arrival, props.reservation.bookingLines[0].nights).toLocaleDateString()}</div>
