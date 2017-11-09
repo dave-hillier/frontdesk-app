@@ -10,7 +10,7 @@ function formatAddress(address: Address): string {
   return parts.filter(p => p.length > 0).join(', ');
 }
 
-const Row = (props: { icon: string, title: string, children: any }) => {
+const Row = (props: { icon?: string, title: string, children: any }) => {
   return (
     <div className="md-list-tile" style={{ padding: '8px' }}>
       <div className="md-tile-addon md-tile-addon--icon">
