@@ -10,20 +10,22 @@ import {
 } from 'react-md';
 import { StandardDialog } from './StandardDialog';
 
-export class SelectItemLayout<Item> extends React.Component<
-  {
-    isMobile: boolean,
-    hotelSiteCode: string,
-    title: string,
-    getItems: (code: string) => Promise<Item[]>,
-    renderItem: (item: Item, onClickCallback: (x: any) => void) => JSX.Element,
-    renderSelectedItem: (item: Item) => JSX.Element
-  },
-  {
-    items: Item[],
-    isLoading: boolean,
-    selected?: Item
-  }> {
+export interface SelectItemLayoutProps<Item> {
+  isMobile: boolean;
+  hotelSiteCode: string;
+  title: string;
+  getItems: (code: string) => Promise<Item[]>;
+  renderItem: (item: Item, onClickCallback: (x: any) => void) => JSX.Element;
+  renderSelectedItem: (item: Item) => JSX.Element;
+}
+
+export interface SelectItemLayoutState<Item> {
+  items: Item[];
+  isLoading: boolean;
+  selected?: Item;
+}
+
+export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProps<Item>, SelectItemLayoutState<Item>> {
   dialog: StandardDialog | null;
 
   constructor(props: any) {
@@ -83,15 +85,7 @@ export class SelectItemLayout<Item> extends React.Component<
         <div className="fab">
           <Button floating={true} secondary={true} primary={true}>add</Button>
         </div>
-        {!this.props.isMobile ? (
-          <Grid>
-            <Cell>{list}</Cell>
-            {selectedPanel}
-          </Grid>)
-          : <div>
-            {mobileLayout}
-            {list}
-          </div>}
+        {!this.props.isMobile ? <Grid><Cell>{list}</Cell>{selectedPanel}</Grid> : <div>{mobileLayout}{list}</div>}
       </div>);
   }
 }
