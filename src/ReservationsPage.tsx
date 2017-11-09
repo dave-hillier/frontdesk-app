@@ -9,6 +9,7 @@ import { ProfilePanel } from './ProfilesPage';
 import './ReservationsPage.css';
 import { addDays } from './dateHelpers';
 import { Button, Paper } from 'react-md';
+import { ReservationDialog } from './ReservationDialog';
 
 class PageLayout extends SelectItemLayout<Reservation> { }
 
@@ -69,17 +70,18 @@ export class ReservationsPage extends React.PureComponent<{
         getItems={getReservations}
         renderItem={this.renderItem}
         renderSelectedItem={this.renderSelectedItem}
+        dialogId="reservation-dialog"
       />);
   }
 }
 
-const Row = (props: { reservation: Reservation }) => {
+const Row = (props: { reservation: Reservation, onClick: (e: any) => void }) => {
   // TODO: booking reference first?
   const room = props.reservation.bookingLines[0].allocatedRoom;
   const leadGuest = props.reservation.leadGuest ? props.reservation.leadGuest.firstName + ' ' + props.reservation.leadGuest.lastName : '';
 
   return (
-    <div className="res-row-container md-divider-border md-divider-border--bottom">
+    <div className="res-row-container md-divider-border md-divider-border--bottom" onClick={props.onClick}>
       <div className="col-contact">{props.reservation.contact.firstName} {props.reservation.contact.lastName}</div>
       <div className="col-guest">{leadGuest}</div>
       <div className="col-arrival">{props.reservation.bookingLines[0].arrival.toLocaleDateString()}</div>
@@ -114,6 +116,7 @@ export class ReservationsPage1 extends React.PureComponent<
     isLoading: boolean,
     selected?: Reservation
   }> {
+  private dialog: ReservationDialog;
 
   constructor(props: any) {
     super(props);
@@ -128,35 +131,44 @@ export class ReservationsPage1 extends React.PureComponent<
     });
   }
 
+  show(event: any, reservation: Reservation) {
+    if (this.dialog) {
+      this.dialog.show(event, reservation);
+    }
+  }
+
   render() {
     if (this.props.isMobile) {
       return <ReservationsPage {...this.props} />;
     }
 
     return (
-      <Paper zindex={1} style={{ margin: '20px' }}>
-        <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom sticky-top">
+      <div>
+        <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
+        <Paper zindex={1} style={{ margin: '20px' }}>
+          <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom sticky-top">
 
-          <div className="col-guest">Guest</div>
-          <div className="col-contact">Contact</div>
-          <div className="col-arrival">Arrival</div>
-          <div className="col-nights">Nights</div>
-          <div className="col-departure">Departure</div>
-          <div className="col-ref">Booking Ref</div>
-          <div className="col-status">Status</div>
-          <div className="col-adult">Ad</div>
-          <div className="col-child">Ch</div>
-          <div className="col-infant">Inf</div>
-          <div className="col-rate">Rate</div>
-          <div className="col-roomtype">Room Type</div>
-          <div className="col-room">Room</div>
-          <div className="col-ledger">Ledger</div>
-          <div className="col-net">Net</div>
-          <div className="col-gross">Gross</div>
+            <div className="col-guest">Guest</div>
+            <div className="col-contact">Contact</div>
+            <div className="col-arrival">Arrival</div>
+            <div className="col-nights">Nights</div>
+            <div className="col-departure">Departure</div>
+            <div className="col-ref">Booking Ref</div>
+            <div className="col-status">Status</div>
+            <div className="col-adult">Ad</div>
+            <div className="col-child">Ch</div>
+            <div className="col-infant">Inf</div>
+            <div className="col-rate">Rate</div>
+            <div className="col-roomtype">Room Type</div>
+            <div className="col-room">Room</div>
+            <div className="col-ledger">Ledger</div>
+            <div className="col-net">Net</div>
+            <div className="col-gross">Gross</div>
 
-        </div>
-        {this.state.reservations.map(i => <Row key={i.ref} reservation={i} />)}
-      </Paper>);
+          </div>
+          {this.state.reservations.map(i => <Row key={i.ref} reservation={i} onClick={e => this.show(e, i)} />)}
+        </Paper>
+      </div>);
   }
 }
 

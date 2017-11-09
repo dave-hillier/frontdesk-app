@@ -10,7 +10,7 @@ import { addDays } from './dateHelpers';
 import { People } from './ReservationComponents';
 
 // TODO: remove duplicate
-const Row = (props: { icon?: string, title: string, children: any }) => {
+const IconNameValue = (props: { icon?: string, title: string, children: any }) => {
   return (
     <div className="md-list-tile" style={{ padding: '8px' }}>
       <div className="md-tile-addon md-tile-addon--icon">
@@ -28,26 +28,30 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
   const arrival = bookingLine.arrival;
   return (
     <div>
-      <Row icon={'date_range'} title={'Arrival'}>{arrival.toLocaleDateString()}</Row>
-      <Row icon={'date_range'} title={'Departure'}>{addDays(arrival, bookingLine.nights).toLocaleDateString()}</Row>
-      <Row icon={'brightness_3'} title={'Nights'}>{bookingLine.nights}</Row>
-      <Row title="Guests"><People adults={1} children={0} infants={0} /></Row>
-      <Row title="Rate">{bookingLine.rate}</Row>
-      <Row title="Room Type">{bookingLine.roomType}</Row>
-      <Row title="Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</Row>
-      <Row title="Media Source">{props.reservation.mediaSource}</Row>
-      <Row title="Market Segment">{props.reservation.marketSegment}</Row>
-      <Row title="Deposit Required">{props.reservation.depositRequired.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
-      <Row title="Deposit Paid">{props.reservation.depositPaid.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
-      <Row title="Total For Stay">{props.reservation.totalForStay.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
+      <div className="md-grid">
+        <div className="md-cell"><IconNameValue icon={'date_range'} title={'Arrival'}>{arrival.toLocaleDateString()}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue icon={'date_range'} title={'Departure'}>{addDays(arrival, bookingLine.nights).toLocaleDateString()}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue icon={'brightness_3'} title={'Nights'}>{bookingLine.nights}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Guests"><People adults={1} children={0} infants={0} /></IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Rate">{bookingLine.rate}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Room Type">{bookingLine.roomType}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Media Source">{props.reservation.mediaSource}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Market Segment">{props.reservation.marketSegment}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Deposit Required">{props.reservation.depositRequired.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Deposit Paid">{props.reservation.depositPaid.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Total For Stay">{props.reservation.totalForStay.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue title="Balance">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
+      </div>
       <hr />
       <div>Profile <Button icon={true}>edit</Button></div>
       <ProfileShortPanel profile={props.reservation.contact} />
       <hr />
-    </div>
+    </div >
   );
 };
 
+// TODO: ideally a dialog props
 // TODO: actions allocate/unallocate
 export class ReservationDialog extends React.Component<{ isMobile?: boolean, isDesktop?: boolean }, { reservation: any }> {
   private dialog: StandardDialog | null;

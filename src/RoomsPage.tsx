@@ -64,6 +64,7 @@ export class RoomsPage extends React.PureComponent<{
         getItems={getRooms}
         renderItem={this.renderItem}
         renderSelectedItem={this.renderSelectedItem}
+        dialogId="rooms-dialog"
       />);
   }
 }

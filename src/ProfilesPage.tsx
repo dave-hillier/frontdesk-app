@@ -121,6 +121,7 @@ export class ProfilesPage extends React.PureComponent<{
         getItems={getProfiles}
         renderItem={this.renderItem}
         renderSelectedItem={this.renderSelectedItem}
+        dialogId="profile-dialog"
       />);
   }
 }

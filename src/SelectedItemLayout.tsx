@@ -17,6 +17,7 @@ export interface SelectItemLayoutProps<Item> {
   getItems: (code: string) => Promise<Item[]>;
   renderItem: (item: Item, onClickCallback: (x: any) => void) => JSX.Element;
   renderSelectedItem: (item: Item) => JSX.Element;
+  dialogId: string;
 }
 
 export interface SelectItemLayoutState<Item> {
@@ -72,7 +73,7 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
     const mobileLayout = (
       <StandardDialog
         title={this.props.title}
-        id="reservation-dialog"
+        id={this.props.dialogId}
         {...this.props}
         ref={self => this.dialog = self}
       >
