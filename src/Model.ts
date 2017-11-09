@@ -5,8 +5,9 @@ export interface Room {
   readonly occupied: boolean;
 }
 
-export interface Ledger {
+export interface CompanyProfile {
   readonly name: string;
+  
 }
 
 // TODO: probably needs to change based on country
@@ -66,7 +67,7 @@ export interface Reservation {
   readonly ref: string;
   readonly contact: GuestProfile;
   readonly leadGuest?: GuestProfile; // If null, then use the above
-  readonly ledger?: Ledger;
+  readonly ledger?: CompanyProfile;
   readonly state: 'provisional' | 'confirmed' | 'cancelled';
   readonly created: Date; // TODO: metadata, last modified, last modified user
   readonly balance: number;

@@ -1,11 +1,10 @@
 @import 'globals';
-@import 'index.scss';
 
 .rez-cell {
   text-overflow: ellipsis;
 	white-space: nowrap;
   overflow: hidden;
-  background: $md-secondary-color-dark;
+  background: darkred;
   color: white;
   border-radius: 2px;
 }

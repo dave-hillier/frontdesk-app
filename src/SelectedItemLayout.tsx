@@ -42,7 +42,7 @@ export class SelectItemLayout<Item> extends React.Component<
   render() {
     if (this.state.isLoading) {
       return (
-        <div style={{ marginTop: '80px' }}>
+        <div style={{ marginTop: '75px' }}>
           {this.props.isMobile ?
             <CircularProgress id="loading-progress" /> :
             <LinearProgress id="loading-progress" />}

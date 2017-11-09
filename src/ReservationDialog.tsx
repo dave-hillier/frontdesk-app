@@ -1,20 +1,9 @@
 import * as React from 'react';
 import {
-  Grid,
-  Cell,
-  DataTable,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableColumn,
-  List,
-  ListItem,
-  FontIcon,
-  Subheader
+  FontIcon
 } from 'react-md';
 
 import { Address, Reservation, GuestProfile } from './Model';
-import { addDays } from './dateHelpers';
 import { StandardDialog } from './StandardDialog';
 
 function toCaps(s: string) {
@@ -61,91 +50,37 @@ function formatAddress(address: Address): string {
   return parts.filter(p => p.length > 0).join(', ');
 }
 
-const ProfileShortPanel = (props: { profile: GuestProfile }) => {
+const Row = (props: { icon: string, title: string, children: any }) => {
   return (
-    <Cell>
-      <List>
-        <Subheader primaryText="Profile" />
-        <ListItem
-          leftIcon={<FontIcon>person</FontIcon>}
-          primaryText="Name"
-          secondaryText={`${props.profile.firstName} ${props.profile.lastName}`}
-        />
-        <ListItem
-          leftIcon={<FontIcon>person_pin_circle</FontIcon>}
-          primaryText="Email"
-          secondaryText={props.profile.email}
-        />
-        <ListItem
-          leftIcon={<FontIcon>mail</FontIcon>}
-          primaryText="Address"
-          secondaryText={formatAddress(props.profile.address)}
-        />
-
-        {props.profile.phone.map(p => (
-          <ListItem
-            key={p.type}
-            leftIcon={<FontIcon>phone</FontIcon>}
-            primaryText="Phone"
-            secondaryText={p.number}
-          />))}
-      </List>
-    </Cell>
+    <div
+      className="md-list-tile"
+    >
+      <div className="md-tile-addon md-tile-addon--icon">
+        <FontIcon>{props.icon}</FontIcon>
+      </div>
+      <div className="md-tile-content md-tile-content--left-icon">
+        <div className="md-tile-text--primary md-text">{props.title}</div>
+        <div className="md-tile-text--secondary md-text--secondary">{props.children}</div></div>
+    </div>
   );
 };
 
-const ReservationLine = (props: { title: string, contents: string }) => (
-  <ListItem
-    primaryText={props.title}
-    secondaryText={props.contents}
-  />
-);
-
-const ReservationPanel = (props: { reservation: Reservation }) => {
-  const arrival = props.reservation.bookingLines[0].arrival.toLocaleDateString();
-  const departure = addDays(props.reservation.bookingLines[0].arrival, props.reservation.bookingLines[0].nights).toLocaleDateString();
+const ProfileShortPanel = (props: { profile: GuestProfile }) => {
   return (
     <div>
-      <Grid>
-        <Cell>
-          <List>
-            <ReservationLine title="Reference" contents={props.reservation.ref} />
-            <ReservationLine title="Status" contents={props.reservation.state} />
-            <ReservationLine title="Ledger" contents={props.reservation.ledger ? props.reservation.ledger.name : ' '} />
-            <ReservationLine title="ETA" contents="00:00" />
-            <ReservationLine title="ETD" contents="00:00" />
-          </List>
-        </Cell>
-        <ProfileShortPanel profile={props.reservation.contact} />
-      </Grid>
-      <DataTable>
-        <TableHeader>
-          <TableRow>
-            <TableColumn>Arrival</TableColumn>
-            <TableColumn>Nights</TableColumn>
-            <TableColumn>Departure</TableColumn>
-            <TableColumn>Room Type</TableColumn>
-            <TableColumn>Rate</TableColumn>
-            <TableColumn>Room</TableColumn>
-            <TableColumn>Adults</TableColumn>
-            <TableColumn>Children</TableColumn>
-            <TableColumn>infants</TableColumn>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableColumn>{arrival}</TableColumn>
-            <TableColumn>{props.reservation.bookingLines[0].nights}</TableColumn>
-            <TableColumn>{departure}</TableColumn>
-            <TableColumn>{props.reservation.bookingLines[0].roomType}</TableColumn>
-            <TableColumn>{props.reservation.bookingLines[0].rate}</TableColumn>
-            <TableColumn />
-            <TableColumn />
-            <TableColumn />
-            <TableColumn />
-          </TableRow>
-        </TableBody>
-      </DataTable>
+      <div>Profile</div>
+      <Row title="Name" icon="person">{props.profile.firstName} {props.profile.lastName}</Row>
+      <Row title="Address" icon="person_pin_circle">{formatAddress(props.profile.address)}</Row>
+      <Row title="Mail" icon="mail">{props.profile.email}</Row>
+      <Row title="Phone" icon="phone"><a href={`tel:${props.profile.phone[0].number}`}>{props.profile.phone[0].number}</a></Row>
+    </div>
+  );
+};
+
+const ReservationPanel = (props: { reservation: Reservation }) => {
+  return (
+    <div>
+      <ProfileShortPanel profile={props.reservation.contact} />
     </div>
   );
 };

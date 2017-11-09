@@ -128,7 +128,7 @@ export class ReservationsPage1 extends React.PureComponent<
 
   render() {
     return (
-      <Paper zIndex={1} style={{ margin: '20px' }}>
+      <Paper zindex={1} style={{ margin: '20px' }}>
         <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom sticky-top">
 
           <div className="col-guest">Guest</div>
