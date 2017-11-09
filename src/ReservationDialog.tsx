@@ -1,60 +1,17 @@
 import * as React from 'react';
 import {
-  FontIcon
+  FontIcon, Button
 } from 'react-md';
 
-import { Address, Reservation, GuestProfile } from './Model';
+import { Reservation } from './Model';
 import { StandardDialog } from './StandardDialog';
+import { ProfileShortPanel } from './ProfileComponents';
+import { addDays } from './dateHelpers';
 
-function toCaps(s: string) {
-  return s.replace(/([A-Z])/g, ' $1')
-    // uppercase the first character
-    .replace(/^./, function (str: string) { return str.toUpperCase(); });
-}
-
-export function renderGrid(r: any) {
-  if (typeof r === 'string') {
-    return r;
-  } else if (Array.isArray(r)) {
-    const values: any[] = r.map((v: any) => renderGrid(v));
-    return <div>{...values}</div>;
-  }
-  const flexDirection: 'row' = 'row';
-  const row = {
-    width: '100%', display: 'flex', flexDirection
-  };
-  const header = {
-    width: '150px'
-  };
-  const rows: JSX.Element[] = [];
-  const borders = 'md-divider-border md-divider-border--top md-divider-border--right md-divider-border--bottom md-divider-border--left';
-  for (let key in r) {
-    if (r.hasOwnProperty(key)) {
-      let value = r[key];
-      if (typeof r[key] === 'object') {
-        value = renderGrid(value);
-      }
-      const rx = (
-        <div key={key} style={row} className={borders + 'md-tile-content'}>
-          <div style={header} className="md-tile-text--primary md-text">{toCaps(key)}</div>
-          <div className="md-tile-text--secondary md-text--secondary">{value}</div>
-        </div>);
-      rows.push(rx);
-    }
-  }
-  return rows;
-}
-
-function formatAddress(address: Address): string {
-  const parts = [address.organisation, address.streetAddress, address.postalTown, address.postCode, address.countryRegion];
-  return parts.filter(p => p.length > 0).join(', ');
-}
-
+// TODO: remove duplicate
 const Row = (props: { icon: string, title: string, children: any }) => {
   return (
-    <div
-      className="md-list-tile"
-    >
+    <div className="md-list-tile" style={{ padding: '8px' }}>
       <div className="md-tile-addon md-tile-addon--icon">
         <FontIcon>{props.icon}</FontIcon>
       </div>
@@ -65,22 +22,17 @@ const Row = (props: { icon: string, title: string, children: any }) => {
   );
 };
 
-const ProfileShortPanel = (props: { profile: GuestProfile }) => {
-  return (
-    <div>
-      <div>Profile</div>
-      <Row title="Name" icon="person">{props.profile.firstName} {props.profile.lastName}</Row>
-      <Row title="Address" icon="person_pin_circle">{formatAddress(props.profile.address)}</Row>
-      <Row title="Mail" icon="mail">{props.profile.email}</Row>
-      <Row title="Phone" icon="phone"><a href={`tel:${props.profile.phone[0].number}`}>{props.profile.phone[0].number}</a></Row>
-    </div>
-  );
-};
-
 const ReservationPanel = (props: { reservation: Reservation }) => {
+  const arrival = props.reservation.bookingLines[0].arrival;
   return (
     <div>
+      <Row icon={'date_range'} title={'Arrival'}>{arrival.toLocaleDateString()}</Row>
+      <Row icon={'date_range'} title={'Departure'}>{addDays(arrival, props.reservation.bookingLines[0].nights).toLocaleDateString()}</Row>
+      <Row icon={'brightness_3'} title={'Nights'}>{props.reservation.bookingLines[0].nights}</Row>
+      <hr />
+      <div>Profile <Button icon={true}>edit</Button></div>
       <ProfileShortPanel profile={props.reservation.contact} />
+      <hr />
     </div>
   );
 };
@@ -95,15 +47,15 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
 
   render() {
     const r: Reservation = this.state.reservation;
-
+    const title = r ? `${r.ref} - ${r.state}` : '';
     return (
       <StandardDialog
-        title="Reservation"
+        title={title}
         id="reservation-dialog"
         {...this.props}
         ref={self => this.dialog = self}
       >
-        {r && <ReservationPanel reservation={r} />}
+        <ReservationPanel reservation={r} />
       </StandardDialog>);
   }
 

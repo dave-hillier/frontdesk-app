@@ -47,8 +47,11 @@ export class StandardDialog extends React.Component<{ id: string, title: any, is
             colored={true}
             title={this.props.title}
             titleId={`${this.props.id}-title`}
-            nav={<Button icon={true} onClick={this.hide}>close</Button>}
-            actions={<Button flat={true} onClick={this.hide}>Save</Button>}
+            actions={<div>
+              <Button icon={true} onClick={this.hide}>edit</Button>
+              <Button icon={true} onClick={this.hide}>more_vert</Button>
+              <Button icon={true} onClick={this.hide}>close</Button>
+            </div>}
           />
           <section className="md-toolbar-relative">
             {this.props.children}
