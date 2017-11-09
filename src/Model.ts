@@ -70,14 +70,15 @@ export interface Reservation {
   readonly leadGuest?: GuestProfile; // If null, then use the above
   readonly ledger?: CompanyProfile;
   readonly state: 'provisional' | 'confirmed' | 'cancelled';
-  readonly created: Date; // TODO: metadata, last modified, last modified user
+  readonly created: Date; // TODO: metadata, last modified, last modified user, etc
   readonly bookingLines: BookingLine[];
   readonly marketSegment: string;
   readonly mediaSource: string;
   // TODO: company, agent, source?
 
   readonly depositRequired: number;
-  readonly balance: number;
+  readonly totalForStay: number; // TODO: sum from booking lines...
 
+  readonly balance: number;
   readonly depositPaid: number; // TODO: obtain from folio?
 }

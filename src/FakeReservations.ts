@@ -135,12 +135,13 @@ function generateData(hotelCode: string): Reservation[][] {
         profiles: [],
         masterRef: reference
       };
+      const balance = nights * 100 + Math.floor(1 + pseudoRandom() * 100);
       const item: Reservation = {
         contact: profile,
         bookingLines: [bookingLine],
         ref: reference,
 
-        balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
+        balance,
         ledger: pseudoRandom() > 0.7 ? {
           name: 'Ledger ' + seededChance.d100(),
           address: {
@@ -157,7 +158,8 @@ function generateData(hotelCode: string): Reservation[][] {
         marketSegment: 'wedding',
         mediaSource: 'internet',
         depositPaid: 0,
-        depositRequired: 100
+        depositRequired: 100,
+        totalForStay: balance + nights * 10 + Math.floor(1 + pseudoRandom() * 10)
       };
       room.push(item);
     }
