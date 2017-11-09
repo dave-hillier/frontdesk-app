@@ -47,7 +47,6 @@ export const ResidentsTopLine = (props: { name: string, arrival: Date, departure
     ;
 };
 
-// TODO: tooltips for icons
 export const People = (props: { adults: number, children: number, infants: number }): JSX.Element => {
   return (
     <div className="align-items-center">

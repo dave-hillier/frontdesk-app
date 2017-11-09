@@ -19,6 +19,7 @@ const roomTypesList: string[] = [
   'Exec Twin',
   'Exec Suite'
 ];
+const rates = ['BAR_RO', 'BAR_BB', 'FLEX_BB', 'FLEX_RO', 'WED_RO', 'WED_BB'];
 
 // TODO: must be called after generated.
 export async function getProfiles(): Promise<GuestProfile[]> {
@@ -115,7 +116,9 @@ function generateData(hotelCode: string): Reservation[][] {
         created: new Date()
       };
       allProfiles.push(profile);
+      const rate = seededChance.pickone(rates);
       const adults = seededChance.d6() > 3 ? 2 : 1;
+      const reference = 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1';
       const bookingLine: BookingLine = {
         ref: 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1',
 
@@ -123,18 +126,19 @@ function generateData(hotelCode: string): Reservation[][] {
         nights: nights,
         roomType: roomType,
         allocatedRoom: theRoom,
-        rate: 'BAR',
+        rate: rate,
         guests: {
           adults: adults,
           children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
           infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
         },
-        profiles: []
+        profiles: [],
+        masterRef: reference
       };
       const item: Reservation = {
         contact: profile,
         bookingLines: [bookingLine],
-        ref: 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1',
+        ref: reference,
 
         balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
         ledger: pseudoRandom() > 0.7 ? {
