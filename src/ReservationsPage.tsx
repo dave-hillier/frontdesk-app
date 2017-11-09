@@ -41,7 +41,7 @@ class ReservationPanel extends React.PureComponent<{ reservation: Reservation }>
             <div className="md-tile-text--secondary md-text--secondary">00:00</div>
           </div>
         </div >
-        <ProfilePanel profile={r.profile} />
+        <ProfilePanel profile={r.contact} />
       </div>
     );
   }
@@ -75,21 +75,22 @@ export class ReservationsPage extends React.PureComponent<{
 
 const Row = (props: { reservation: Reservation }) => {
   // TODO: booking reference first?
+  const room = props.reservation.bookingLines[0].allocatedRoom;
   return (
     <div className="res-row-container md-divider-border md-divider-border--bottom">
-      <div className="col-guest">{props.reservation.profile.firstName} {props.reservation.profile.lastName}</div>
+      <div className="col-guest">{props.reservation.contact.firstName} {props.reservation.contact.lastName}</div>
       <div className="col-contact">ContactContact ContactContact</div>
-      <div className="col-arrival">{props.reservation.arrival.toLocaleDateString()}</div>
-      <div className="col-nights">{props.reservation.nights}</div>
-      <div className="col-departure">{addDays(props.reservation.arrival, props.reservation.nights).toLocaleDateString()}</div>
+      <div className="col-arrival">{props.reservation.bookingLines[0].arrival.toLocaleDateString()}</div>
+      <div className="col-nights">{props.reservation.bookingLines[0].nights}</div>
+      <div className="col-departure">{addDays(props.reservation.bookingLines[0].arrival, props.reservation.bookingLines[0].nights).toLocaleDateString()}</div>
       <div className="col-ref">{props.reservation.ref}</div>
       <div className="col-status">{props.reservation.state}</div>
-      <div className="col-adult">{props.reservation.guests.adults}</div>
-      <div className="col-child">{props.reservation.guests.children}</div>
-      <div className="col-infant">{props.reservation.guests.infants}</div>
-      <div className="col-rate">{props.reservation.rate}</div>
-      <div className="col-roomtype">{props.reservation.requestedRoomTypes[0]}</div>
-      <div className="col-room">{props.reservation.allocations[0].name}</div>
+      <div className="col-adult">{props.reservation.bookingLines[0].guests.adults}</div>
+      <div className="col-child">{props.reservation.bookingLines[0].guests.children}</div>
+      <div className="col-infant">{props.reservation.bookingLines[0].guests.infants}</div>
+      <div className="col-rate">{props.reservation.bookingLines[0].rate}</div>
+      <div className="col-roomtype">{props.reservation.bookingLines[0].roomType}</div>
+      <div className="col-room">{room ? room.name : ''}</div>
       <div className="col-ledger">{props.reservation.ledger ? props.reservation.ledger.name : ''}</div>
       <div className="col-net">Net</div>
       <div className="col-gross">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>

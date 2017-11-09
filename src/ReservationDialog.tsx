@@ -13,7 +13,7 @@ import {
   Subheader
 } from 'react-md';
 
-import { Address, Reservation, Profile } from './Model';
+import { Address, Reservation, GuestProfile } from './Model';
 import { addDays } from './dateHelpers';
 import { StandardDialog } from './StandardDialog';
 
@@ -61,7 +61,7 @@ function formatAddress(address: Address): string {
   return parts.filter(p => p.length > 0).join(', ');
 }
 
-const ProfileShortPanel = (props: { profile: Profile }) => {
+const ProfileShortPanel = (props: { profile: GuestProfile }) => {
   return (
     <Cell>
       <List>
@@ -102,8 +102,8 @@ const ReservationLine = (props: { title: string, contents: string }) => (
 );
 
 const ReservationPanel = (props: { reservation: Reservation }) => {
-  const arrival = props.reservation.arrival.toLocaleDateString();
-  const departure = addDays(props.reservation.arrival, props.reservation.nights).toLocaleDateString();
+  const arrival = props.reservation.bookingLines[0].arrival.toLocaleDateString();
+  const departure = addDays(props.reservation.bookingLines[0].arrival, props.reservation.bookingLines[0].nights).toLocaleDateString();
   return (
     <div>
       <Grid>
@@ -116,7 +116,7 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
             <ReservationLine title="ETD" contents="00:00" />
           </List>
         </Cell>
-        <ProfileShortPanel profile={props.reservation.profile} />
+        <ProfileShortPanel profile={props.reservation.contact} />
       </Grid>
       <DataTable>
         <TableHeader>
@@ -135,22 +135,11 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
         <TableBody>
           <TableRow>
             <TableColumn>{arrival}</TableColumn>
-            <TableColumn>{props.reservation.nights}</TableColumn>
+            <TableColumn>{props.reservation.bookingLines[0].nights}</TableColumn>
             <TableColumn>{departure}</TableColumn>
-            <TableColumn>{props.reservation.requestedRoomTypes[0]}</TableColumn>
-            <TableColumn>{props.reservation.rate}</TableColumn>
+            <TableColumn>{props.reservation.bookingLines[0].roomType}</TableColumn>
+            <TableColumn>{props.reservation.bookingLines[0].rate}</TableColumn>
             <TableColumn />
-            <TableColumn />
-            <TableColumn />
-            <TableColumn />
-          </TableRow>
-          <TableRow>
-            <TableColumn>{arrival}</TableColumn>
-            <TableColumn>{props.reservation.nights}</TableColumn>
-            <TableColumn>{departure}</TableColumn>
-            <TableColumn>{props.reservation.requestedRoomTypes[0]}</TableColumn>
-            <TableColumn>{props.reservation.rate}</TableColumn>
-            <TableColumn>{props.reservation.allocations[0].name}</TableColumn>
             <TableColumn />
             <TableColumn />
             <TableColumn />

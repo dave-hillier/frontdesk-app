@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { getProfiles } from './FakeReservations';
-import { Profile, Address } from './Model';
+import { GuestProfile, Address } from './Model';
 import { SelectItemLayout } from './SelectedItemLayout';
 import { ListItem, TextField, FontIcon } from 'react-md';
 
@@ -10,7 +10,7 @@ function formatAddress(address: Address): string {
   return parts.filter(p => p.length > 0).join(', ');
 }
 
-export class ProfilePanel extends React.PureComponent<{ profile: Profile }, {}> {
+export class ProfilePanel extends React.PureComponent<{ profile: GuestProfile }, {}> {
 
   render() {
     const p = this.props.profile;
@@ -39,7 +39,7 @@ export class ProfilePanel extends React.PureComponent<{ profile: Profile }, {}> 
       </div>);
   }
 }
-export class EditProfilePanel extends React.PureComponent<{ profile: Profile }, {}> {
+export class EditProfilePanel extends React.PureComponent<{ profile: GuestProfile }, {}> {
   render() {
     return (
       <div>
@@ -89,14 +89,14 @@ export class EditProfilePanel extends React.PureComponent<{ profile: Profile }, 
   }
 }
 
-class PageLayout extends SelectItemLayout<Profile> { }
+class PageLayout extends SelectItemLayout<GuestProfile> { }
 
 export class ProfilesPage extends React.PureComponent<{
   isMobile: boolean,
   hotelSiteCode: string
 }> {
 
-  renderItem(item: Profile, onClick: (x: any) => void): JSX.Element {
+  renderItem(item: GuestProfile, onClick: (x: any) => void): JSX.Element {
 
     return (
       <ListItem
@@ -109,7 +109,7 @@ export class ProfilesPage extends React.PureComponent<{
       />);
   }
 
-  renderSelectedItem(item: Profile): JSX.Element {
+  renderSelectedItem(item: GuestProfile): JSX.Element {
     return <ProfilePanel profile={item} />;
   }
 

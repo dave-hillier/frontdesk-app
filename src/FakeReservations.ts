@@ -1,7 +1,7 @@
 
 import { addDays } from './dateHelpers';
 import { Chance } from 'chance';
-import { Room, Reservation, Profile } from './Model';
+import { Room, Reservation, GuestProfile, BookingLine } from './Model';
 
 const today = new Date('2017-10-25');
 today.setHours(0, 0, 0, 0);
@@ -21,8 +21,10 @@ const roomTypesList: string[] = [
 ];
 
 // TODO: must be called after generated.
-export async function getProfiles(): Promise<Profile[]> {
+export async function getProfiles(): Promise<GuestProfile[]> {
   await generateData('0');
+  await generateData('1');
+  await generateData('2');
   return allProfiles;
 }
 
@@ -52,7 +54,7 @@ function hashCode(str: string) {
 }
 
 const allRooms: { [code: string]: Room[] } = {};
-const allProfiles: Profile[] = [];
+const allProfiles: GuestProfile[] = [];
 
 const generated: any = {};
 function generateData(hotelCode: string): Reservation[][] {
@@ -114,23 +116,31 @@ function generateData(hotelCode: string): Reservation[][] {
       };
       allProfiles.push(profile);
       const adults = seededChance.d6() > 3 ? 2 : 1;
-      const item: Reservation = {
-        profile,
+      const bookingLine: BookingLine = {
+        ref: 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1',
+
         arrival: arrival, // TODO: change to date?
         nights: nights,
-        allocations: [theRoom],
-        requestedRoomTypes: [roomType],
-        ref: 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1',
+        roomType: roomType,
+        allocatedRoom: theRoom,
         rate: 'BAR',
-        balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
-        ledger: pseudoRandom() > 0.7 ? {
-          name: 'Ledger ' + seededChance.d100()
-        } : undefined,
         guests: {
           adults: adults,
           children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
           infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
         },
+        profiles: []
+      };
+      const item: Reservation = {
+        contact: profile,
+        bookingLines: [bookingLine],
+        ref: 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1',
+
+        balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
+        ledger: pseudoRandom() > 0.7 ? {
+          name: 'Ledger ' + seededChance.d100()
+        } : undefined,
+
         state: 'provisional',
         created: new Date()
       };
@@ -154,7 +164,11 @@ export async function getReservations(hotelSite: string): Promise<Reservation[]>
 
 export async function getReservationsByRoom(hotelSite: string) {
   const rez = await getReservations(hotelSite);
-  const roomNameToResPairs: any[] = rez.filter(r => r.allocations[0]).map(r => { return { room: r.allocations[0].name, rez: r }; });
+  const roomNameToResPairs: any[] = rez.filter(r => r.bookingLines[0].allocatedRoom).map(r => {
+    const room = r.bookingLines[0].allocatedRoom;
+    const name = room ? room.name : '';
+    return { room: name, rez: r };
+  });
 
   let lookup: any = {};
   for (let i = 0; i < roomNameToResPairs.length; ++i) {

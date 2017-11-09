@@ -22,36 +22,51 @@ export interface Note {
   readonly body: string;
 }
 
-export interface Profile {
+export interface GuestProfile {
   readonly title?: string;
   readonly firstName: string;
   readonly lastName: string;
+
   readonly email: string;
   readonly address: Address;
+
   readonly phone: {
     type: string,
     number: string
   }[];
   readonly notes: Note[];
   readonly created: Date;
+
+  // Note - child/infant profiles seems pointless
 }
 
-export interface Reservation {
+export interface BookingLine {
   readonly ref: string;
+  // TODO: master booking?
 
-  readonly profile: Profile;
-  readonly ledger?: Ledger;
   readonly arrival: Date;
   readonly nights: number;
+
   readonly guests: {
     readonly adults: number;
     readonly children: number;
     readonly infants: number;
   };
-  readonly requestedRoomTypes: string[];
-  readonly allocations: Room[];
-  readonly balance: number;
-  readonly state: 'provisional' | 'confirmed' | 'resident' | 'noshow' | 'departed' | 'cancelled' | 'waitlist';
+
+  readonly profiles: GuestProfile[];
+
   readonly rate: string;
+  readonly roomType: string;
+  readonly allocatedRoom?: Room;
+}
+
+export interface Reservation {
+  readonly ref: string;
+  readonly contact: GuestProfile;
+  readonly leadGuest?: GuestProfile; // If null, then use the above
+  readonly ledger?: Ledger;
+  readonly state: 'provisional' | 'confirmed' | 'cancelled';
   readonly created: Date;
+  readonly balance: number;
+  readonly bookingLines: BookingLine[];
 }

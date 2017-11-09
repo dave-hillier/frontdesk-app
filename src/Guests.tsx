@@ -17,7 +17,7 @@ today.setHours(0, 0, 0, 0);
 
 function filterArrivals(rez: Reservation[]) {
   return rez.filter(res => {
-    const d = new Date(res.arrival);
+    const d = new Date(res.bookingLines[0].arrival);
     d.setHours(0, 0, 0, 0);
     return d.getTime() === today.getTime();
   });
@@ -25,9 +25,9 @@ function filterArrivals(rez: Reservation[]) {
 
 function filterDepartures(rez: Reservation[]) {
   return rez.filter(res => {
-    const a = new Date(res.arrival);
+    const a = new Date(res.bookingLines[0].arrival);
     a.setHours(0, 0, 0, 0);
-    const d = addDays(new Date(a), res.nights);
+    const d = addDays(new Date(a), res.bookingLines[0].nights);
 
     return d.getTime() === today.getTime();
   });
@@ -35,9 +35,9 @@ function filterDepartures(rez: Reservation[]) {
 
 function filterResidents(rez: Reservation[]) {
   return rez.filter(res => {
-    const a = new Date(res.arrival);
+    const a = new Date(res.bookingLines[0].arrival);
     a.setHours(0, 0, 0, 0);
-    const d = addDays(new Date(a), res.nights);
+    const d = addDays(new Date(a), res.bookingLines[0].nights);
 
     return d.getTime() > today.getTime() &&
       a.getTime() < today.getTime();
@@ -54,27 +54,27 @@ function filterResidents(rez: Reservation[]) {
 
 const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
-
+  const room = r.bookingLines[0].allocatedRoom;
   return (
     <ListItem
       className="md-divider-border md-divider-border--bottom"
       primaryText={(
         <ArrivalTopLine
-          name={`${r.profile.firstName} ${r.profile.lastName}`}
+          name={`${r.contact.firstName} ${r.contact.lastName}`}
         />)}
       secondaryText={(
         <div>
           <MiddleLine
-            roomName={props.reservation.allocations[0].name ? 'Room: '
-              + props.reservation.allocations[0].name.toString() : ''}
-            roomType={props.reservation.allocations[0].type}
-            nights={props.reservation.nights}
+            roomName={room ? 'Room: '
+              + room.name.toString() : ''}
+            roomType={room ? room.type : ''}
+            nights={r.bookingLines[0].nights}
           />
           <BottomLine
             balance={r.balance ? r.balance : 0}
-            adults={r.guests.adults}
-            children={r.guests.children}
-            infants={r.guests.infants}
+            adults={r.bookingLines[0].guests.adults}
+            children={r.bookingLines[0].guests.children}
+            infants={r.bookingLines[0].guests.infants}
           />
         </div>)}
       onClick={props.onClick}
@@ -84,18 +84,19 @@ const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => voi
 
 const DepartureItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
+  const room = r.bookingLines[0].allocatedRoom;
 
   return (
     <ListItem
       className="md-divider-border md-divider-border--bottom"
       primaryText={(
         <DepartureTopLine
-          name={`${r.profile.firstName} ${r.profile.lastName}`}
+          name={`${r.contact.firstName} ${r.contact.lastName}`}
         />)}
       secondaryText={(
         <div>
           <div className="space-between-content">
-            <div >{props.reservation.allocations[0].name && 'Room: ' + props.reservation.allocations[0].name.toString()}</div>
+            <div>{room ? 'Room: ' + room.name.toString() : ''}</div>
             <div>{props.reservation.balance && props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
           </div>
         </div>)}
