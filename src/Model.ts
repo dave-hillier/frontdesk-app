@@ -22,6 +22,8 @@ export interface Note {
   readonly body: string;
 }
 
+// TODO: company profiles
+
 export interface GuestProfile {
   readonly title?: string;
   readonly firstName: string;
@@ -43,7 +45,6 @@ export interface GuestProfile {
 export interface BookingLine {
   readonly ref: string;
   readonly masterRef: string;
-  // TODO: master booking?
 
   readonly arrival: Date;
   readonly nights: number;
@@ -67,7 +68,11 @@ export interface Reservation {
   readonly leadGuest?: GuestProfile; // If null, then use the above
   readonly ledger?: Ledger;
   readonly state: 'provisional' | 'confirmed' | 'cancelled';
-  readonly created: Date;
+  readonly created: Date; // TODO: metadata, last modified, last modified user
   readonly balance: number;
   readonly bookingLines: BookingLine[];
+  readonly marketSegment: string;
+  // TODO: company, agent, source?
 }
+
+// TODO: folios, deposits

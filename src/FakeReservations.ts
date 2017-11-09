@@ -146,7 +146,8 @@ function generateData(hotelCode: string): Reservation[][] {
         } : undefined,
 
         state: 'provisional',
-        created: new Date()
+        created: new Date(),
+        marketSegment: 'internet'
       };
       room.push(item);
     }
