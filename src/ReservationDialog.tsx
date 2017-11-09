@@ -23,6 +23,7 @@ const IconNameValue = (props: { icon?: string, title: string, children: any }) =
   );
 };
 
+// TODO: Cancel for before today?
 const ReservationPanel = (props: { reservation: Reservation }) => {
   const bookingLine = props.reservation.bookingLines[0];
   const arrival = bookingLine.arrival;
@@ -32,12 +33,12 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
         <div className="md-cell"><IconNameValue icon={'date_range'} title={'Arrival'}>{arrival.toLocaleDateString()}</IconNameValue></div>
         <div className="md-cell"><IconNameValue icon={'date_range'} title={'Departure'}>{addDays(arrival, bookingLine.nights).toLocaleDateString()}</IconNameValue></div>
         <div className="md-cell"><IconNameValue icon={'brightness_3'} title={'Nights'}>{bookingLine.nights}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Guests"><People adults={1} children={0} infants={0} /></IconNameValue></div>
+        <div className="md-cell"><IconNameValue icon={'people'} title="Guests"><People adults={1} children={0} infants={0} /></IconNameValue></div>
         <div className="md-cell"><IconNameValue title="Rate">{bookingLine.rate}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Room Type">{bookingLine.roomType}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue icon={'hotel'} title="Room Type">{bookingLine.roomType}</IconNameValue></div>
         <div className="md-cell"><IconNameValue title="Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</IconNameValue></div>
         <div className="md-cell"><IconNameValue title="Media Source">{props.reservation.mediaSource}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Market Segment">{props.reservation.marketSegment}</IconNameValue></div>
+        <div className="md-cell"><IconNameValue icon={'data_usage'} title="Market Segment">{props.reservation.marketSegment}</IconNameValue></div>
         <div className="md-cell"><IconNameValue title="Deposit Required">{props.reservation.depositRequired.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
         <div className="md-cell"><IconNameValue title="Deposit Paid">{props.reservation.depositPaid.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
         <div className="md-cell"><IconNameValue title="Total For Stay">{props.reservation.totalForStay.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
