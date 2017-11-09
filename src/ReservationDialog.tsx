@@ -37,9 +37,9 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
       <Row title="Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</Row>
       <Row title="Media Source">{props.reservation.mediaSource}</Row>
       <Row title="Market Segment">{props.reservation.marketSegment}</Row>
-      <Row title="Deposit Required">{props.reservation.depositRequired}</Row>
-      <Row title="Deposit Paid">{props.reservation.depositPaid}</Row>
-      <Row title="Total For Stay">{props.reservation.totalForStay}</Row>
+      <Row title="Deposit Required">{props.reservation.depositRequired.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
+      <Row title="Deposit Paid">{props.reservation.depositPaid.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
+      <Row title="Total For Stay">{props.reservation.totalForStay.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
       <hr />
       <div>Profile <Button icon={true}>edit</Button></div>
       <ProfileShortPanel profile={props.reservation.contact} />

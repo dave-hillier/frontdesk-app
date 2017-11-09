@@ -6,3 +6,4 @@
 - [ ] Search overlay
 - [ ] anchors to selected item on the select pages
 - [ ] planner scaling
+- [ ] Currency
