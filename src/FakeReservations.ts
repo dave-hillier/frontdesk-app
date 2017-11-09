@@ -106,7 +106,7 @@ function generateData(hotelCode: string): Reservation[][] {
           number: seededChance.phone()
         }],
         address: {
-          organisation: '',
+          building: '',
           streetAddress: seededChance.address(),
           postalTown: seededChance.city(),
           postCode: seededChance.zip(),
@@ -142,12 +142,22 @@ function generateData(hotelCode: string): Reservation[][] {
 
         balance: nights * 100 + Math.floor(1 + pseudoRandom() * 100),
         ledger: pseudoRandom() > 0.7 ? {
-          name: 'Ledger ' + seededChance.d100()
+          name: 'Ledger ' + seededChance.d100(),
+          address: {
+            building: '',
+            streetAddress: seededChance.address(),
+            postalTown: seededChance.city(),
+            postCode: seededChance.zip(),
+            countryRegion: seededChance.country()
+          }
         } : undefined,
 
         state: 'provisional',
         created: new Date(),
-        marketSegment: 'internet'
+        marketSegment: 'wedding',
+        mediaSource: 'internet',
+        depositPaid: 0,
+        depositRequired: 100
       };
       room.push(item);
     }

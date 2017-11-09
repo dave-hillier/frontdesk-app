@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-// TODO: inject tooltip didnt work...
+// Inject tooltip didnt work...
 const Tooltip = (props: { label: React.ReactNode, children: React.ReactNode }) => {
   return (
     <div className="tooltip-container">

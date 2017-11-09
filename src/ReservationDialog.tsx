@@ -35,6 +35,8 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
       <Row title="Rate">{bookingLine.rate}</Row>
       <Row title="Room Type">{bookingLine.roomType}</Row>
       <Row title="Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</Row>
+      <Row title="Media Source">{props.reservation.mediaSource}</Row>
+      <Row title="Market Segment">{props.reservation.marketSegment}</Row>
       <hr />
       <div>Profile <Button icon={true}>edit</Button></div>
       <ProfileShortPanel profile={props.reservation.contact} />
@@ -43,6 +45,7 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
   );
 };
 
+// TODO: actions allocate/unallocate
 export class ReservationDialog extends React.Component<{ isMobile?: boolean, isDesktop?: boolean }, { reservation: any }> {
   private dialog: StandardDialog | null;
 

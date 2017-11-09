@@ -6,7 +6,7 @@ import { SelectItemLayout } from './SelectedItemLayout';
 import { ListItem, TextField, FontIcon } from 'react-md';
 
 function formatAddress(address: Address): string {
-  const parts = [address.organisation, address.streetAddress, address.postalTown, address.postCode, address.countryRegion];
+  const parts = [address.building, address.streetAddress, address.postalTown, address.postCode, address.countryRegion];
   return parts.filter(p => p.length > 0).join(', ');
 }
 

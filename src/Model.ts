@@ -7,12 +7,13 @@ export interface Room {
 
 export interface CompanyProfile {
   readonly name: string;
-  
+
+  readonly address: Address;
 }
 
 // TODO: probably needs to change based on country
 export interface Address {
-  organisation: string;
+  building: string;
   streetAddress: string;
   postalTown: string;
   postCode: string;
@@ -70,10 +71,13 @@ export interface Reservation {
   readonly ledger?: CompanyProfile;
   readonly state: 'provisional' | 'confirmed' | 'cancelled';
   readonly created: Date; // TODO: metadata, last modified, last modified user
-  readonly balance: number;
   readonly bookingLines: BookingLine[];
   readonly marketSegment: string;
+  readonly mediaSource: string;
   // TODO: company, agent, source?
-}
 
-// TODO: folios, deposits
+  readonly depositRequired: number;
+  readonly balance: number;
+
+  readonly depositPaid: number; // TODO: obtain from folio?
+}
