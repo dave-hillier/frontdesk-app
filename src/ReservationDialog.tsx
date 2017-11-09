@@ -43,10 +43,11 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
         <div className="md-cell"><IconNameValue title="Total For Stay">{props.reservation.totalForStay.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
         <div className="md-cell"><IconNameValue title="Balance">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
       </div>
+      {bookingLine.allocatedRoom ? <Button flat={true}>Deallocate</Button> : <Button flat={true}>Allocate</Button>}
+      <Button flat={true}>Room Billing</Button>
       <hr />
       <div>Profile <Button icon={true}>edit</Button></div>
       <ProfileShortPanel profile={props.reservation.contact} />
-      <hr />
     </div >
   );
 };
