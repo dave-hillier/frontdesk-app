@@ -62,6 +62,9 @@ export interface BookingLine {
   readonly rate: string;
   readonly roomType: string;
   readonly allocatedRoom?: Room;
+
+  readonly eta?: Date;
+  readonly etd?: Date;
 }
 
 export interface Reservation {

@@ -9,14 +9,16 @@ import { ProfileShortPanel } from './ProfileComponents';
 import { addDays } from './dateHelpers';
 import { People } from './ReservationComponents';
 
+import './ReservationDialog.css';
+
 // TODO: remove duplicate
-const IconNameValue = (props: { icon?: string, title: string, children: any }) => {
+const Row = (props: { icon?: string, title: string, children: any }) => {
   return (
-    <div className="md-list-tile" style={{ padding: '8px' }}>
-      <div className="md-tile-addon md-tile-addon--icon">
-        {props.icon ? <FontIcon>{props.icon}</FontIcon> : <div style={{ width: '20px' }} />}
+    <div className="rd-tile">
+      <div className="rd-tile-icon">
+        {props.icon ? <FontIcon>{props.icon}</FontIcon> : <div style={{ width: '24px' }} />}
       </div>
-      <div className="md-tile-content md-tile-content--left-icon">
+      <div className="rd-tile-content">
         <div className="md-tile-text--primary md-text">{props.title}</div>
         <div className="md-tile-text--secondary md-text--secondary">{props.children}</div></div>
     </div>
@@ -29,20 +31,36 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
   const arrival = bookingLine.arrival;
   return (
     <div>
-      <div className="md-grid">
-        <div className="md-cell"><IconNameValue icon={'date_range'} title={'Arrival'}>{arrival.toLocaleDateString()}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue icon={'date_range'} title={'Departure'}>{addDays(arrival, bookingLine.nights).toLocaleDateString()}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue icon={'brightness_3'} title={'Nights'}>{bookingLine.nights}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue icon={'people'} title="Guests"><People adults={1} children={0} infants={0} /></IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Rate">{bookingLine.rate}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue icon={'hotel'} title="Room Type">{bookingLine.roomType}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Media Source">{props.reservation.mediaSource}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue icon={'data_usage'} title="Market Segment">{props.reservation.marketSegment}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Deposit Required">{props.reservation.depositRequired.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Deposit Paid">{props.reservation.depositPaid.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Total For Stay">{props.reservation.totalForStay.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
-        <div className="md-cell"><IconNameValue title="Balance">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</IconNameValue></div>
+      <div className="rd-grid">
+        <div className="rd-tile">
+          <Row icon={'date_range'} title={'Arrival'}>{arrival.toLocaleDateString()}</Row>
+          <Row icon={'brightness_3'} title={'Nights'}>{bookingLine.nights}</Row>
+          <Row icon={'date_range'} title={'Departure'}>{addDays(arrival, bookingLine.nights).toLocaleDateString()}</Row>
+        </div>
+        <div className="rd-tile">
+          <Row icon={'schedule'} title="ETA">{bookingLine.eta ? bookingLine.eta.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : 'x'}</Row>
+          <Row title="ETD">{bookingLine.etd ? bookingLine.etd.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : 'x'}</Row>
+        </div>
+        <div className="rd-tile">
+          <Row icon={'hotel'} title="Room Type">{bookingLine.roomType}</Row>
+          <Row title="Allocated Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</Row>
+        </div>
+        <div className="rd-tile">
+          <Row icon={'laptop'} title="Media Source">{props.reservation.mediaSource}</Row>
+          <Row icon={'pie_chart'} title="Market Segment">{props.reservation.marketSegment}</Row>
+        </div>
+        <div className="rd-tile">
+          <Row icon={'people'} title="Guests"><People adults={1} children={0} infants={0} /></Row>
+        </div>
+
+        <div className="rd-tile">
+
+          <Row title="Rate">{bookingLine.rate}</Row>
+          <Row title="Deposit Required">{props.reservation.depositRequired.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
+          <Row title="Deposit Paid">{props.reservation.depositPaid.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
+          <Row title="Total For Stay">{props.reservation.totalForStay.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
+          <Row title="Balance">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Row>
+        </div>
       </div>
       {bookingLine.allocatedRoom ? <Button flat={true}>Deallocate</Button> : <Button flat={true}>Allocate</Button>}
       <Button flat={true}>Room Billing</Button>

@@ -133,7 +133,10 @@ function generateData(hotelCode: string): Reservation[][] {
           infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
         },
         profiles: [],
-        masterRef: reference
+        masterRef: reference,
+
+        eta: seededChance.d6() === 1 ? new Date() : undefined,
+        etd: seededChance.d6() === 1 ? new Date() : undefined,
       };
       const balance = nights * 100 + Math.floor(1 + pseudoRandom() * 100);
       const item: Reservation = {
