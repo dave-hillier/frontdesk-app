@@ -5,8 +5,6 @@ import {
   ListItem,
   Avatar,
   SelectField,
-  TextField,
-  Button,
   DropdownMenu,
   AccessibleFakeButton
 } from 'react-md';
@@ -21,6 +19,7 @@ import LaunchScreen from './LaunchScreen';
 import RoomsPage from './RoomsPage';
 import ReservationsPage from './ReservationsPage';
 import ProfilesPage from './ProfilesPage';
+import ToolbarSearchBox from './ToolbarSearchBox';
 
 const logo = require('./logo.svg');
 export const MobileMinWidth = 320;
@@ -125,23 +124,6 @@ const titles = {
   '/profiles': 'Profiles'
 };
 
-const ToolbarChildSearch = (props: { placeholder: string }) => {
-  return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row', padding: '8px', justifyContent: 'center' }}>
-      <div style={{ width: '685px', height: '100%', display: 'flex', flexDirection: 'row', background: '#007ac1', borderRadius: '2px' }} >
-        <Button icon={true} style={{ opacity: 0.8, alignSelf: 'center' }}>search</Button>
-        <TextField
-          id="search-box"
-          placeholder={props.placeholder}
-          block={true}
-          style={{ alignSelf: 'center' }}
-          inputStyle={{ fontSize: '16px' }}
-        />
-        <Button icon={true} style={{ opacity: 0.8, alignSelf: 'center' }}>cancel</Button>
-      </div>
-    </div>);
-};
-
 const AccountMenu = () => {
   return (
     <DropdownMenu
@@ -190,7 +172,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                     console.log('updating site', i);
                   }}
                 />)}
-              toolbarChildren={!isMobile ? <ToolbarChildSearch placeholder={`Search ${titles[location.pathname] ? titles[location.pathname].toLowerCase() : ''}`} /> : null}
+              toolbarChildren={!isMobile ? <ToolbarSearchBox placeholder={`Search ${titles[location.pathname] ? titles[location.pathname].toLowerCase() : ''}`} /> : null}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : ''}</div>}
               toolbarActions={<div className="toolbar-actions">
                 {isMobile ? <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} /> : null}
