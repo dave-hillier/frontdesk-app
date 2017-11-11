@@ -115,7 +115,7 @@ const GridSection = (props: { primaryText: string, listClassName: string, childr
 interface Props {
   listClassName: string;
   items: Reservation[];
-  onClick: (e: any, r: any) => void;
+  onClick: (e: any, r: Reservation) => void;
   isMobile: boolean;
 }
 
@@ -174,9 +174,9 @@ class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string 
   }
 
   render() {
-    const arrivals = <Arrivals items={this.state.arrivals} onClick={(e: any, r: any) => this.dialog.show(e, r)} listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''} isMobile={this.props.isMobile} />;
-    const residents = <Residents items={this.state.residents} onClick={(e: any, r: any) => this.dialog.show(e, r)} listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''} isMobile={this.props.isMobile} />;
-    const departures = <Departures items={this.state.departures} onClick={(e: any, r: any) => this.dialog.show(e, r)} listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''} isMobile={this.props.isMobile} />;
+    const arrivals = <Arrivals items={this.state.arrivals} onClick={(e: any, r: Reservation) => this.dialog.show(e, r)} listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''} isMobile={this.props.isMobile} />;
+    const residents = <Residents items={this.state.residents} onClick={(e: any, r: Reservation) => this.dialog.show(e, r)} listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''} isMobile={this.props.isMobile} />;
+    const departures = <Departures items={this.state.departures} onClick={(e: any, r: Reservation) => this.dialog.show(e, r)} listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''} isMobile={this.props.isMobile} />;
 
     if (!this.props.isMobile) {
       return (

@@ -25,6 +25,7 @@ const Row = (props: { icon?: string, title: string, children: any }) => {
   );
 };
 
+// TODO: more menu should contain the options?
 // TODO: Cancel for before today?
 const ReservationPanel = (props: { reservation: Reservation }) => {
   const bookingLine = props.reservation.bookingLines[0];
@@ -73,16 +74,16 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
 
 // TODO: ideally a dialog props
 // TODO: actions allocate/unallocate
-export class ReservationDialog extends React.Component<{ isMobile?: boolean, isDesktop?: boolean }, { reservation: any }> {
+export class ReservationDialog extends React.Component<{ isMobile?: boolean, isDesktop?: boolean }, { reservation?: Reservation }> {
   private dialog: StandardDialog | null;
 
   constructor(props: any) {
     super(props);
-    this.state = { reservation: null };
+    this.state = { reservation: undefined };
   }
 
   render() {
-    const r: Reservation = this.state.reservation;
+    const r: Reservation | undefined = this.state.reservation;
     const title = r ? `${r.ref} - ${r.state}` : '';
     return (
       <StandardDialog
@@ -91,11 +92,11 @@ export class ReservationDialog extends React.Component<{ isMobile?: boolean, isD
         {...this.props}
         ref={self => this.dialog = self}
       >
-        <ReservationPanel reservation={r} />
+        {r && <ReservationPanel reservation={r} />}
       </StandardDialog>);
   }
 
-  show(e: any, r: any) {
+  show(e: any, r: Reservation) {
     if (this.dialog) {
       this.dialog.show(e);
       this.setState({ reservation: r });
