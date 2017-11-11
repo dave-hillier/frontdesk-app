@@ -14,7 +14,7 @@ import DateColumnHeaders from './DateColumnHeaders';
 // TODO: optimise: can we cut down on empty cells?
 // TODO: clean up the styles
 // TODO: fix the grid -- top corner style
-const now = new Date('2017-10-25'); // new Date();
+const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // TODO: ensure this updates
 const gridSize = 42;
 const maxDays = 7 + (window.innerWidth / gridSize); // TODO: observe change?

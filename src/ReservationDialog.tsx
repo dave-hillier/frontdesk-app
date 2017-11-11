@@ -38,8 +38,8 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
           <Row icon={'date_range'} title={'Departure'}>{addDays(arrival, bookingLine.nights).toLocaleDateString()}</Row>
         </div>
         <div className="rd-tile">
-          <Row icon={'schedule'} title="ETA">{bookingLine.eta ? bookingLine.eta.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : 'x'}</Row>
-          <Row title="ETD">{bookingLine.etd ? bookingLine.etd.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : 'x'}</Row>
+          <Row icon={'schedule'} title="ETA">{bookingLine.eta ? bookingLine.eta.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Row>
+          <Row title="ETD">{bookingLine.etd ? bookingLine.etd.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Row>
         </div>
         <div className="rd-tile">
           <Row icon={'hotel'} title="Room Type">{bookingLine.roomType}</Row>

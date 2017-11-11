@@ -12,7 +12,7 @@ import { getReservations } from './FakeReservations';
 import { addDays } from './dateHelpers';
 import { Reservation } from './Model';
 
-const today = new Date('2017-10-25');
+const today = new Date();
 today.setHours(0, 0, 0, 0);
 
 function filterArrivals(rez: Reservation[]) {
