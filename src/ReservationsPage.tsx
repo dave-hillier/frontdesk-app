@@ -35,11 +35,11 @@ class ReservationPanel extends React.PureComponent<{ reservation: Reservation }>
           </div>
           <div className="md-tile-content md-cell md-cell--bottom" style={{ minWidth }}>
             <div className="md-tile-text--primary md-text">ETA</div>
-            <div className="md-tile-text--secondary md-text--secondary">00:00</div>
+            <div className="md-tile-text--secondary md-text--secondary">--:--</div>
           </div>
           <div className="md-tile-content md-cell md-cell--bottom" style={{ minWidth }}>
             <div className="md-tile-text--primary md-text">ETD</div>
-            <div className="md-tile-text--secondary md-text--secondary">00:00</div>
+            <div className="md-tile-text--secondary md-text--secondary">--:--</div>
           </div>
         </div >
         <ProfilePanel profile={r.contact} />

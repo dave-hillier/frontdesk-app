@@ -6,7 +6,9 @@ import {
   Avatar,
   SelectField,
   TextField,
-  Button
+  Button,
+  DropdownMenu,
+  AccessibleFakeButton
 } from 'react-md';
 import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
@@ -140,6 +142,21 @@ const ToolbarChildSearch = (props: { placeholder: string }) => {
     </div>);
 };
 
+const AccountMenu = () => {
+  return (
+    <DropdownMenu
+      id={`avatar-dropdown-menu`}
+      menuItems={['Preferences', 'About', { divider: true }, 'Log out']}
+      sameWidth={true}
+      simplifiedMenu={false}
+    >
+      <AccessibleFakeButton>
+        <Avatar suffix="pink">DH</Avatar>
+      </AccessibleFakeButton>
+    </DropdownMenu>);
+
+};
+
 class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number }> {
   constructor(props: {}) {
     super(props);
@@ -177,7 +194,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : ''}</div>}
               toolbarActions={<div className="toolbar-actions">
                 {isMobile ? <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} /> : null}
-                {!isMobile ? <Avatar key="av">DH</Avatar> : null}
+                {!isMobile ? <AccountMenu /> : null}
               </div>}
               navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
             >
