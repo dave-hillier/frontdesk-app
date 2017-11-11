@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Planner.css';
 import { getReservationsByRoom, getRooms } from './FakeReservations';
-import { Room } from './Model';
+import { Room, Reservation } from './Model';
 import { subtractDates, addDays } from './dateHelpers';
 import { ReservationDialog } from './ReservationDialog';
 import DateColumnHeaders from './DateColumnHeaders';
@@ -32,8 +32,10 @@ const EmptyCellBlock = (props: { days: number }): JSX.Element => {
       className="rez-empty-cell md-divider-border md-divider-border--right grid-cell"
     />);
 };
-
-export default class Planner extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { lookup: any, roomNames: string[] }> {
+export interface RoomLookup {
+  [room: string]: Reservation[];
+}
+export default class Planner extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { lookup: RoomLookup, roomNames: string[] }> {
   private dialog: ReservationDialog;
 
   constructor(props: any) {
@@ -43,7 +45,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
 
   componentWillMount() {
     // TODO: get hotel by prop?
-    getReservationsByRoom(this.props.hotelSiteCode).then((l: any) => this.setState({ lookup: l }));
+    getReservationsByRoom(this.props.hotelSiteCode).then((l: RoomLookup) => this.setState({ lookup: l }));
     getRooms(this.props.hotelSiteCode).then((r: Room[]) => this.setState({ roomNames: r.map(n => n.name) }));
   }
 
@@ -70,14 +72,19 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
 
     const rows = [];
 
+    // tslint:disable-next-line:no-console
+    console.log('Lookup', this.state.lookup);
+
     for (let i = 0; i < numberOfRooms; ++i) {
       let currentDate = today;
+      // tslint:disable-next-line:no-console
+      console.log('name', i, this.state.roomNames[i]);
       if (this.state.roomNames[i] in this.state.lookup) {
         const roomReservations = this.state.lookup[this.state.roomNames[i]];
         const rez: {}[] = [];
         for (let j = 0; j < roomReservations.length; ++j) {
-          const arrival = new Date(roomReservations[j].arrival);
-          const nights = roomReservations[j].nights;
+          const arrival = roomReservations[j].bookingLines[0].arrival;
+          const nights = roomReservations[j].bookingLines[0].nights;
           const departure = addDays(arrival, nights);
           const daysTillNext = subtractDates(arrival, currentDate);
           const daysTillDeparture = subtractDates(departure, currentDate);
@@ -105,7 +112,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
                 onClick={e => this.dialog.show(e, roomReservations[j])}
                 className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-cell rez-cell"
               >
-                {roomReservations[j].profile.lastName}
+                {roomReservations[j].contact.lastName}
               </div>);
             currentDate = departure;
           }

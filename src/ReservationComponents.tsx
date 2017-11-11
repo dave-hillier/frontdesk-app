@@ -86,7 +86,7 @@ export const BottomLine = (props: { balance: number, adults: number, children: n
 
 export const ResidentItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
-  const a = new Date(r.bookingLines[0].arrival);
+  const a = (r.bookingLines[0].arrival);
   const room = r.bookingLines[0].allocatedRoom;
 
   return (
@@ -96,7 +96,7 @@ export const ResidentItem = (props: { reservation: Reservation, onClick: (e: any
         <ResidentsTopLine
           name={`${r.contact.firstName} ${r.contact.lastName}`}
           arrival={a}
-          departure={new Date(addDays(a, r.bookingLines[0].nights))}
+          departure={addDays(a, r.bookingLines[0].nights)}
         />)}
       secondaryText={(
         <div>

@@ -184,13 +184,13 @@ export async function getReservations(hotelSite: string): Promise<Reservation[]>
 
 export async function getReservationsByRoom(hotelSite: string) {
   const rez = await getReservations(hotelSite);
-  const roomNameToResPairs: any[] = rez.filter(r => r.bookingLines[0].allocatedRoom).map(r => {
+  const roomNameToResPairs: { room: string, rez: Reservation }[] = rez.filter(r => r.bookingLines[0].allocatedRoom).map(r => {
     const room = r.bookingLines[0].allocatedRoom;
     const name = room ? room.name : '';
     return { room: name, rez: r };
   });
 
-  let lookup: any = {};
+  let lookup: { [room: string]: Reservation[] } = {};
   for (let i = 0; i < roomNameToResPairs.length; ++i) {
     if (roomNameToResPairs[i].room in lookup) {
       lookup[roomNameToResPairs[i].room].push(roomNameToResPairs[i].rez);
@@ -201,8 +201,8 @@ export async function getReservationsByRoom(hotelSite: string) {
 
   for (let key in lookup) {
     if (lookup.hasOwnProperty(key)) {
-      lookup[key].sort((a: any, b: any) => {
-        return new Date(a.arrival).getTime() - new Date(b.arrival).getTime();
+      lookup[key].sort((a: Reservation, b: Reservation) => {
+        return a.bookingLines[0].arrival.getTime() - b.bookingLines[0].arrival.getTime();
       });
     }
   }

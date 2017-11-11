@@ -17,7 +17,7 @@ today.setHours(0, 0, 0, 0);
 
 function filterArrivals(rez: Reservation[]) {
   return rez.filter(res => {
-    const d = new Date(res.bookingLines[0].arrival);
+    const d = res.bookingLines[0].arrival;
     d.setHours(0, 0, 0, 0);
     return d.getTime() === today.getTime();
   });
@@ -25,9 +25,9 @@ function filterArrivals(rez: Reservation[]) {
 
 function filterDepartures(rez: Reservation[]) {
   return rez.filter(res => {
-    const a = new Date(res.bookingLines[0].arrival);
+    const a = res.bookingLines[0].arrival;
     a.setHours(0, 0, 0, 0);
-    const d = addDays(new Date(a), res.bookingLines[0].nights);
+    const d = addDays(a, res.bookingLines[0].nights);
 
     return d.getTime() === today.getTime();
   });
@@ -35,9 +35,9 @@ function filterDepartures(rez: Reservation[]) {
 
 function filterResidents(rez: Reservation[]) {
   return rez.filter(res => {
-    const a = new Date(res.bookingLines[0].arrival);
+    const a = res.bookingLines[0].arrival;
     a.setHours(0, 0, 0, 0);
-    const d = addDays(new Date(a), res.bookingLines[0].nights);
+    const d = addDays(a, res.bookingLines[0].nights);
 
     return d.getTime() > today.getTime() &&
       a.getTime() < today.getTime();
