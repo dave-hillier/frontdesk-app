@@ -147,9 +147,8 @@ export class ReservationsPage1 extends React.PureComponent<
         <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
         <Paper zindex={1} style={{ margin: '20px' }}>
           <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom sticky-top">
-
-            <div className="col-guest">Guest</div>
             <div className="col-contact">Contact</div>
+            <div className="col-guest">Lead Guest</div>
             <div className="col-arrival">Arrival</div>
             <div className="col-nights">Nights</div>
             <div className="col-departure">Departure</div>

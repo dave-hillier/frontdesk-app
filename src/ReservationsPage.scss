@@ -64,12 +64,12 @@ $screen-small: 768px;
   }
 }
 
-.col-guest {
+.col-contact {
   grid-column: span 4;
   @include text-elipsis;
 }
 
-.col-contact, 
+.col-guest, 
 .col-arrival, 
 .col-nights, 
 .col-departure,
@@ -89,7 +89,7 @@ $screen-small: 768px;
 }
 
 @media screen and (min-width: 520px) {
-  .col-contact {
+  .col-guest {
     display: block;
     grid-column: span 4;
     @include text-elipsis;
