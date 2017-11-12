@@ -118,7 +118,7 @@ export class ProfilesPage extends React.PureComponent<{
       <PageLayout
         {...this.props}
         title="Profile"
-        getItems={getProfiles}
+        getItems={() => getProfiles().then(pl => pl.sort((a: GuestProfile, b: GuestProfile) => a.lastName.localeCompare(b.lastName)))}
         renderItem={this.renderItem}
         renderSelectedItem={this.renderSelectedItem}
         dialogId="profile-dialog"
