@@ -9,7 +9,7 @@ import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 import Guests from './Guests';
-import Allocations from './Allocations';
+import Availability from './Availability';
 import Planner from './Planner';
 import SearchBox from './SearchBox';
 import LaunchScreen from './LaunchScreen';
@@ -195,7 +195,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                   component={() => <Guests isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
                 />
                 <Route path="/planner" location={location} component={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
-                <Route path="/availability" location={location} component={() => (<Allocations isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)} />
+                <Route path="/availability" location={location} component={() => (<Availability isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)} />
                 <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
                 <Route path="/rooms" location={location} component={() => <RoomsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
                 <Route path="/profiles" location={location} component={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />

@@ -206,9 +206,6 @@ export async function getAllocations(hotelSite: string, from: Date, until: Date)
     }
   }
 
-  // tslint:disable-next-line:no-console
-  console.log('allocation', result);
-
   return result;
 }
 

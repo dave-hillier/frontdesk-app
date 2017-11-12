@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './Allocations.css';
+import './Availability.css';
 
 import { getRoomTypes, getAllocations } from './FakeReservations';
 import DateColumnHeaders from './DateColumnHeaders';
@@ -25,7 +25,7 @@ const RowHeaders = (props: { roomTypesList: string[] }) => {
   return <div className="grid-row-headers">{...rows}</div>;
 };
 
-export default class Allocations extends React.Component<{ isMobile: boolean, hotelSiteCode: string },
+export default class Availability extends React.Component<{ isMobile: boolean, hotelSiteCode: string },
   { roomTypesList: string[], allocations: any }> {
   constructor(props: any) {
     super(props);
