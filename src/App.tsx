@@ -3,10 +3,7 @@ import {
   NavigationDrawer,
   FontIcon,
   ListItem,
-  Avatar,
   SelectField,
-  DropdownMenu,
-  AccessibleFakeButton
 } from 'react-md';
 import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
@@ -20,6 +17,7 @@ import RoomsPage from './RoomsPage';
 import ReservationsPage from './ReservationsPage';
 import ProfilesPage from './ProfilesPage';
 import ToolbarSearchBox from './ToolbarSearchBox';
+import AccountMenu from './AccountMenu';
 
 const logo = require('./logo.svg');
 export const MobileMinWidth = 320;
@@ -121,26 +119,6 @@ const titles = {
   '/reservations': 'Reservations',
   '/rooms': 'Rooms',
   '/profiles': 'Profiles'
-};
-
-const AccountMenu = () => {
-  const anchors = {
-    x: DropdownMenu.HorizontalAnchors.INNER_RIGHT,
-    y: DropdownMenu.VerticalAnchors.BOTTOM,
-  };
-  return (
-    <DropdownMenu
-      id={`avatar-dropdown-menu`}
-      menuItems={['Preferences', 'About', { divider: true }, 'Log out']}
-      sameWidth={true}
-      simplifiedMenu={false}
-      anchor={anchors}
-    >
-      <AccessibleFakeButton>
-        <Avatar suffix="pink">DH</Avatar>
-      </AccessibleFakeButton>
-    </DropdownMenu >);
-
 };
 
 class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number }> {
