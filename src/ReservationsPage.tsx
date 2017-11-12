@@ -2,11 +2,10 @@ import * as React from 'react';
 
 import { getReservations } from './FakeReservations';
 import { Reservation } from './Model';
-import { ResidentItem } from './ReservationComponents';
+import { ResidentItem, ReservationPanel } from './ReservationComponents';
 import { SelectItemLayout } from './SelectedItemLayout';
 import { ReservationDialog } from './ReservationDialog';
 import { ReservationsTable } from './ReservationsTable';
-import { ReservationPanel } from './RoomComponents';
 
 import './ReservationsPage.css';
 
