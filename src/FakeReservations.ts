@@ -1,5 +1,5 @@
 
-import { addDays } from './dateHelpers';
+import { addDays, subtractDates } from './dateHelpers';
 import { Chance } from 'chance';
 import { Room, Reservation, GuestProfile, BookingLine } from './Model';
 
@@ -180,6 +180,64 @@ export async function getReservations(hotelSite: string): Promise<Reservation[]>
   return new Promise<Reservation[]>((resolve, reject) => {
     setTimeout(function () { resolve(inner()); }, 100);
   });
+}
+
+export async function getAllocations(hotelSite: string, from: Date, until: Date): Promise<any> {
+  const reservations = await getReservations(hotelSite);
+  const result = {};
+
+  let days = subtractDates(until, from);
+  for (let type of roomTypesList) {
+    result[type] = new Array(days).fill(0);
+  }
+
+  for (let reservation of reservations) {
+    const arrival = reservation.bookingLines[0].arrival;
+    const nights = reservation.bookingLines[0].nights;
+    const departure = addDays(arrival, nights);
+
+    const daysTillNext = subtractDates(arrival, from);
+    const daysTillDeparture = subtractDates(departure, from);
+
+    const type = reservation.bookingLines[0].roomType;
+    const roomLevels = result[type];
+    for (let i = 0; i < days; ++i) {
+      roomLevels[i] = roomLevels[i] + (i >= daysTillNext && i < daysTillDeparture ? 1 : 0);
+    }
+  }
+
+  // tslint:disable-next-line:no-console
+  console.log('allocation', result);
+
+  return result;
+}
+
+// TODO: grouping function
+export async function getReservationsByRoomType(hotelSite: string) {
+  const rez = await getReservations(hotelSite);
+  const roomTypeToResPairs: { roomType: string, rez: Reservation }[] = rez.filter(r => r.bookingLines[0].allocatedRoom).map(r => {
+    const roomType = r.bookingLines[0].roomType;
+    return { roomType, rez: r };
+  });
+
+  let lookup: { [room: string]: Reservation[] } = {};
+  for (let i = 0; i < roomTypeToResPairs.length; ++i) {
+    if (roomTypeToResPairs[i].roomType in lookup) {
+      lookup[roomTypeToResPairs[i].roomType].push(roomTypeToResPairs[i].rez);
+    } else {
+      lookup[roomTypeToResPairs[i].roomType] = [roomTypeToResPairs[i].rez];
+    }
+  }
+
+  for (let key in lookup) {
+    if (lookup.hasOwnProperty(key)) {
+      lookup[key].sort((a: Reservation, b: Reservation) => {
+        return a.bookingLines[0].arrival.getTime() - b.bookingLines[0].arrival.getTime();
+      });
+    }
+  }
+
+  return lookup;
 }
 
 export async function getReservationsByRoom(hotelSite: string) {

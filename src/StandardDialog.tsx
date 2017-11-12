@@ -27,7 +27,7 @@ export class StandardDialog extends React.Component<{ id: string, title: any, is
 
   render() {
     const { visible, pageX, pageY } = this.state;
-    const width = this.props.isDesktop ? 1024 : (!this.props.isMobile ? 800 : undefined); // min tablet 768
+    const width = this.props.isDesktop ? 1024 : (!this.props.isMobile ? 860 : undefined); // min tablet 768
     const height = this.props.isDesktop ? 768 : (!this.props.isMobile ? 600 : undefined);
     return (
       <div>

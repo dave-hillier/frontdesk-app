@@ -48,10 +48,8 @@ function filterResidents(rez: Reservation[]) {
 // TODO: animate change screen?
 // TODO: warning for no allocation, room state
 // TODO: billing warning for departure red/green?
-// TODO: ETA/ETD need to be added to data
 // TODO: using routes for mobile subsections
 // TODO: react-transition-group betweeen tabs
-
 const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
   const room = r.bookingLines[0].allocatedRoom;
