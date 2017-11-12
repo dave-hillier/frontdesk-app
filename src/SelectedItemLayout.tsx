@@ -45,7 +45,7 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
   render() {
     if (this.state.isLoading) {
       return (
-        <div style={{ marginTop: '75px' }} className="md-toolbar-relative">
+        <div className="toolbar-margin">
           {this.props.isMobile ?
             <CircularProgress id="loading-progress" /> :
             <LinearProgress id="loading-progress" />}

@@ -140,3 +140,23 @@ i.medium-icon {
   z-index: 15;
 }
 
+
+$screen-small: 768px;
+@media screen and (max-width: $screen-small) and (orientation: landscape) {
+  .toolbar-margin {
+    margin-top: 48px; 
+  }
+}
+
+$screen-small: 768px;
+@media screen and (max-width: $screen-small) and (orientation: portrait) {
+  .toolbar-margin {
+    margin-top: 56px; 
+  }
+}
+
+@media screen and (min-width: $screen-small) {
+  .toolbar-margin  {
+    margin-top: 64px; 
+  }
+}
