@@ -1,8 +1,8 @@
 import * as React from 'react';
 import './Allocations.css';
-import { addDays } from './dateHelpers';
 
-import DateHeader from './DateHeader';
+import { addDays } from './dateHelpers';
+import { DateHeader } from './DateHeader';
 
 const DateColumnHeaders = (props: { start: Date, days: number }): JSX.Element => {
   const cols: {}[] = [];

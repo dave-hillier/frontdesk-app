@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {
-  ListItem
-} from 'react-md';
+import { ListItem } from 'react-md';
+
 import { Room, Reservation } from './Model';
 import { ProfilePanel } from './ProfileComponents';
 

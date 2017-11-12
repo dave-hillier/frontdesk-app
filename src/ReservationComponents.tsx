@@ -1,6 +1,8 @@
 import * as React from 'react';
-import Tooltip from './Tooltip';
+
 import { ListItem } from 'react-md';
+
+import { Tooltip } from './Tooltip';
 import { addDays } from './dateHelpers';
 import { Reservation } from './Model';
 

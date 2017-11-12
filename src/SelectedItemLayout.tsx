@@ -8,6 +8,7 @@ import {
   Button,
   Card
 } from 'react-md';
+
 import { StandardDialog } from './StandardDialog';
 
 export interface SelectItemLayoutProps<Item> {

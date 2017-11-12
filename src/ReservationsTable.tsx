@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { Button, Paper } from 'react-md';
+
 import { Reservation } from './Model';
+import { addDays } from './dateHelpers';
+import { ReservationDialog } from './ReservationDialog';
 
 import './ReservationsPage.css';
-import { addDays } from './dateHelpers';
-import { Button, Paper } from 'react-md';
-import { ReservationDialog } from './ReservationDialog';
 
 const Row = (props: { reservation: Reservation, onClick: (e: any) => void }) => {
   // TODO: booking reference first?

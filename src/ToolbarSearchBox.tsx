@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, TextField } from 'react-md';
+
 import './ToolbarSearchBox.css';
 
 const ToolbarSearchBox = (props: { placeholder: string }) => {

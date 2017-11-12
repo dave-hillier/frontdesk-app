@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {
-  FontIcon, Button
-} from 'react-md';
+import { FontIcon, Button } from 'react-md';
 
 import { Reservation } from './Model';
 import { StandardDialog } from './StandardDialog';

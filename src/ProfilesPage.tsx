@@ -3,7 +3,6 @@ import * as React from 'react';
 import { getProfiles } from './FakeReservations';
 import { GuestProfile } from './Model';
 import { SelectItemLayout } from './SelectedItemLayout';
-
 import { ProfileListItem, ProfilePanel } from './ProfileComponents';
 
 class PageLayout extends SelectItemLayout<GuestProfile> { }

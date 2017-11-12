@@ -4,12 +4,11 @@ import { getReservations } from './FakeReservations';
 import { Reservation } from './Model';
 import { ResidentItem } from './ReservationComponents';
 import { SelectItemLayout } from './SelectedItemLayout';
-
-import './ReservationsPage.css';
-
 import { ReservationDialog } from './ReservationDialog';
 import { ReservationsTable } from './ReservationsTable';
 import { ReservationPanel } from './RoomComponents';
+
+import './ReservationsPage.css';
 
 class PageLayout extends SelectItemLayout<Reservation> { }
 

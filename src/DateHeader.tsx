@@ -2,7 +2,7 @@ import * as React from 'react';
 
 const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-const DateHeader = (props: { date: Date }) => {
+export const DateHeader = (props: { date: Date }) => {
   const dayOfWeek = props.date.getDay();
   const dayOfMonth = props.date.getDate();
   return (
@@ -14,5 +14,3 @@ const DateHeader = (props: { date: Date }) => {
     </div>
   );
 };
-
-export default DateHeader;
