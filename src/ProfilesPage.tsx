@@ -12,10 +12,6 @@ export class ProfilesPage extends React.PureComponent<{
   hotelSiteCode: string
 }> {
 
-  renderSelectedItem(item: GuestProfile): JSX.Element {
-    return <ProfilePanel profile={item} />;
-  }
-
   render() {
     return (
       <PageLayout
@@ -23,7 +19,7 @@ export class ProfilesPage extends React.PureComponent<{
         title="Profile"
         getItems={() => getProfiles().then(pl => pl.sort((a: GuestProfile, b: GuestProfile) => a.lastName.localeCompare(b.lastName)))}
         renderItem={(item: GuestProfile, onClick: (x: any) => void) => <ProfileListItem item={item} onClick={onClick} />}
-        renderSelectedItem={this.renderSelectedItem}
+        renderSelectedItem={(item: GuestProfile) => <ProfilePanel profile={item} />}
         dialogId="profile-dialog"
       />);
   }
