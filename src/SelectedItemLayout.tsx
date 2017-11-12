@@ -26,6 +26,11 @@ export interface SelectItemLayoutState<Item> {
   selected?: Item;
 }
 
+const LoadingProgress = (props: { isMobile: boolean }) => (
+  <div className="toolbar-margin">
+    {props.isMobile ? <CircularProgress id="loading-progress" /> : <LinearProgress id="loading-progress" />}
+  </div>);
+
 export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProps<Item>, SelectItemLayoutState<Item>> {
   dialog: StandardDialog | null;
 
@@ -44,40 +49,37 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
 
   render() {
     if (this.state.isLoading) {
-      return (
-        <div className="toolbar-margin">
-          {this.props.isMobile ?
-            <CircularProgress id="loading-progress" /> :
-            <LinearProgress id="loading-progress" />}
-        </div>);
+      return <LoadingProgress isMobile={this.props.isMobile} />;
     }
 
-    const list = (
+    const selectedItemsList = (
       <List className="md-paper md-paper--1">
-        {this.state.items.map(r => this.props.renderItem(r, (e: any) => {
-          this.setState({ selected: r });
+        {this.state.items.map(reservation => this.props.renderItem(reservation, (e: any) => {
+          this.setState({ selected: reservation });
           if (this.dialog) {
             this.dialog.show(e);
           }
         }))}
-      </List>
-    );
+      </List>);
+
+    const selected = this.state.selected && this.props.renderSelectedItem(this.state.selected);
+
     // TODO: does md-toolbar-relative work??
-    const selectedPanel = this.state.selected && (
+    const selectedPreview = this.state.selected && (
       <Cell size={8}>
         <Card className="md-paper md-paper--1 sticky-top md-list" style={{ padding: '8px' }}>
-          {this.props.renderSelectedItem(this.state.selected)}
+          {selected}
         </Card>
       </Cell>);
 
-    const mobileLayout = (
+    const mobilePreview = (
       <StandardDialog
         title={this.props.title}
         id={this.props.dialogId}
         {...this.props}
         ref={self => this.dialog = self}
       >
-        {this.state.selected && this.props.renderSelectedItem(this.state.selected)}
+        {selected}
       </StandardDialog>
     );
 
@@ -86,7 +88,7 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
         <div className="fab">
           <Button floating={true} secondary={true} primary={true}>add</Button>
         </div>
-        {!this.props.isMobile ? <Grid><Cell>{list}</Cell>{selectedPanel}</Grid> : <div>{mobileLayout}{list}</div>}
+        {!this.props.isMobile ? <Grid><Cell>{selectedItemsList}</Cell>{selectedPreview}</Grid> : <div>{mobilePreview}{selectedItemsList}</div>}
       </div>);
   }
 }
