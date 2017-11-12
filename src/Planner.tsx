@@ -53,9 +53,11 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
     const rowStyle = {
       height: gridSize + 'px',
     };
+    const position: 'sticky' = 'sticky';
     const rowHeaderStyle = {
       ...rowStyle,
-      width: 2 * gridSize + 'px'
+      width: 2 * gridSize + 'px',
+      position
     };
     const numberOfRooms = this.state.roomNames.length;
     const rowHeaders = [];

@@ -58,7 +58,6 @@ class DrawerHeader extends React.Component<{ hotelSiteIndex: number, onChange: (
           onChange={this.props.onChange}
         />
       </div>
-
     );
   }
 }
@@ -125,17 +124,22 @@ const titles = {
 };
 
 const AccountMenu = () => {
+  const anchors = {
+    x: DropdownMenu.HorizontalAnchors.INNER_RIGHT,
+    y: DropdownMenu.VerticalAnchors.BOTTOM,
+  };
   return (
     <DropdownMenu
       id={`avatar-dropdown-menu`}
       menuItems={['Preferences', 'About', { divider: true }, 'Log out']}
       sameWidth={true}
       simplifiedMenu={false}
+      anchor={anchors}
     >
       <AccessibleFakeButton>
         <Avatar suffix="pink">DH</Avatar>
       </AccessibleFakeButton>
-    </DropdownMenu>);
+    </DropdownMenu >);
 
 };
 
