@@ -3,19 +3,19 @@ import { Button, TextField } from 'react-md';
 
 import './ToolbarSearchBox.css';
 
-const ToolbarSearchBox = (props: { placeholder: string }) => {
+const ToolbarSearchBox = (props: any) => {
   return (
     <div className="toolbar-search-box-container">
       <div className="toolbar-search-box-inner" >
         <Button icon={true} style={{ opacity: 0.8, alignSelf: 'center' }}>search</Button>
         <TextField
           id="search-box"
-          placeholder={props.placeholder}
+          {...props}
           block={true}
           style={{ alignSelf: 'center' }}
           inputStyle={{ fontSize: '16px' }}
         />
-        <Button icon={true} style={{ opacity: 0.8, alignSelf: 'center' }}>cancel</Button>
+        {props.showClear && <Button icon={true} style={{ opacity: 0.8, alignSelf: 'center' }} onClick={props.clear}>cancel</Button>}
       </div>
     </div>);
 };

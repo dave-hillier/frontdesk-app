@@ -121,6 +121,30 @@ const titles = {
   '/profiles': 'Profiles'
 };
 
+class ToolbarStateful extends React.Component<{ location: any }, { filter: string }> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      filter: ''
+    };
+  }
+
+  render() {
+    const searchTitle = `Search ${titles[this.props.location.pathname] ? titles[this.props.location.pathname].toLowerCase() : ''}`;
+    return (
+      <ToolbarSearchBox
+        placeholder={searchTitle}
+        onChange={(v: string, e: any) => this.setState({ filter: v })}
+        showClear={this.state.filter.length > 0}
+        value={this.state.filter}
+        clear={() => this.setState({ filter: '' })}
+      />
+    );
+  }
+
+  // TODO: give a callback
+}
+
 class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number }> {
   constructor(props: {}) {
     super(props);
@@ -138,6 +162,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
   }
 
   render() {
+
     return (
       <div>
         <LaunchScreen show={!this.state.loaded} />
@@ -154,7 +179,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                     console.log('updating site', i);
                   }}
                 />)}
-              toolbarChildren={!isMobile ? <ToolbarSearchBox placeholder={`Search ${titles[location.pathname] ? titles[location.pathname].toLowerCase() : ''}`} /> : null}
+              toolbarChildren={!isMobile ? <ToolbarStateful location={location} /> : null}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : ''}</div>}
               toolbarActions={<div className="toolbar-actions">
                 {isMobile ? <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} /> : null}

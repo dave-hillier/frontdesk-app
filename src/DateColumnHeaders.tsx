@@ -13,9 +13,7 @@ const DateColumnHeaders = (props: { start: Date, days: number }): JSX.Element =>
     );
   }
   return (
-    <div
-      className="md-divider-border md-divider-border--bottom grid-row"
-    >
+    <div className="md-divider-border md-divider-border--bottom grid-row">
       {...cols}
     </div>);
 };
