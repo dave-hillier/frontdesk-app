@@ -1,14 +1,11 @@
 import * as React from 'react';
 
 import { getProfiles } from './FakeReservations';
-import { GuestProfile, Address } from './Model';
+import { GuestProfile } from './Model';
 import { SelectItemLayout } from './SelectedItemLayout';
-import { ListItem, TextField, FontIcon } from 'react-md';
-
-function formatAddress(address: Address): string {
-  const parts = [address.building, address.streetAddress, address.postalTown, address.postCode, address.countryRegion];
-  return parts.filter(p => p.length > 0).join(', ');
-}
+import { TextField, FontIcon } from 'react-md';
+import ProfileListItem from './ProfileListItem';
+import { formatAddress } from './ProfileComponents';
 
 export class ProfilePanel extends React.PureComponent<{ profile: GuestProfile }, {}> {
 
@@ -96,19 +93,6 @@ export class ProfilesPage extends React.PureComponent<{
   hotelSiteCode: string
 }> {
 
-  renderItem(item: GuestProfile, onClick: (x: any) => void): JSX.Element {
-
-    return (
-      <ListItem
-        key={`${item.firstName} ${item.lastName} ${item.created}`}
-        className="md-divider-border md-divider-border--bottom"
-        primaryText={`${item.firstName} ${item.lastName}`}
-        secondaryText={`${formatAddress(item.address)}\n${item.email}`}
-        threeLines={true}
-        onClick={onClick}
-      />);
-  }
-
   renderSelectedItem(item: GuestProfile): JSX.Element {
     return <ProfilePanel profile={item} />;
   }
@@ -119,7 +103,7 @@ export class ProfilesPage extends React.PureComponent<{
         {...this.props}
         title="Profile"
         getItems={() => getProfiles().then(pl => pl.sort((a: GuestProfile, b: GuestProfile) => a.lastName.localeCompare(b.lastName)))}
-        renderItem={this.renderItem}
+        renderItem={(item: GuestProfile, onClick: (x: any) => void) => <ProfileListItem item={item} onClick={onClick} />}
         renderSelectedItem={this.renderSelectedItem}
         dialogId="profile-dialog"
       />);
