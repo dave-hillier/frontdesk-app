@@ -4,8 +4,7 @@ import { getProfiles } from './FakeReservations';
 import { GuestProfile } from './Model';
 import { SelectItemLayout } from './SelectedItemLayout';
 import { TextField, FontIcon } from 'react-md';
-import ProfileListItem from './ProfileListItem';
-import { formatAddress } from './ProfileComponents';
+import { formatAddress, ProfileListItem } from './ProfileComponents';
 
 export class ProfilePanel extends React.PureComponent<{ profile: GuestProfile }, {}> {
 
