@@ -4,7 +4,7 @@ import { getReservations } from './FakeReservations';
 import { Reservation } from './Model';
 import { ResidentItem } from './ReservationComponents';
 import { SelectItemLayout } from './SelectedItemLayout';
-import { ProfilePanel } from './ProfilesPage';
+import { ProfilePanel } from './ProfileComponents';
 
 import './ReservationsPage.css';
 import { addDays } from './dateHelpers';
