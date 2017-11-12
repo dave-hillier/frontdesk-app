@@ -46,8 +46,7 @@ export const ProfileListItem = (props: { item: GuestProfile, onClick: any }) => 
   />
 );
 
-export class ProfilePanel extends React.PureComponent<{ profile: GuestProfile }, {}> {
-
+export class ProfilePanel extends React.PureComponent<{ profile: GuestProfile }> {
   render() {
     const p = this.props.profile;
     const minWidth = '150px';
