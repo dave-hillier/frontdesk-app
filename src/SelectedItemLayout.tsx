@@ -45,7 +45,7 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
   render() {
     if (this.state.isLoading) {
       return (
-        <div style={{ marginTop: '75px' }}>
+        <div style={{ marginTop: '75px' }} className="md-toolbar-relative">
           {this.props.isMobile ?
             <CircularProgress id="loading-progress" /> :
             <LinearProgress id="loading-progress" />}
@@ -62,7 +62,7 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
         }))}
       </List>
     );
-
+    // TODO: does md-toolbar-relative work??
     const selectedPanel = this.state.selected && (
       <Cell size={8}>
         <Card className="md-paper md-paper--1 sticky-top md-list" style={{ padding: '8px' }}>
