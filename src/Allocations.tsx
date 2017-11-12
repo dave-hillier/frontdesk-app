@@ -4,8 +4,8 @@ import './Allocations.css';
 import { getRoomTypes } from './FakeReservations';
 import DateColumnHeaders from './DateColumnHeaders';
 
-const now = new Date();
-const today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
 const RowHeaders = (props: { roomTypesList: string[] }) => {
   const rows: {}[] = [];

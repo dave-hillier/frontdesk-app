@@ -1,6 +1,5 @@
 $grid-size: 42px;
 
-
 .grid-row {
   height: $grid-size; // TODO: same height as toolbar -- or at least a multiple of 32 half size
   vertical-align: middle;
@@ -10,14 +9,10 @@ $grid-size: 42px;
 
 .grid-row:nth-child(odd) { 
   background-color:#f7f7f7; 
-  //background-size: $grid-size $grid-size;
-  //background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 
 .grid-row:nth-child(even)	{ 
   background-color:#fff; 
-  //background-size: $grid-size $grid-size;
-  //background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 
 .grid-cell {
