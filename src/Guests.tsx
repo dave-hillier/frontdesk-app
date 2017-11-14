@@ -117,21 +117,18 @@ interface Props {
   isMobile: boolean;
 }
 
-const Arrivals = (props: Props) => {
-  const { items, onClick, ...rest } = props;
-  const i = items.map(r => <ArrivalItem key={r.ref} reservation={r} onClick={(e) => props.onClick(e, r)} />);
+const Arrivals = ({ items, onClick, ...rest }: Props) => {
+  const i = items.map(r => <ArrivalItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
   return <GridSection primaryText={`Arrivals (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
 };
 
-const Residents = (props: Props) => {
-  const { items, onClick, ...rest } = props;
-  const i = items.map(r => <ResidentItem key={r.ref} reservation={r} onClick={(e) => props.onClick(e, r)} />);
+const Residents = ({ items, onClick, ...rest }: Props) => {
+  const i = items.map(r => <ResidentItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
   return <GridSection primaryText={`Residents (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
 };
 
-const Departures = (props: Props) => {
-  const { items, onClick, ...rest } = props;
-  const i = items.map(r => <DepartureItem key={r.ref} reservation={r} onClick={(e) => props.onClick(e, r)} />);
+const Departures = ({ items, onClick, ...rest }: Props) => {
+  const i = items.map(r => <DepartureItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
   return <GridSection primaryText={`Departures (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
 };
 
@@ -172,9 +169,28 @@ class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string 
   }
 
   render() {
-    const arrivals = <Arrivals items={this.state.arrivals} onClick={(e: any, r: Reservation) => this.dialog.show(e, r)} listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''} isMobile={this.props.isMobile} />;
-    const residents = <Residents items={this.state.residents} onClick={(e: any, r: Reservation) => this.dialog.show(e, r)} listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''} isMobile={this.props.isMobile} />;
-    const departures = <Departures items={this.state.departures} onClick={(e: any, r: Reservation) => this.dialog.show(e, r)} listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''} isMobile={this.props.isMobile} />;
+    const arrivals = (
+      <Arrivals
+        items={this.state.arrivals}
+        onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
+        listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
+        isMobile={this.props.isMobile}
+      />);
+
+    const residents = (
+      <Residents
+        items={this.state.residents}
+        onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
+        listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
+        isMobile={this.props.isMobile}
+      />);
+    const departures = (
+      <Departures
+        items={this.state.departures}
+        onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
+        listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
+        isMobile={this.props.isMobile}
+      />);
 
     if (!this.props.isMobile) {
       return (

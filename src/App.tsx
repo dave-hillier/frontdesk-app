@@ -121,7 +121,7 @@ const titles = {
   '/profiles': 'Profiles'
 };
 
-class ToolbarStateful extends React.Component<{ location: any }, { filter: string }> {
+class ToolbarStateful extends React.Component<{ location: any, onChange?: (filter: string) => void }, { filter: string }> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -134,15 +134,18 @@ class ToolbarStateful extends React.Component<{ location: any }, { filter: strin
     return (
       <ToolbarSearchBox
         placeholder={searchTitle}
-        onChange={(v: string, e: any) => this.setState({ filter: v })}
+        onChange={(value: string, e: any) => {
+          this.setState({ filter: value });
+          if (this.props.onChange) {
+            this.props.onChange(value);
+          }
+        }}
         showClear={this.state.filter.length > 0}
         value={this.state.filter}
         clear={() => this.setState({ filter: '' })}
       />
     );
   }
-
-  // TODO: give a callback
 }
 
 class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number }> {
