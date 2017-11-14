@@ -7,7 +7,8 @@ import {
 } from 'react-md';
 import { Link as RouterLink, Route, Switch } from 'react-router-dom';
 
-import './App.css';
+import * as Rx from 'rx-lite';
+
 import Guests from './Guests';
 import Availability from './Availability';
 import Planner from './Planner';
@@ -18,6 +19,8 @@ import ReservationsPage from './ReservationsPage';
 import ProfilesPage from './ProfilesPage';
 import ToolbarSearchBox from './ToolbarSearchBox';
 import AccountMenu from './AccountMenu';
+
+import './App.css';
 
 const logo = require('./logo.svg');
 export const MobileMinWidth = 320;
@@ -165,6 +168,11 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
   }
 
   render() {
+    const filterSubject = new Rx.Subject<string>();
+    const debounced = filterSubject.debounce(300).publish().refCount();
+
+    // tslint:disable-next-line:no-console
+    debounced.subscribe((v) => console.log('on search', v));
 
     return (
       <div>
@@ -182,7 +190,11 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                     console.log('updating site', i);
                   }}
                 />)}
-              toolbarChildren={!isMobile ? <ToolbarStateful location={location} /> : null}
+              toolbarChildren={!isMobile ?
+                <ToolbarStateful
+                  location={location}
+                  onChange={s => filterSubject.onNext(s)}
+                /> : null}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : ''}</div>}
               toolbarActions={<div className="toolbar-actions">
                 {isMobile ? <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} /> : null}
@@ -195,7 +207,12 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                   exact={true}
                   path="/"
                   location={location}
-                  component={() => <Guests isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                  render={() => (
+                    <Guests
+                      isMobile={isMobile}
+                      hotelSiteCode={this.state.hotelSiteIndex.toString()}
+                      search={debounced}
+                    />)}
                 />
                 <Route path="/planner" location={location} component={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
                 <Route path="/availability" location={location} component={() => (<Availability isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)} />

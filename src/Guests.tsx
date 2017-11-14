@@ -49,7 +49,6 @@ function filterResidents(rez: Reservation[]) {
 // TODO: warning for no allocation, room state
 // TODO: billing warning for departure red/green?
 // TODO: using routes for mobile subsections
-// TODO: react-transition-group betweeen tabs
 const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
   const room = r.bookingLines[0].allocatedRoom;
@@ -115,10 +114,12 @@ interface Props {
   items: Reservation[];
   onClick: (e: any, r: Reservation) => void;
   isMobile: boolean;
+  filter: string;
 }
 
-const Arrivals = ({ items, onClick, ...rest }: Props) => {
-  const i = items.map(r => <ArrivalItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
+const Arrivals = ({ items, onClick, filter, ...rest }: Props) => {
+  const filtered = filter !== '' ? items.filter(r => r.contact.lastName.indexOf(filter) !== -1) : items;
+  const i = filtered.map(r => <ArrivalItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
   return <GridSection primaryText={`Arrivals (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
 };
 
@@ -143,7 +144,23 @@ const links = [{
   icon: <FontIcon>directions_walk</FontIcon>,
 }];
 
-class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { title: string, currentSection: number, arrivals: Reservation[], residents: Reservation[], departures: Reservation[] }> {
+export interface GuestsProps {
+  isMobile: boolean;
+  hotelSiteCode: string;
+  search: Rx.Observable<string>;
+}
+
+export interface GuestsState {
+  title: string;
+  filter: string;
+  currentSection: number;
+  arrivals: Reservation[];
+  residents: Reservation[];
+  departures: Reservation[];
+}
+
+class Guests extends React.Component<GuestsProps, GuestsState> {
+  subscription: any;
   dialog: ReservationDialog;
 
   constructor(props: any) {
@@ -154,11 +171,18 @@ class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string 
       currentSection: 0,
       arrivals: [],
       residents: [],
-      departures: []
+      departures: [],
+      filter: ''
     };
   }
 
   componentWillMount() {
+    this.subscription = this.props.search.subscribe(filter => {
+      // tslint:disable-next-line:no-console
+      console.log('Fitlering items ', filter);
+      this.setState({ filter });
+    });
+
     getReservations(this.props.hotelSiteCode).then(rez => {
       this.setState({
         arrivals: filterArrivals(rez),
@@ -168,6 +192,12 @@ class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string 
     });
   }
 
+  componentWillUnmount() {
+    // TODO: this is crashing!
+    // this.subscription.unsubscribe();
+
+  }
+
   render() {
     const arrivals = (
       <Arrivals
@@ -175,6 +205,7 @@ class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string 
         onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
         listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
         isMobile={this.props.isMobile}
+        filter={this.state.filter}
       />);
 
     const residents = (
@@ -183,6 +214,7 @@ class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string 
         onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
         listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
         isMobile={this.props.isMobile}
+        filter={this.state.filter}
       />);
     const departures = (
       <Departures
@@ -190,6 +222,7 @@ class Guests extends React.Component<{ isMobile: boolean, hotelSiteCode: string 
         onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
         listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
         isMobile={this.props.isMobile}
+        filter={this.state.filter}
       />);
 
     if (!this.props.isMobile) {
