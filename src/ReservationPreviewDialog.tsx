@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FontIcon, Button } from 'react-md';
+import { FontIcon, Button, Divider } from 'react-md';
 
 import { Reservation } from './Model';
 import { StandardDialog } from './StandardDialog';
@@ -70,7 +70,7 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
       </div>
       {bookingLine.allocatedRoom ? <Button flat={true}>Deallocate</Button> : <Button flat={true}>Allocate</Button>}
       <Button flat={true}>Room Billing</Button>
-      <hr />
+      <Divider />
       <div className="rd-grid">
         <div className="rd-row">
           <div className="rd-tile">Profile <Button icon={true}>edit</Button></div>
