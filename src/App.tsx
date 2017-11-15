@@ -152,7 +152,12 @@ class ToolbarStateful extends React.Component<
         }}
         showClear={this.state.filter.length > 0}
         value={this.state.filter}
-        clear={() => this.setState({ filter: '' })}
+        clear={() => {
+          this.setState({ filter: '' });
+          if (this.props.onChange) {
+            this.props.onChange('');
+          }
+        }}
       />
     );
   }
