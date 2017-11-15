@@ -171,9 +171,6 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
     const filterSubject = new Rx.Subject<string>();
     const debounced = filterSubject.debounce(300).publish().refCount();
 
-    // tslint:disable-next-line:no-console
-    debounced.subscribe((v) => console.log('on search', v));
-
     return (
       <div>
         <LaunchScreen show={!this.state.loaded} />
@@ -202,7 +199,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
               </div>}
               navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
             >
-              <Switch key={location.key}>
+              <Switch key={location.key} location={location}> // https://github.com/reactjs/react-transition-group/issues/79
                 <Route
                   exact={true}
                   path="/"
