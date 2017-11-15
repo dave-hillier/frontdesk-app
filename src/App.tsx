@@ -123,6 +123,8 @@ const titles = {
   '/rooms': 'Rooms',
   '/profiles': 'Profiles'
 };
+const filterSubject = new Rx.Subject<string>();
+const debounced = filterSubject.debounce(300).publish().refCount();
 
 class ToolbarStateful extends React.Component<{ location: any, onChange?: (filter: string) => void }, { filter: string }> {
   constructor(props: any) {
@@ -168,8 +170,6 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
   }
 
   render() {
-    const filterSubject = new Rx.Subject<string>();
-    const debounced = filterSubject.debounce(300).publish().refCount();
 
     return (
       <div>
