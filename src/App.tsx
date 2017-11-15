@@ -221,7 +221,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number,
                   exact={true}
                   path="/"
                   location={location}
-                  render={() => (
+                  component={() => (
                     <Guests
                       isMobile={isMobile}
                       hotelSiteCode={this.state.hotelSiteIndex.toString()}
@@ -231,17 +231,17 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number,
                 <Route
                   path="/planner"
                   location={location}
-                  render={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                  component={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
                 />
                 <Route
                   path="/availability"
                   location={location}
-                  render={() => (<Availability isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)}
+                  component={() => (<Availability isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)}
                 />
                 <Route
                   path="/reservations"
                   location={location}
-                  render={() => (
+                  component={() => (
                     <ReservationsPage
                       isMobile={isMobile}
                       hotelSiteCode={this.state.hotelSiteIndex.toString()}
@@ -251,12 +251,12 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number,
                 <Route
                   path="/rooms"
                   location={location}
-                  render={() => <RoomsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                  component={() => <RoomsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
                 />
                 <Route
                   path="/profiles"
                   location={location}
-                  render={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                  component={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
                 />
               </Switch>
             </NavigationDrawer>
