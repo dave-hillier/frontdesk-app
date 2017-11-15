@@ -117,6 +117,7 @@ class NavLink extends React.Component<{ to: string, exact?: boolean, icon: strin
 }
 
 const titles = {
+  '/': 'Guests',
   '/planner': 'Planner',
   '/allocations': 'Allocations',
   '/reservations': 'Reservations',
