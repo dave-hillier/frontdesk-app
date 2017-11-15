@@ -131,15 +131,15 @@ const fuseOptions = {
   minMatchCharLength: 1,
   keys: [
     'contact.firstName',
-    'contact.lastName'
+    'contact.lastName',
+    'ref',
+    'ledger.name'
   ]
 };
 
-const renderItemA = (r: Reservation, onClick: (e: any, r: Reservation) => void) => {
-  return <ArrivalItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />;
-};
-
-const wrapper = ({ title, items, onClick, filter, ...rest }: Props & TitleProp, renderItem = renderItemA) => {
+const filteredList = (
+  { title, items, onClick, filter, ...rest }: Props & TitleProp,
+  renderItem: (r: Reservation, onClick: (e: any, r: Reservation) => void) => void) => {
   const fuse = new Fuse(items, fuseOptions);
   const filtered: Reservation[] = filter ? fuse.search(filter) : items;
 
@@ -147,15 +147,15 @@ const wrapper = ({ title, items, onClick, filter, ...rest }: Props & TitleProp, 
   return <GridSection primaryText={`${title} (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
 };
 
-const Arrivals = (props: Props) => wrapper(
+const Arrivals = (props: Props) => filteredList(
   { ...props, title: 'Arrivals' },
   (r: Reservation, onClick: any) => <ArrivalItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
 
-const Residents = (props: Props) => wrapper(
+const Residents = (props: Props) => filteredList(
   { ...props, title: 'Residents' },
   (r: Reservation, onClick: any) => <ResidentItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
 
-const Departures = (props: Props) => wrapper(
+const Departures = (props: Props) => filteredList(
   { ...props, title: 'Departures' },
   (r: Reservation, onClick: any) => <DepartureItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
 
@@ -219,9 +219,7 @@ class Guests extends React.Component<GuestsProps, GuestsState> {
   }
 
   componentWillUnmount() {
-    // TODO: this is crashing!
-    // this.subscription.unsubscribe();
-
+    this.subscription.dispose();
   }
 
   render() {

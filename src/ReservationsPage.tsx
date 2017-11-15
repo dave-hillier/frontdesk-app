@@ -6,6 +6,7 @@ import { ResidentItem, ReservationPanel } from './ReservationComponents';
 import { SelectItemLayout } from './SelectedItemLayout';
 import { ReservationDialog } from './ReservationDialog';
 import { ReservationsTable } from './ReservationsTable';
+import * as Fuse from 'fuse.js';
 
 import './ReservationsPage.css';
 
@@ -30,10 +31,26 @@ export class ReservationsPage extends React.PureComponent<{
   }
 }
 
+const fuseOptions = {
+  shouldSort: true,
+  threshold: 0.2,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 1,
+  keys: [
+    'contact.firstName',
+    'contact.lastName',
+    'ref',
+    'ledger.name'
+  ]
+};
+
 export class ReservationsTablePage extends React.PureComponent<
   {
     isMobile: boolean,
-    hotelSiteCode: string
+    hotelSiteCode: string,
+    filter: string
   },
   {
     reservations: Reservation[],
@@ -65,7 +82,10 @@ export class ReservationsTablePage extends React.PureComponent<
     if (this.props.isMobile) {
       return <ReservationsPage {...this.props} />;
     }
-    return <ReservationsTable reservations={this.state.reservations} />;
+
+    const fuse = new Fuse(this.state.reservations, fuseOptions);
+    const filtered: Reservation[] = this.props.filter !== '' ? fuse.search(this.props.filter) : this.state.reservations;
+    return <ReservationsTable reservations={filtered} />;
   }
 }
 

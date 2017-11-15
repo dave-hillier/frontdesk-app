@@ -158,12 +158,14 @@ class ToolbarStateful extends React.Component<
   }
 }
 
-class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number }> {
+class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number, filter: string }> {
+  subscription: Rx.IDisposable;
   constructor(props: {}) {
     super(props);
     this.state = {
       loaded: false,
-      hotelSiteIndex: 0
+      hotelSiteIndex: 0,
+      filter: ''
     };
   }
 
@@ -172,10 +174,15 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
       this.setState({ loaded: true });
       // tslint:disable-next-line:align
     }, 300); // TODO: replace with real load
+
+    this.subscription = debounced.subscribe(f => this.setState({ filter: f }));
+  }
+
+  componentWillUnmount() {
+    this.subscription.dispose();
   }
 
   render() {
-
     return (
       <div>
         <LaunchScreen show={!this.state.loaded} />
@@ -229,7 +236,12 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                 <Route
                   path="/reservations"
                   location={location}
-                  render={() => <ReservationsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                  render={() => (
+                    <ReservationsPage
+                      isMobile={isMobile}
+                      hotelSiteCode={this.state.hotelSiteIndex.toString()}
+                      filter={this.state.filter}
+                    />)}
                 />
                 <Route
                   path="/rooms"
