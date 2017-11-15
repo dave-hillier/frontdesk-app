@@ -124,7 +124,7 @@ interface TitleProp {
 
 const fuseOptions = {
   shouldSort: true,
-  threshold: 0.4,
+  threshold: 0.2,
   location: 0,
   distance: 100,
   maxPatternLength: 32,
