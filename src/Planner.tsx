@@ -3,7 +3,7 @@ import './Planner.css';
 import { getReservationsByRoom, getRooms } from './FakeReservations';
 import { Room, Reservation } from './Model';
 import { subtractDates, addDays } from './dateHelpers';
-import { ReservationDialog } from './ReservationDialog';
+import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 import DateColumnHeaders from './DateColumnHeaders';
 
 // TODO: break this up!
@@ -36,7 +36,7 @@ export interface RoomLookup {
   [room: string]: Reservation[];
 }
 export default class Planner extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { lookup: RoomLookup, roomNames: string[] }> {
-  private dialog: ReservationDialog;
+  private dialog: ReservationPreviewDialog;
 
   constructor(props: any) {
     super(props);
@@ -170,7 +170,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
     // TODO: fixup this grid vs the Allocations, extract a standard layout
     return (
       <div>
-        <ReservationDialog isMobile={this.props.isMobile} ref={(r: ReservationDialog) => this.dialog = r} />
+        <ReservationPreviewDialog isMobile={this.props.isMobile} ref={(r: ReservationPreviewDialog) => this.dialog = r} />
         <div style={c}>
           <div style={s1}>
             <div

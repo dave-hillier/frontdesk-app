@@ -3,7 +3,7 @@ import { Button, Paper } from 'react-md';
 
 import { Reservation } from './Model';
 import { addDays } from './dateHelpers';
-import { ReservationDialog } from './ReservationDialog';
+import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 
 import './ReservationsPage.css';
 
@@ -41,7 +41,7 @@ const Row = (props: { reservation: Reservation, onClick: (e: any) => void }) => 
 export class ReservationsTable extends React.PureComponent<{
   reservations: Reservation[]
 }, {}> {
-  private dialog: ReservationDialog;
+  private dialog: ReservationPreviewDialog;
 
   show(event: any, reservation: Reservation) {
     if (this.dialog) {
@@ -52,7 +52,7 @@ export class ReservationsTable extends React.PureComponent<{
   render() {
     return (
       <div>
-        <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={false} />
+        <ReservationPreviewDialog ref={(r: ReservationPreviewDialog) => this.dialog = r} isMobile={false} />
         <Paper zindex={1} style={{ margin: '20px' }}>
           <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom sticky-top">
             <div className="col-contact">Contact</div>

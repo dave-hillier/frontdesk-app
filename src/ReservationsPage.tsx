@@ -4,7 +4,7 @@ import { getReservations } from './FakeReservations';
 import { Reservation } from './Model';
 import { ResidentItem, ReservationPanel } from './ReservationComponents';
 import { SelectItemLayout } from './SelectedItemLayout';
-import { ReservationDialog } from './ReservationDialog';
+import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 import { ReservationsTable } from './ReservationsTable';
 import * as Fuse from 'fuse.js';
 
@@ -56,7 +56,7 @@ export class ReservationsTablePage extends React.PureComponent<
     reservations: Reservation[],
     isLoading: boolean
   }> {
-  private dialog: ReservationDialog;
+  private dialog: ReservationPreviewDialog;
 
   constructor(props: any) {
     super(props);

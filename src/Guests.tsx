@@ -6,7 +6,7 @@ import {
   BottomNavigation,
   FontIcon
 } from 'react-md';
-import { ReservationDialog } from './ReservationDialog';
+import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentItem } from './ReservationComponents';
 import { getReservations } from './FakeReservations';
 import { addDays } from './dateHelpers';
@@ -184,7 +184,7 @@ export interface GuestsState {
 
 class Guests extends React.PureComponent<GuestsProps, GuestsState> {
   subscription: any;
-  dialog: ReservationDialog;
+  dialog: ReservationPreviewDialog;
 
   constructor(props: any) {
     super(props);
@@ -238,7 +238,7 @@ class Guests extends React.PureComponent<GuestsProps, GuestsState> {
     if (!this.props.isMobile) {
       return (
         <div className="md-grid">
-          <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
+          <ReservationPreviewDialog ref={(r: ReservationPreviewDialog) => this.dialog = r} isMobile={this.props.isMobile} />
           {arrivals}
           {residents}
           {departures}
@@ -247,7 +247,7 @@ class Guests extends React.PureComponent<GuestsProps, GuestsState> {
       const sections = [arrivals, residents, departures];
       return (
         <div>
-          <ReservationDialog ref={(r: ReservationDialog) => this.dialog = r} isMobile={this.props.isMobile} />
+          <ReservationPreviewDialog ref={(r: ReservationPreviewDialog) => this.dialog = r} isMobile={this.props.isMobile} />
           {sections[this.state.currentSection]}
           <BottomNavigation
             links={links}

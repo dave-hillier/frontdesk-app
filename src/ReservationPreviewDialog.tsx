@@ -85,7 +85,7 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
 
 // TODO: ideally a dialog props
 // TODO: actions allocate/unallocate
-export class ReservationDialog extends React.Component<{ isMobile?: boolean, isDesktop?: boolean }, { reservation?: Reservation }> {
+export class ReservationPreviewDialog extends React.Component<{ isMobile?: boolean, isDesktop?: boolean }, { reservation?: Reservation }> {
   private dialog: StandardDialog | null;
 
   constructor(props: any) {
