@@ -11,11 +11,12 @@ import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentItem 
 import { getReservations } from './FakeReservations';
 import { addDays } from './dateHelpers';
 import { Reservation } from './Model';
+import * as Fuse from 'fuse.js';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-function filterArrivals(rez: Reservation[]) {
+function getArrivals(rez: Reservation[]) {
   return rez.filter(res => {
     const d = res.bookingLines[0].arrival;
     d.setHours(0, 0, 0, 0);
@@ -23,7 +24,7 @@ function filterArrivals(rez: Reservation[]) {
   });
 }
 
-function filterDepartures(rez: Reservation[]) {
+function getDepartures(rez: Reservation[]) {
   return rez.filter(res => {
     const a = res.bookingLines[0].arrival;
     a.setHours(0, 0, 0, 0);
@@ -33,7 +34,7 @@ function filterDepartures(rez: Reservation[]) {
   });
 }
 
-function filterResidents(rez: Reservation[]) {
+function getResidents(rez: Reservation[]) {
   return rez.filter(res => {
     const a = res.bookingLines[0].arrival;
     a.setHours(0, 0, 0, 0);
@@ -117,23 +118,46 @@ interface Props {
   filter: string;
 }
 
-const Arrivals = ({ items, onClick, filter, ...rest }: Props) => {
-  const filtered = filter !== '' ? items.filter(r => r.contact.lastName.indexOf(filter) !== -1) : items;
-  const i = filtered.map(r => <ArrivalItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
-  return <GridSection primaryText={`Arrivals (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
+interface TitleProp {
+  title: string;
+}
+
+const fuseOptions = {
+  shouldSort: true,
+  threshold: 0.4,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 1,
+  keys: [
+    'contact.firstName',
+    'contact.lastName'
+  ]
 };
 
-const Residents = ({ items, onClick, filter, ...rest }: Props) => {
-  const filtered = filter !== '' ? items.filter(r => r.contact.lastName.indexOf(filter) !== -1) : items;
-  const i = filtered.map(r => <ResidentItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
-  return <GridSection primaryText={`Residents (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
+const renderItemA = (r: Reservation, onClick: (e: any, r: Reservation) => void) => {
+  return <ArrivalItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />;
 };
 
-const Departures = ({ items, onClick, filter, ...rest }: Props) => {
-  const filtered = filter !== '' ? items.filter(r => r.contact.lastName.indexOf(filter) !== -1) : items;
-  const i = filtered.map(r => <DepartureItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
-  return <GridSection primaryText={`Departures (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
+const wrapper = ({ title, items, onClick, filter, ...rest }: Props & TitleProp, renderItem = renderItemA) => {
+  const fuse = new Fuse(items, fuseOptions);
+  const filtered: Reservation[] = filter ? fuse.search(filter) : items;
+
+  const i = filtered.map(r => renderItem(r, onClick));
+  return <GridSection primaryText={`${title} (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
 };
+
+const Arrivals = (props: Props) => wrapper(
+  { ...props, title: 'Arrivals' },
+  (r: Reservation, onClick: any) => <ArrivalItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
+
+const Residents = (props: Props) => wrapper(
+  { ...props, title: 'Residents' },
+  (r: Reservation, onClick: any) => <ResidentItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
+
+const Departures = (props: Props) => wrapper(
+  { ...props, title: 'Departures' },
+  (r: Reservation, onClick: any) => <DepartureItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
 
 const links = [{
   label: 'Arrivals',
@@ -187,9 +211,9 @@ class Guests extends React.Component<GuestsProps, GuestsState> {
 
     getReservations(this.props.hotelSiteCode).then(rez => {
       this.setState({
-        arrivals: filterArrivals(rez),
-        residents: filterResidents(rez),
-        departures: filterDepartures(rez)
+        arrivals: getArrivals(rez),
+        residents: getResidents(rez),
+        departures: getDepartures(rez)
       });
     });
   }
