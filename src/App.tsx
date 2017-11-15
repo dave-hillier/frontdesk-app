@@ -45,7 +45,8 @@ console.log('Mobile', isMobile, 'Tablet', tablet, 'desktop', desktop);
 
 const hotelSites = ['Hotel Site A', 'Hotel Site B', 'Hotel Site C'];
 
-class DrawerHeader extends React.Component<{ hotelSiteIndex: number, onChange: (value: string, index: number, event: any) => void }, {}> {
+class DrawerHeader extends React.Component<
+  { hotelSiteIndex: number, onChange: (value: string, index: number, event: any) => void }, {}> {
   render() {
     return (
       <div className="drawer-header">
@@ -127,7 +128,9 @@ const titles = {
 const filterSubject = new Rx.Subject<string>();
 const debounced = filterSubject.debounce(300).publish().refCount();
 
-class ToolbarStateful extends React.Component<{ location: any, onChange?: (filter: string) => void }, { filter: string }> {
+class ToolbarStateful extends React.Component<
+  { location: any, onChange?: (filter: string) => void },
+  { filter: string }> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -136,7 +139,8 @@ class ToolbarStateful extends React.Component<{ location: any, onChange?: (filte
   }
 
   render() {
-    const searchTitle = `Search ${titles[this.props.location.pathname] ? titles[this.props.location.pathname].toLowerCase() : ''}`;
+    const searchTitle = `Search ${titles[this.props.location.pathname] ?
+      titles[this.props.location.pathname].toLowerCase() : ''}`;
     return (
       <ToolbarSearchBox
         placeholder={searchTitle}
@@ -212,11 +216,31 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number 
                       search={debounced}
                     />)}
                 />
-                <Route path="/planner" location={location} component={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
-                <Route path="/availability" location={location} component={() => (<Availability isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)} />
-                <Route path="/reservations" location={location} component={() => <ReservationsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
-                <Route path="/rooms" location={location} component={() => <RoomsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
-                <Route path="/profiles" location={location} component={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />} />
+                <Route
+                  path="/planner"
+                  location={location}
+                  render={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                />
+                <Route
+                  path="/availability"
+                  location={location}
+                  render={() => (<Availability isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)}
+                />
+                <Route
+                  path="/reservations"
+                  location={location}
+                  render={() => <ReservationsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                />
+                <Route
+                  path="/rooms"
+                  location={location}
+                  render={() => <RoomsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                />
+                <Route
+                  path="/profiles"
+                  location={location}
+                  render={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                />
               </Switch>
             </NavigationDrawer>
           )}
