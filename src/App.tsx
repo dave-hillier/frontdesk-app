@@ -225,7 +225,7 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number,
                     <Guests
                       isMobile={isMobile}
                       hotelSiteCode={this.state.hotelSiteIndex.toString()}
-                      search={debounced}
+                      search={this.state.filter}
                     />)}
                 />
                 <Route

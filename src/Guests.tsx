@@ -45,8 +45,6 @@ function getResidents(rez: Reservation[]) {
   });
 }
 
-// TODO: swipe to navigate
-// TODO: animate change screen?
 // TODO: warning for no allocation, room state
 // TODO: billing warning for departure red/green?
 // TODO: using routes for mobile subsections
@@ -173,19 +171,18 @@ const links = [{
 export interface GuestsProps {
   isMobile: boolean;
   hotelSiteCode: string;
-  search: Rx.Observable<string>;
+  search: string;
 }
 
 export interface GuestsState {
   title: string;
-  filter: string;
   currentSection: number;
   arrivals: Reservation[];
   residents: Reservation[];
   departures: Reservation[];
 }
 
-class Guests extends React.Component<GuestsProps, GuestsState> {
+class Guests extends React.PureComponent<GuestsProps, GuestsState> {
   subscription: any;
   dialog: ReservationDialog;
 
@@ -197,18 +194,11 @@ class Guests extends React.Component<GuestsProps, GuestsState> {
       currentSection: 0,
       arrivals: [],
       residents: [],
-      departures: [],
-      filter: ''
+      departures: []
     };
   }
 
   componentWillMount() {
-    this.subscription = this.props.search.subscribe(filter => {
-      // tslint:disable-next-line:no-console
-      console.log('Fitlering items ', filter);
-      this.setState({ filter });
-    });
-
     getReservations(this.props.hotelSiteCode).then(rez => {
       this.setState({
         arrivals: getArrivals(rez),
@@ -218,10 +208,6 @@ class Guests extends React.Component<GuestsProps, GuestsState> {
     });
   }
 
-  componentWillUnmount() {
-    this.subscription.dispose();
-  }
-
   render() {
     const arrivals = (
       <Arrivals
@@ -229,7 +215,7 @@ class Guests extends React.Component<GuestsProps, GuestsState> {
         onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
         listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
         isMobile={this.props.isMobile}
-        filter={this.state.filter}
+        filter={this.props.search}
       />);
 
     const residents = (
@@ -238,7 +224,7 @@ class Guests extends React.Component<GuestsProps, GuestsState> {
         onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
         listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
         isMobile={this.props.isMobile}
-        filter={this.state.filter}
+        filter={this.props.search}
       />);
     const departures = (
       <Departures
@@ -246,7 +232,7 @@ class Guests extends React.Component<GuestsProps, GuestsState> {
         onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
         listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
         isMobile={this.props.isMobile}
-        filter={this.state.filter}
+        filter={this.props.search}
       />);
 
     if (!this.props.isMobile) {
