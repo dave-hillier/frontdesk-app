@@ -123,13 +123,15 @@ const Arrivals = ({ items, onClick, filter, ...rest }: Props) => {
   return <GridSection primaryText={`Arrivals (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
 };
 
-const Residents = ({ items, onClick, ...rest }: Props) => {
-  const i = items.map(r => <ResidentItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
+const Residents = ({ items, onClick, filter, ...rest }: Props) => {
+  const filtered = filter !== '' ? items.filter(r => r.contact.lastName.indexOf(filter) !== -1) : items;
+  const i = filtered.map(r => <ResidentItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
   return <GridSection primaryText={`Residents (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
 };
 
-const Departures = ({ items, onClick, ...rest }: Props) => {
-  const i = items.map(r => <DepartureItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
+const Departures = ({ items, onClick, filter, ...rest }: Props) => {
+  const filtered = filter !== '' ? items.filter(r => r.contact.lastName.indexOf(filter) !== -1) : items;
+  const i = filtered.map(r => <DepartureItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
   return <GridSection primaryText={`Departures (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
 };
 
