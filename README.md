@@ -2,6 +2,7 @@
 
 - [ ] Preview Dialog
 - [ ] Booking lines vs Reservations
+- [ ] Mobile reservation search results
 - [ ] Room search
 - [ ] Profile search 
 - [ ] Planner search
@@ -10,8 +11,15 @@
 - [ ] internationalisation, localisation
 - [ ] Try out https://jaysoo.ca/2014/03/20/i18n-with-es2015-template-literals/
 - [ ] Backend, updates
+- [ ] breakpoints for : 480, 600, 840, 960, 1280, 1440, and 1600dp. https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints
+- [ ] cleanup the scss 
+- [ ] rationalise the grid css
+- [ ] bottom sheet for more menu in mobile style 
+- [ ] a refresh thing hidden under the toolbar, springy scroll...
+- [ ] expand the search on mobile from the bottom
 
 Notes
+md-toolbar-relative 
 
 https://thenounproject.com
 - Components files should be saved for stateless components...

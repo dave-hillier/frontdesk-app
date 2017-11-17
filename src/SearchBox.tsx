@@ -2,26 +2,24 @@ import * as React from 'react';
 
 import {
   Button,
-  Autocomplete,
   Toolbar,
-  DialogContainer
+  DialogContainer,
+  TextField
 } from 'react-md';
 
 const ToolbarAutocomplete = (props: { placeholder: string }) => {
   return (
-    <Autocomplete
-      id="toolbar-search"
-      data={[]}
-      block={true}
-      dataLabel="label"
-      dataValue="value"
-      listClassName="toolbar-search__list"
-      className="md-background--card "
+    <TextField
+      id="search-box"
       {...props}
+      block={true}
+      style={{ alignSelf: 'center' }}
+      inputStyle={{ fontSize: '16px' }}
     />);
+
 };
 
-export class MobileSearchDialog extends React.Component<{ id: string, area: any, visible: boolean },
+export class MobileSearchDialog extends React.Component<{ id: string, area: any, visible: boolean, back: any },
   { search: string }> {
 
   constructor(props: any) {
@@ -76,15 +74,16 @@ export class MobileSearchDialog extends React.Component<{ id: string, area: any,
             title={<ToolbarAutocomplete placeholder={`Search ${this.props.area}`} />}
             titleId={`${this.props.id}-title`}
             actions={actions}
-            nav={<Button icon={true} onClick={e => e}>{icon}</Button>}
+            nav={<Button icon={true} onClick={e => this.props.back()}>{icon}</Button>}
             className="md-background--card md-text"
             value={(v: string) => this.search(v)}
             onFocus={() => this.startSearching()}
             onChange={(v: string) => this.handleChange(v)}
             onKeyDown={() => this.handleKeyDown}
           />
-          <section className="md-toolbar-relative">
+          <section className="md-toolbar-relative md-text">
             {this.props.children}
+            <div>test!!!</div><div>test!!!</div>
           </section>
         </DialogContainer>
       </div>
@@ -102,7 +101,14 @@ export default class SearchBox extends React.Component<{ data: any, mobile: bool
     return (
       <div>
         {!this.state.open ? <Button key="search" icon={true} onClick={() => this.setState({ open: true })}>search</Button> : null}
-        <MobileSearchDialog id="sss" area="xxx" visible={this.state.open} />
+        <MobileSearchDialog
+          id="sss"
+          area="xxx"
+          visible={this.state.open}
+          back={(e: any) => this.setState({ open: false })}
+        >
+          Hi
+        </MobileSearchDialog>
       </div>
     );
   }
