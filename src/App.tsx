@@ -89,6 +89,10 @@ const navItems = [{
   label: 'Profiles',
   to: '/profiles',
   icon: 'contacts',
+}, {
+  label: 'Rate Search',
+  to: '/rates',
+  icon: 'pie_chart',
 }];
 
 class NavLink extends React.Component<{ to: string, exact?: boolean, icon: string, label: string }, {}> {
@@ -163,7 +167,27 @@ class ToolbarStateful extends React.Component<
   }
 }
 
-class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number, filter: string }> {
+class RateSearch extends React.PureComponent<{ isMobile: boolean, hotelSiteCode: string }, {}> {
+  render() {
+    return (
+      <div>
+        <div
+          style={{
+            width: '100%',
+            background: '#007ac1',
+            color: 'white',
+            height: '112px'
+          }}
+          className="md-paper md-paper--2"
+        >
+          TODO: Grid..
+        </div>
+        <div style={{ height: '1000px' }}>TODO: body</div>
+      </div>);
+  }
+}
+
+class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: number, filter: string }> {
   subscription: Rx.IDisposable;
   constructor(props: {}) {
     super(props);
@@ -257,6 +281,14 @@ class App extends React.Component<{}, { loaded: boolean, hotelSiteIndex: number,
                   path="/profiles"
                   location={location}
                   component={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                />
+                <Route
+                  path="/rates"
+                  location={location}
+                  component={() => <RateSearch
+                    isMobile={isMobile}
+                    hotelSiteCode={this.state.hotelSiteIndex.toString()}
+                  />}
                 />
               </Switch>
             </NavigationDrawer>

@@ -37,8 +37,7 @@ current mobile features...
 -House Count Report
 -Check in
 
-The following features would be required for the pin groups looking to
-run operationally from a tablet...
+next set..
 
 -Rate Plan Search
 -Reservation Create

@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { Button, Paper } from 'react-md';
+import { Button, Paper, FontIcon } from 'react-md';
 
 import { Reservation } from './Model';
 import { addDays } from './dateHelpers';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 
 import './ReservationsPage.css';
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
 const Row = (props: { reservation: Reservation, onClick: (e: any) => void }) => {
   // TODO: booking reference first?
@@ -52,9 +55,30 @@ export class ReservationsTable extends React.PureComponent<{
   render() {
     return (
       <div>
+        <div
+          style={{
+            width: '100%',
+            background: '#007ac1',
+            color: 'white',
+            height: '112px',
+            marginBottom: '-44px'
+          }}
+          className="md-paper md-paper--2 md-text"
+        >
+          <div className="rd-row">
+            <div className="rd-tile-icon"><FontIcon style={{ color: 'white', marginLeft: '8px' }}>date_range</FontIcon></div>
+            <div style={{ background: '#03a9f4', borderRadius: '2px', height: '36px', padding: '8px' }} className="rd-tile">
+              From
+          </div>
+            <div style={{ background: '#03a9f4', borderRadius: '2px', height: '36px', padding: '8px' }} className="rd-tile">
+              Until
+          </div>
+            <div>TODO: Search filters here?...</div>
+          </div>
+        </div>
         <ReservationPreviewDialog ref={(r: ReservationPreviewDialog) => this.dialog = r} isMobile={false} />
-        <Paper zindex={1} style={{ margin: '20px' }}>
-          <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom sticky-top">
+        <Paper zindex={1} style={{ margin: '20px' }} className="rd-grid">
+          <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom toolbar-margin">
             <div className="col-contact">Contact</div>
             <div className="col-guest">Lead Guest</div>
             <div className="col-arrival">Arrival</div>

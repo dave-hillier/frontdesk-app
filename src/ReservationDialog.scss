@@ -1,7 +1,7 @@
 @import 'globals';
 
 .rd-grid {
-
+  background: white;
 }
 
 .rd-tile {
@@ -15,12 +15,10 @@
   grid-template-columns: 60px 120px 80px 120px;
   align-items: center;
   height: 60px;
-  background: white;
   padding-left: 8px;
   padding-right: 8px;
   grid-column-gap: 8px;
 }
-
 
 .rd-tile-icon {
   margin-left: 8px;

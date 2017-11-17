@@ -1,7 +1,7 @@
 @import 'globals';
 
 $md-light-theme: true; // optional for light theme
-$md-primary-color: $md-light-blue-500; // 500 is recommended as the level by material design
+$md-primary-color: $md-light-blue-500; // 500 is recommended as the level by material design, but not legible with white
 $md-secondary-color: #e73859; // not a recommended colour - consider $md-red-a-400; 
 
 // My variables..
