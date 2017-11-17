@@ -26,9 +26,13 @@
 }
 
 .rd-grid {
-  background: white;
   @include wide-grid;
 
+}
+
+.reservation-table-grid {
+  background: white;
+  margin: 20px;
 }
 
 .rd-tile {

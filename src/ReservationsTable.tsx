@@ -67,7 +67,7 @@ export class ReservationsTable extends React.PureComponent<{
       <div>
         <Config />
         <ReservationPreviewDialog ref={(r: ReservationPreviewDialog) => this.dialog = r} isMobile={false} />
-        <Paper zindex={1} style={{ margin: '20px' }} className="rd-grid">
+        <Paper zindex={1} className="reservation-table-grid">
           <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom toolbar-margin">
             <div className="col-contact">Contact</div>
             <div className="col-guest">Lead Guest</div>
