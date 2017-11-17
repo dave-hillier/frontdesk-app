@@ -42,27 +42,27 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
 
           <Value title="Guests"><People adults={1} children={0} infants={0} /></Value>
         </div>
-        <div className="rd-row">
+        <div className="rd-row2">
           <div className="rd-tile-icon"><FontIcon>hotel</FontIcon></div>
           <Value title="Room Type">{bookingLine.roomType}</Value>
           <Value title="Allocated Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</Value>
         </div>
-        <div className="rd-row">
+        <div className="rd-row2">
           <div className="rd-tile-icon"><FontIcon>pie_chart</FontIcon></div>
           <Value title="Media Source">{props.reservation.mediaSource}</Value>
           <Value title="Market Segment">{props.reservation.marketSegment}</Value>
         </div>
-        <div className="rd-row">
+        <div className="rd-row2">
           <div />
           <Value title="Rate">{bookingLine.rate}</Value>
           <Value title="Status">{props.reservation.state}</Value>
         </div>
-        <div className="rd-row">
+        <div className="rd-row2">
           <div />
           <Value title="Deposit Required">{props.reservation.depositRequired.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Value>
           <Value title="Deposit Paid">{props.reservation.depositPaid.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Value>
         </div>
-        <div className="rd-row">
+        <div className="rd-row2">
           <div />
           <Value title="Total For Stay">{props.reservation.totalForStay.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Value>
           <Value title="Balance">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Value>

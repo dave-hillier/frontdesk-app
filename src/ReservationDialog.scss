@@ -1,7 +1,34 @@
 @import 'globals';
 
+@mixin wide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 304px);
+  grid-template-rows: repeat(auto-fill, 36px);
+  
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  padding: 8px;
+  
+}
+
+@mixin icon-three-fields {
+  display: grid;
+  grid-template-columns: 60px 90px 50px 90px;
+  align-items: center;
+  grid-column-gap: 8px;
+}
+
+@mixin icon-two-fields {
+  display: grid;
+  grid-template-columns: 60px 120px 120px;
+  align-items: center;
+  grid-column-gap: 8px;
+}
+
 .rd-grid {
   background: white;
+  @include wide-grid;
+
 }
 
 .rd-tile {
@@ -11,18 +38,15 @@
 }
 
 .rd-row {
-  display: grid;
-  grid-template-columns: 60px 120px 80px 120px;
-  align-items: center;
-  height: 60px;
-  padding-left: 8px;
-  padding-right: 8px;
-  grid-column-gap: 8px;
+  @include icon-three-fields;  
+}
+
+.rd-row2 {
+  @include icon-two-fields;  
 }
 
 .rd-tile-icon {
-  margin-left: 8px;
-  margin-right: 16px;
+
 }
 
 .config-paper {
@@ -31,14 +55,7 @@
   color: white;
   margin-bottom: -44px;
   
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 304px);
-  grid-template-rows: repeat(auto-fill, 36px);
-  
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-  padding: 8px;
-
+  @include wide-grid;
 }
 
 .config-paper-cell {
