@@ -24,3 +24,41 @@
   margin-left: 8px;
   margin-right: 16px;
 }
+
+.config-paper {
+  width: 100%;
+  background: #007ac1;
+  color: white;
+  margin-bottom: -44px;
+  
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 304px);
+  grid-template-rows: repeat(auto-fill, 36px);
+  
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  padding: 8px;
+
+}
+
+.config-paper-cell {
+
+  display: grid;
+  grid-template-columns: 40px 120px 120px;
+  grid-column-gap: 8px;
+  align-items: center;
+
+
+}
+
+.config-paper-field { 
+
+  background: #03a9f4; 
+  border-radius: 2px; 
+  padding: 8px;
+}
+
+.config-paper-icon {
+  margin-left: 8px;
+  margin-right: 16px;
+}

@@ -69,13 +69,11 @@ export const People = (props: { adults: number, children: number, infants: numbe
   );
 };
 
-export const MiddleLine = (props: { roomName: string, roomType: string, nights?: number }): JSX.Element => {
-  const nights = props.nights ? `${props.nights} nights` : '';
-
+export const MiddleLine = ({ roomName, roomType, nights }: { roomName: string; roomType: string; nights?: number; }): JSX.Element => {
   return (
     <div className="space-between-content">
-      <div>{props.roomType} {props.roomName}</div>
-      <div className="md-text--secondary">{nights}</div>
+      <div>{roomType} {roomName}</div>
+      <div className="md-text--secondary">{nights ? `${nights} nights` : ''}</div>
     </div>);
 };
 

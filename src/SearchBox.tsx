@@ -60,7 +60,7 @@ export class MobileSearchDialog extends React.Component<{ id: string, area: any,
 
   render() {
     let searching = this.state.search !== '';
-    const icon = searching ? 'arrow_back' : 'search';
+    const icon = 'arrow_back';
     const actions = searching ? (<Button icon={true} onClick={e => this.clear()}>clear</Button>) : <div />;
     return (
       <div>
