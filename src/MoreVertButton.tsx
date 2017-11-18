@@ -1,9 +1,14 @@
 import * as React from 'react';
 import {
   Button,
-  MenuButton
+  MenuButton,
+  List,
+  Paper
 } from 'react-md';
 
+import './MoreVertButtom.css';
+
+// TODO: transistion up and down
 export class MoreVertButton extends React.PureComponent<
   { id: string, icon?: string, bottomSheet?: boolean, children: any }, { bottomSheetVisible: boolean }> {
   constructor(props: any) {
@@ -16,8 +21,13 @@ export class MoreVertButton extends React.PureComponent<
     if (this.props.bottomSheet) {
       return (
         <div>
-          {this.state.bottomSheetVisible ? <div className="bottom-sheet-menu">{this.props.children}</div> : null}
-          <Button id={this.props.id} icon={true} >{icon}</Button>
+          {this.state.bottomSheetVisible ?
+            <div onClick={() => this.setState({ bottomSheetVisible: false })} className="bottom-sheet-overlay">
+              <Paper zDepth={1}><List className="bottom-sheet-menu">{this.props.children}</List></Paper>
+            </div>
+            : null}
+
+          <Button id={this.props.id} icon={true} onClick={() => this.setState({ bottomSheetVisible: true })}>{icon}</Button>
         </div>);
     }
     return <MenuButton id={this.props.id} icon={true} menuItems={this.props.children}>{icon}</MenuButton>;

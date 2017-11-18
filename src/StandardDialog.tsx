@@ -57,6 +57,8 @@ export class StandardDialog extends React.PureComponent<{ id: string, title: any
               >
                 <ListItem key={1} primaryText="Item One" />
                 <ListItem key={2} primaryText="Item Two" />
+                <ListItem key={3} primaryText="Item Three" />
+                <ListItem key={4} primaryText="Item Four" />
               </MoreVertButton>
               <Button icon={true} onClick={this.hide}>close</Button>
             </div>}

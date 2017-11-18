@@ -19,6 +19,7 @@ const ToolbarAutocomplete = (props: { placeholder: string }) => {
 
 };
 
+// TODO: consider using a drawer instead of this or Portal & Overlay
 export class MobileSearchDialog extends React.Component<{ id: string, area: any, visible: boolean, back: any },
   { search: string }> {
 
