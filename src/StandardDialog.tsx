@@ -4,6 +4,7 @@ import {
   DialogContainer,
   Toolbar,
   ListItem,
+  FontIcon,
 } from 'react-md';
 import { MoreVertButton } from './MoreVertButton';
 
@@ -55,10 +56,11 @@ export class StandardDialog extends React.PureComponent<{ id: string, title: any
                 id="dialog-more-button"
                 bottomSheet={this.props.isMobile}
               >
-                <ListItem key={1} primaryText="Item One" />
-                <ListItem key={2} primaryText="Item Two" />
-                <ListItem key={3} primaryText="Item Three" />
-                <ListItem key={4} primaryText="Item Four" />
+                <ListItem key={1} primaryText="Item One" inset={true} />
+                <ListItem key={2} primaryText="Item Two" leftIcon={<FontIcon key="data">data_usage</FontIcon>} />
+                <ListItem key={3} primaryText="Item Three" leftIcon={<FontIcon key="data">data_usage</FontIcon>} />
+                <ListItem key={4} primaryText="Item Four" leftIcon={<FontIcon key="data">data_usage</FontIcon>} />
+
               </MoreVertButton>
               <Button icon={true} onClick={this.hide}>close</Button>
             </div>}
