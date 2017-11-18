@@ -176,8 +176,6 @@ export const ReservationPanel = (props: { reservation: Reservation }) => {
           <Value title="Balance">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Value>
         </div>
       </div>
-      {bookingLine.allocatedRoom ? <Button flat={true}>Deallocate</Button> : <Button flat={true}>Allocate</Button>}
-      <Button flat={true}>Room Billing</Button>
       <Divider />
       <div>
         <div className="rd-row">
