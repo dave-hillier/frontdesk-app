@@ -3,7 +3,7 @@ import * as React from 'react';
 const logo = require('./logo.svg');
 import './LaunchScreen.css';
 
-// TODO consider Layover
+// TODO consider CSS Transistion
 export default class LaunchScreen extends React.Component<{ show: boolean }, {}> {
   render() {
     return (
