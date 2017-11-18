@@ -212,6 +212,7 @@ class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: num
   }
 
   render() {
+    // https://github.com/reactjs/react-transition-group/issues/79
     return (
       <div>
         <LaunchScreen show={!this.state.loaded} />
@@ -240,7 +241,7 @@ class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: num
               </div>}
               navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
             >
-              <Switch key={location.key} location={location}> // https://github.com/reactjs/react-transition-group/issues/79
+              <Switch key={location.key} location={location}>
                 <Route
                   exact={true}
                   path="/"

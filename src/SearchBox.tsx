@@ -4,13 +4,15 @@ import {
   Button,
   Toolbar,
   DialogContainer,
-  TextField
+  TextField,
+  List,
+  ListItem
 } from 'react-md';
 
-const ToolbarAutocomplete = (props: { placeholder: string }) => {
+const ToolbarTextField = (props: { placeholder: string }) => {
   return (
     <TextField
-      id="search-box"
+      id="search-box-text-field"
       {...props}
       block={true}
       style={{ alignSelf: 'center' }}
@@ -72,7 +74,7 @@ export class MobileSearchDialog extends React.Component<{ id: string, area: any,
           <Toolbar
             style={{ margin: '8px' }}
             fixed={true}
-            title={<ToolbarAutocomplete placeholder={`Search ${this.props.area}`} />}
+            title={<ToolbarTextField placeholder={`Search ${this.props.area}`} />}
             titleId={`${this.props.id}-title`}
             actions={actions}
             nav={<Button icon={true} onClick={e => this.props.back()}>{icon}</Button>}
@@ -83,8 +85,9 @@ export class MobileSearchDialog extends React.Component<{ id: string, area: any,
             onKeyDown={() => this.handleKeyDown}
           />
           <section className="md-toolbar-relative md-text">
-            {this.props.children}
-            <div>test!!!</div><div>test!!!</div>
+            <div style={{ paddingTop: '16px' }}>
+              {this.props.children}
+            </div>
           </section>
         </DialogContainer>
       </div>
@@ -103,12 +106,17 @@ export default class SearchBox extends React.Component<{ data: any, mobile: bool
       <div>
         {!this.state.open ? <Button key="search" icon={true} onClick={() => this.setState({ open: true })}>search</Button> : null}
         <MobileSearchDialog
-          id="sss"
+          id="mobile-search"
           area="xxx"
           visible={this.state.open}
           back={(e: any) => this.setState({ open: false })}
         >
-          Hi
+          <List>
+            <ListItem key={1} primaryText="Item One" />
+            <ListItem key={2} primaryText="Item Two" />
+            <ListItem key={3} primaryText="Item Three" />
+            <ListItem key={4} primaryText="Item Four" />
+          </List>
         </MobileSearchDialog>
       </div>
     );
