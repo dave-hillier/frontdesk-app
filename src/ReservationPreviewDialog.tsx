@@ -71,7 +71,7 @@ const ReservationPanel = (props: { reservation: Reservation }) => {
       {bookingLine.allocatedRoom ? <Button flat={true}>Deallocate</Button> : <Button flat={true}>Allocate</Button>}
       <Button flat={true}>Room Billing</Button>
       <Divider />
-      <div className="rd-grid">
+      <div>
         <div className="rd-row">
           <div className="rd-tile">Profile <Button icon={true}>edit</Button></div>
         </div>

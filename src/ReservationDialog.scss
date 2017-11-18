@@ -2,7 +2,7 @@
 
 @mixin wide-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 304px);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-template-rows: repeat(auto-fill, 36px);
   
   grid-column-gap: 8px;
@@ -13,14 +13,14 @@
 
 @mixin icon-three-fields {
   display: grid;
-  grid-template-columns: 60px 90px 50px 90px;
+  grid-template-columns: 60px 9fr 5fr 9fr;
   align-items: center;
   grid-column-gap: 8px;
 }
 
 @mixin icon-two-fields {
   display: grid;
-  grid-template-columns: 60px 120px 120px;
+  grid-template-columns: 60px 1fr 1fr;
   align-items: center;
   grid-column-gap: 8px;
 }
