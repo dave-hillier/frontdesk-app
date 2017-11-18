@@ -13,7 +13,7 @@
 
 @mixin icon-three-fields {
   display: grid;
-  grid-template-columns: 60px 9fr 5fr 9fr;
+  grid-template-columns: 60px 1fr 1fr 1fr;
   align-items: center;
   grid-column-gap: 8px;
 }

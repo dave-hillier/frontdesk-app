@@ -3,9 +3,11 @@ import {
   Button,
   DialogContainer,
   Toolbar,
+  ListItem,
 } from 'react-md';
+import { MoreVertButton } from './MoreVertButton';
 
-export class StandardDialog extends React.Component<{ id: string, title: any, isMobile?: boolean, isDesktop?: boolean }, { pageX?: number, pageY?: number, visible: boolean }> {
+export class StandardDialog extends React.PureComponent<{ id: string, title: any, isMobile?: boolean, isDesktop?: boolean }, { pageX?: number, pageY?: number, visible: boolean }> {
   constructor(props: any) {
     super(props);
     this.state = { visible: false };
@@ -47,9 +49,15 @@ export class StandardDialog extends React.Component<{ id: string, title: any, is
             colored={true}
             title={this.props.title}
             titleId={`${this.props.id}-title`}
-            actions={<div>
+            actions={<div style={{ display: 'flex', flexDirection: 'row' }}>
               <Button icon={true} onClick={this.hide}>edit</Button>
-              <Button icon={true} onClick={this.hide}>more_vert</Button>
+              <MoreVertButton
+                id="dialog-more-button"
+                bottomSheet={this.props.isMobile}
+              >
+                <ListItem key={1} primaryText="Item One" />
+                <ListItem key={2} primaryText="Item Two" />
+              </MoreVertButton>
               <Button icon={true} onClick={this.hide}>close</Button>
             </div>}
           />

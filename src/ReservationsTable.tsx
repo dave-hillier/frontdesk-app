@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Button, Paper, FontIcon } from 'react-md';
+import { Button, Paper, FontIcon, ListItem } from 'react-md';
 
 import { Reservation } from './Model';
 import { addDays } from './dateHelpers';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 
 import './ReservationsPage.css';
+import { MoreVertButton } from './MoreVertButton';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -35,7 +36,12 @@ const Row = (props: { reservation: Reservation, onClick: (e: any) => void }) => 
       <div className="col-gross">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
       <div className="col-actions">
         <Button icon={true}>edit</Button>
-        <Button icon={true}>more_vert</Button>
+        <MoreVertButton
+          id="dialog-more-button"
+        >
+          <ListItem key={1} primaryText="Item One" />
+          <ListItem key={2} primaryText="Item Two" />
+        </MoreVertButton>
       </div>
     </div>
   );
