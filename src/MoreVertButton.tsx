@@ -23,7 +23,7 @@ export class MoreVertButton extends React.PureComponent<
         <div>
           {this.state.bottomSheetVisible ?
             <div onClick={() => this.setState({ bottomSheetVisible: false })} className="bottom-sheet-overlay">
-              <Paper zDepth={1}><List className="bottom-sheet-menu">{this.props.children}</List></Paper>
+              <Paper zDepth={2} className="bottom-sheet-menu"><List>{this.props.children}</List></Paper>
             </div>
             : null}
 
