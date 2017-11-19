@@ -11,7 +11,9 @@ import { MoreVertButton } from './MoreVertButton';
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-const Row = (props: { reservation: Reservation, onClick: (e: any) => void }) => {
+const rowHeight = 60; // TODO: should I including padding?
+
+const ReservationRow = (props: { reservation: Reservation, onClick: (e: any) => void }) => {
   // TODO: booking reference first?
   const room = props.reservation.bookingLines[0].allocatedRoom;
   const leadGuest = props.reservation.leadGuest ? props.reservation.leadGuest.firstName + ' ' + props.reservation.leadGuest.lastName : '';
@@ -47,7 +49,30 @@ const Row = (props: { reservation: Reservation, onClick: (e: any) => void }) => 
   );
 };
 
-const Config = () => (
+const ReservationHeaders = () => (
+  <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom toolbar-margin">
+    <div className="col-contact">Contact</div>
+    <div className="col-guest">Lead Guest</div>
+    <div className="col-arrival">Arrival</div>
+    <div className="col-nights">Nights</div>
+    <div className="col-departure">Departure</div>
+    <div className="col-ref">Booking Ref</div>
+    <div className="col-status">Status</div>
+    <div className="col-adult">Ad</div>
+    <div className="col-child">Ch</div>
+    <div className="col-infant">Inf</div>
+    <div className="col-rate">Rate</div>
+    <div className="col-roomtype">Room Type</div>
+    <div className="col-room">Room</div>
+    <div className="col-ledger">Ledger</div>
+    <div className="col-net">Net</div>
+    <div className="col-gross">Gross</div>
+
+  </div>
+);
+
+// TODO: Move into search bar when its wider...
+const ConfigPlaceholder = () => (
   <div className="md-paper md-paper--2 config-paper">
     <div className="config-paper-cell">
       <FontIcon style={{ color: 'white', marginLeft: '8px' }}>date_range</FontIcon>
@@ -57,6 +82,69 @@ const Config = () => (
   </div>
 );
 
+class Table extends React.PureComponent<{
+  onClick: (e: any, r: Reservation) => void, reservations: Reservation[]
+}, { scrollPosition: number }> {
+
+  private ref: HTMLDivElement | null;
+
+  constructor(props: any) {
+    super(props);
+    this.state = { scrollPosition: 0 };
+  }
+
+  componentWillMount() {
+    window.addEventListener('scroll', this.listenScrollEvent);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.listenScrollEvent);
+  }
+
+  render() {
+    const { onClick, reservations } = this.props;
+    const before = 10;
+    const countOnScreen = 30; // TODO: viewport height or something keep thats much bigger?
+
+    let startIndex = this.state.scrollPosition - before;
+    if (startIndex < 0) {
+      startIndex = 0;
+    }
+
+    let endIndex = this.state.scrollPosition + countOnScreen;
+    if (endIndex > reservations.length) {
+      endIndex = reservations.length;
+    }
+
+    if (startIndex > endIndex - countOnScreen) {
+      startIndex = endIndex - countOnScreen;
+    }
+
+    const reservationsToShow = reservations.slice(startIndex, endIndex);
+
+    const countAfter = reservations.length - endIndex;
+    return (
+      <div ref={e => this.ref = e}>
+        <Paper zindex={1} className="reservation-table-grid" >
+          <ReservationHeaders />
+          <div style={{ height: startIndex * rowHeight }} />
+          {reservationsToShow.map(r => <ReservationRow key={r.ref} reservation={r} onClick={e => onClick(e, r)} />)}
+          <div style={{ height: countAfter * rowHeight }} />
+        </Paper>
+      </div>);
+  }
+
+  private listenScrollEvent = (e: any) => {
+    const ref = this.ref;
+    if (ref && document.scrollingElement) {
+      const offsetFromTop = /*ref.offsetTop -*/ document.scrollingElement.scrollTop;
+      const scrollPosition = Math.floor(offsetFromTop / rowHeight);
+      this.setState({ scrollPosition });
+    }
+  }
+}
+
+// TODO: This is the whole page
 export class ReservationsTable extends React.PureComponent<{
   reservations: Reservation[]
 }, {}> {
@@ -71,30 +159,9 @@ export class ReservationsTable extends React.PureComponent<{
   render() {
     return (
       <div>
-        <Config />
+        <ConfigPlaceholder />
         <ReservationPreviewDialog ref={(r: ReservationPreviewDialog) => this.dialog = r} isMobile={false} />
-        <Paper zindex={1} className="reservation-table-grid">
-          <div className="res-header-container md-font-bold md-text--secondary md-divider-border md-divider-border--bottom toolbar-margin">
-            <div className="col-contact">Contact</div>
-            <div className="col-guest">Lead Guest</div>
-            <div className="col-arrival">Arrival</div>
-            <div className="col-nights">Nights</div>
-            <div className="col-departure">Departure</div>
-            <div className="col-ref">Booking Ref</div>
-            <div className="col-status">Status</div>
-            <div className="col-adult">Ad</div>
-            <div className="col-child">Ch</div>
-            <div className="col-infant">Inf</div>
-            <div className="col-rate">Rate</div>
-            <div className="col-roomtype">Room Type</div>
-            <div className="col-room">Room</div>
-            <div className="col-ledger">Ledger</div>
-            <div className="col-net">Net</div>
-            <div className="col-gross">Gross</div>
-
-          </div>
-          {this.props.reservations.map(i => <Row key={i.ref} reservation={i} onClick={e => this.show(e, i)} />)}
-        </Paper>
-      </div>);
+        <Table reservations={this.props.reservations} onClick={(e, r) => this.show(e, r)} />
+      </div >);
   }
 }
