@@ -11,8 +11,6 @@ import { MoreVertButton } from './MoreVertButton';
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-const rowHeight = 60; // TODO: should I including padding?
-
 const ReservationRow = (props: { reservation: Reservation, onClick: (e: any) => void }) => {
   // TODO: booking reference first?
   const room = props.reservation.bookingLines[0].allocatedRoom;
@@ -83,7 +81,7 @@ const ConfigPlaceholder = () => (
 );
 
 class Table extends React.PureComponent<{
-  onClick: (e: any, r: Reservation) => void, reservations: Reservation[]
+  rowHeight: number, onClick: (e: any, r: Reservation) => void, reservations: Reservation[]
 }, { scrollPosition: number }> {
 
   private ref: HTMLDivElement | null;
@@ -101,10 +99,15 @@ class Table extends React.PureComponent<{
     window.removeEventListener('scroll', this.listenScrollEvent);
   }
 
+  renderItem(r: any, onClick: any) {
+    return <ReservationRow key={r.ref} reservation={r} onClick={e => onClick(e, r)} />;
+  }
+
   render() {
-    const { onClick, reservations } = this.props;
+    const { rowHeight, onClick, reservations } = this.props;
     const before = 10;
     const countOnScreen = 30; // TODO: viewport height or something keep thats much bigger?
+    // TODO: should I including padding?
 
     let startIndex = this.state.scrollPosition - before;
     if (startIndex < 0) {
@@ -128,7 +131,7 @@ class Table extends React.PureComponent<{
         <Paper zindex={1} className="reservation-table-grid" >
           <ReservationHeaders />
           <div style={{ height: startIndex * rowHeight }} />
-          {reservationsToShow.map(r => <ReservationRow key={r.ref} reservation={r} onClick={e => onClick(e, r)} />)}
+          {reservationsToShow.map(r => this.renderItem(r, onClick))}
           <div style={{ height: countAfter * rowHeight }} />
         </Paper>
       </div>);
@@ -138,7 +141,7 @@ class Table extends React.PureComponent<{
     const ref = this.ref;
     if (ref && document.scrollingElement) {
       const offsetFromTop = /*ref.offsetTop -*/ document.scrollingElement.scrollTop;
-      const scrollPosition = Math.floor(offsetFromTop / rowHeight);
+      const scrollPosition = Math.floor(offsetFromTop / this.props.rowHeight);
       this.setState({ scrollPosition });
     }
   }
@@ -161,7 +164,7 @@ export class ReservationsTable extends React.PureComponent<{
       <div>
         <ConfigPlaceholder />
         <ReservationPreviewDialog ref={(r: ReservationPreviewDialog) => this.dialog = r} isMobile={false} />
-        <Table reservations={this.props.reservations} onClick={(e, r) => this.show(e, r)} />
+        <Table rowHeight={65} reservations={this.props.reservations} onClick={(e, r) => this.show(e, r)} />
       </div >);
   }
 }
