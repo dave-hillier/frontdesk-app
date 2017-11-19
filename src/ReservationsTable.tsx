@@ -83,9 +83,6 @@ const ConfigPlaceholder = () => (
 class Table extends React.PureComponent<{
   rowHeight: number, onClick: (e: any, r: Reservation) => void, reservations: Reservation[]
 }, { scrollPosition: number }> {
-
-  private ref: HTMLDivElement | null;
-
   constructor(props: any) {
     super(props);
     this.state = { scrollPosition: 0 };
@@ -127,20 +124,17 @@ class Table extends React.PureComponent<{
 
     const countAfter = reservations.length - endIndex;
     return (
-      <div ref={e => this.ref = e}>
-        <Paper zindex={1} className="reservation-table-grid" >
-          <ReservationHeaders />
-          <div style={{ height: startIndex * rowHeight }} />
-          {reservationsToShow.map(r => this.renderItem(r, onClick))}
-          <div style={{ height: countAfter * rowHeight }} />
-        </Paper>
-      </div>);
+      <Paper zindex={1} className="reservation-table-grid" >
+        <ReservationHeaders />
+        <div style={{ height: startIndex * rowHeight }} />
+        {reservationsToShow.map(r => this.renderItem(r, onClick))}
+        <div style={{ height: countAfter * rowHeight }} />
+      </Paper>);
   }
 
   private listenScrollEvent = (e: any) => {
-    const ref = this.ref;
-    if (ref && document.scrollingElement) {
-      const offsetFromTop = /*ref.offsetTop -*/ document.scrollingElement.scrollTop;
+    if (document.scrollingElement) {
+      const offsetFromTop = document.scrollingElement.scrollTop;
       const scrollPosition = Math.floor(offsetFromTop / this.props.rowHeight);
       this.setState({ scrollPosition });
     }
