@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import { List, ListItem } from 'react-md';
 
 export class Virtualized<Item> extends
   React.PureComponent<
@@ -62,5 +63,20 @@ export class Virtualized<Item> extends
       const scrollPosition = Math.floor(offsetFromTop / this.props.rowHeight); // Deliberately quantized so its not rendering on every sroll
       this.setState({ scrollPosition });
     }
+  }
+}
+
+export class VirtualizedList<Item> extends Virtualized<Item> {
+  render() {
+    const { rowHeight, collection, renderItem, numberBefore, numberOnScreen } = this.props;
+    const { startIndex, endIndex } = this.window(collection.length, numberBefore, numberOnScreen);
+    const itemsToShow = collection.slice(startIndex, endIndex);
+
+    return (
+      <List className="md-paper md-paper--1">
+        <ListItem style={{ height: startIndex * rowHeight }} primaryText={''} />
+        {itemsToShow.map(item => renderItem(item))}
+        <ListItem style={{ height: (collection.length - endIndex) * rowHeight }} primaryText={''} />
+      </List>);
   }
 }

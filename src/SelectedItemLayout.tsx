@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  List,
   Grid,
   Cell,
   LinearProgress,
@@ -10,7 +9,7 @@ import {
 } from 'react-md';
 
 import { StandardDialog } from './StandardDialog';
-import { Virtualized } from './Virtualized';
+import { VirtualizedList } from './Virtualized';
 
 export interface SelectItemLayoutProps<Item> {
   isMobile: boolean;
@@ -55,20 +54,18 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
     }
 
     const selectedItemsList = (
-      <List className="md-paper md-paper--1">
-        <Virtualized
-          rowHeight={60}
-          numberOnScreen={20}
-          numberBefore={10}
-          collection={this.state.items}
-          renderItem={(reservation: any) => this.props.renderItem(reservation, (e: any) => {
-            this.setState({ selected: reservation });
-            if (this.dialog) {
-              this.dialog.show(e);
-            }
-          })}
-        />
-      </List>);
+      <VirtualizedList
+        rowHeight={60}
+        numberOnScreen={20}
+        numberBefore={10}
+        collection={this.state.items}
+        renderItem={(reservation: any) => this.props.renderItem(reservation, (e: any) => {
+          this.setState({ selected: reservation });
+          if (this.dialog) {
+            this.dialog.show(e);
+          }
+        })}
+      />);
 
     const selected = this.state.selected && this.props.renderSelectedItem(this.state.selected);
 
