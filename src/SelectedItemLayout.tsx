@@ -10,6 +10,7 @@ import {
 } from 'react-md';
 
 import { StandardDialog } from './StandardDialog';
+import { Virtualized } from './Virtualized';
 
 export interface SelectItemLayoutProps<Item> {
   isMobile: boolean;
@@ -55,12 +56,18 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
 
     const selectedItemsList = (
       <List className="md-paper md-paper--1">
-        {this.state.items.map(reservation => this.props.renderItem(reservation, (e: any) => {
-          this.setState({ selected: reservation });
-          if (this.dialog) {
-            this.dialog.show(e);
-          }
-        }))}
+        <Virtualized
+          rowHeight={60}
+          numberOnScreen={30}
+          numberBefore={10}
+          collection={this.state.items}
+          renderItem={(reservation: any) => this.props.renderItem(reservation, (e: any) => {
+            this.setState({ selected: reservation });
+            if (this.dialog) {
+              this.dialog.show(e);
+            }
+          })}
+        />
       </List>);
 
     const selected = this.state.selected && this.props.renderSelectedItem(this.state.selected);

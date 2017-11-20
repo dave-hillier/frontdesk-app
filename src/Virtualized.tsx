@@ -3,7 +3,13 @@ import * as React from 'react';
 
 export class Virtualized<Item> extends
   React.PureComponent<
-  { numberBefore: number, numberOnScreen: number, rowHeight: number, collection: Item[], renderItem: (i: Item) => JSX.Element },
+  {
+    numberBefore: number,
+    numberOnScreen: number,
+    rowHeight: number,
+    collection: Item[],
+    renderItem: (i: Item) => JSX.Element,
+  },
   { scrollPosition: number }> {
 
   constructor(props: any) {
