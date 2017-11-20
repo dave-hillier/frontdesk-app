@@ -58,7 +58,7 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
       <List className="md-paper md-paper--1">
         <Virtualized
           rowHeight={60}
-          numberOnScreen={30}
+          numberOnScreen={20}
           numberBefore={10}
           collection={this.state.items}
           renderItem={(reservation: any) => this.props.renderItem(reservation, (e: any) => {
