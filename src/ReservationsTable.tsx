@@ -36,9 +36,7 @@ const ReservationRow = (props: { reservation: Reservation, onClick: (e: any) => 
       <div className="col-gross">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
       <div className="col-actions">
         <Button icon={true}>edit</Button>
-        <MoreVertButton
-          id="dialog-more-button"
-        >
+        <MoreVertButton id="dialog-more-button">
           <ListItem key={1} primaryText="Item One" />
           <ListItem key={2} primaryText="Item Two" />
         </MoreVertButton>
@@ -100,26 +98,27 @@ class Table extends React.PureComponent<{
     return <ReservationRow key={r.ref} reservation={r} onClick={e => onClick(e, r)} />;
   }
 
-  render() {
-    const { rowHeight, onClick, reservations } = this.props;
-    const before = 10;
-    const countOnScreen = 30; // TODO: viewport height or something keep thats much bigger?
-    // TODO: should I including padding?
+  window(count: number, numberBefore: number, numberOnScreen: number) {
+    let endIndex = this.state.scrollPosition + numberOnScreen;
+    if (endIndex > count) {
+      endIndex = count;
+    }
 
-    let startIndex = this.state.scrollPosition - before;
+    let startIndex = this.state.scrollPosition - numberBefore;
     if (startIndex < 0) {
       startIndex = 0;
     }
 
-    let endIndex = this.state.scrollPosition + countOnScreen;
-    if (endIndex > reservations.length) {
-      endIndex = reservations.length;
+    if (startIndex > endIndex - numberOnScreen) {
+      startIndex = endIndex - numberOnScreen;
     }
 
-    if (startIndex > endIndex - countOnScreen) {
-      startIndex = endIndex - countOnScreen;
-    }
+    return { startIndex, endIndex };
+  }
 
+  render() {
+    const { rowHeight, onClick, reservations } = this.props;
+    const { startIndex, endIndex } = this.window(reservations.length, 10, 30);
     const reservationsToShow = reservations.slice(startIndex, endIndex);
 
     const countAfter = reservations.length - endIndex;

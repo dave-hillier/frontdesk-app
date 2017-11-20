@@ -24,7 +24,7 @@ md-toolbar-relative
 https://thenounproject.com
 - Components files should be saved for stateless components...
 
-
+https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e
 
 current mobile features...
 
