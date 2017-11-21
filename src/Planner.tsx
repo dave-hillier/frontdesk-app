@@ -32,9 +32,37 @@ const EmptyCellBlock = (props: { days: number }): JSX.Element => {
       className="rez-empty-cell md-divider-border md-divider-border--right grid-cell"
     />);
 };
+
 export interface RoomLookup {
   [room: string]: Reservation[];
 }
+
+const RowHeader = (props: { rowHeaderStyle: any, key: string, roomName: string }) => (
+  <div
+    key={props.key}
+    style={props.rowHeaderStyle}
+    className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header grid-cell"
+  >
+    {props.roomName}
+  </div>);
+
+const ReservationBlock = (props: { reservation: Reservation, width: string, onClick: any }) => (
+  <div
+    key={props.reservation.ref}
+    style={{ width: props.width }}
+    onClick={props.onClick}
+    className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-cell rez-cell"
+  >
+    {props.reservation.contact.lastName}
+  </div>
+);
+
+const RowWrapper = (props: { index: number, gridSize: number, children: any }) => (
+  <div key={'RoomRow' + props.index} style={{ height: props.gridSize + 'px' }} className="md-divider-border md-divider-border--bottom grid-row">
+    {props.children}
+  </div>
+);
+
 export default class Planner extends React.Component<{ isMobile: boolean, hotelSiteCode: string }, { lookup: RoomLookup, roomNames: string[] }> {
   private dialog: ReservationPreviewDialog;
 
@@ -62,31 +90,19 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
     const numberOfRooms = this.state.roomNames.length;
     const rowHeaders = [];
     for (let i = 0; i < numberOfRooms; ++i) {
-      rowHeaders.push(
-        <div
-          key={'Room' + i}
-          style={rowHeaderStyle}
-          className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-row grid-row-header grid-cell"
-        >
-          {this.state.roomNames[i]}
-        </div>);
+      rowHeaders.push(<RowHeader rowHeaderStyle={rowHeaderStyle} key={'Room' + i} roomName={this.state.roomNames[i]} />);
     }
 
     const rows = [];
-
-    // tslint:disable-next-line:no-console
-    console.log('Lookup', this.state.lookup);
-
     for (let i = 0; i < numberOfRooms; ++i) {
       let currentDate = today;
-      // tslint:disable-next-line:no-console
-      console.log('name', i, this.state.roomNames[i]);
       if (this.state.roomNames[i] in this.state.lookup) {
         const roomReservations = this.state.lookup[this.state.roomNames[i]];
-        const rez: {}[] = [];
+        const currentRow: {}[] = [];
         for (let j = 0; j < roomReservations.length; ++j) {
-          const arrival = roomReservations[j].bookingLines[0].arrival;
-          const nights = roomReservations[j].bookingLines[0].nights;
+          const r = roomReservations[j];
+          const arrival = r.bookingLines[0].arrival;
+          const nights = r.bookingLines[0].nights;
           const departure = addDays(arrival, nights);
           const daysTillNext = subtractDates(arrival, currentDate);
           const daysTillDeparture = subtractDates(departure, currentDate);
@@ -95,7 +111,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
           }
 
           if (daysTillNext > 0) {
-            rez.push(
+            currentRow.push(
               <EmptyCellBlock
                 key={'empty' + '_' + j + '_' + i}
                 days={daysTillNext}
@@ -104,18 +120,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
           }
           const size = (daysTillNext < 0 && daysTillDeparture > 0) ? ((nights + daysTillNext) * gridSize + 'px') : (nights * gridSize + 'px');
           if (daysTillNext < 0 && daysTillDeparture > 0 || daysTillNext >= 0) {
-            const rs = {
-              width: size
-            };
-            rez.push(
-              <div
-                key={'rez' + '_' + j + '_' + i}
-                style={rs}
-                onClick={e => this.dialog.show(e, roomReservations[j])}
-                className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-cell rez-cell"
-              >
-                {roomReservations[j].contact.lastName}
-              </div>);
+            currentRow.push(<ReservationBlock width={size} reservation={r} onClick={(e: any) => this.dialog.show(e, r)} />);
             currentDate = departure;
           }
 
@@ -125,27 +130,19 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
         }
         const daysToFill = subtractDates(maxDate, currentDate);
         if (daysToFill > 0) {
-          rez.push(<EmptyCellBlock key={'empty' + i} days={daysToFill} />);
+          currentRow.push(<EmptyCellBlock key={'empty' + i} days={daysToFill} />);
         }
 
         rows.push(
-          <div
-            key={'RoomRow' + i}
-            style={rowStyle}
-            className="md-divider-border md-divider-border--bottom grid-row"
-          >
-            {...rez}
-          </div>);
+          <RowWrapper index={i} gridSize={gridSize}>
+            {...currentRow}
+          </RowWrapper>);
       } else {
         const daysToFill = subtractDates(maxDate, currentDate);
         rows.push(
-          <div
-            key={'RoomRow' + i}
-            style={rowStyle}
-            className="md-divider-border md-divider-border--bottom grid-row"
-          >
+          <RowWrapper index={i} gridSize={gridSize}>
             <EmptyCellBlock key={'emptyr' + i} days={daysToFill} />
-          </div>);
+          </RowWrapper>);
       }
     }
 
