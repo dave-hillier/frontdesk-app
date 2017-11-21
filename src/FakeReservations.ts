@@ -90,9 +90,11 @@ function generateData(hotelCode: string): Reservation[][] {
 
     const room: Reservation[] = rez[theRoom.name] = [];
     let currentDate = addDays(today, -5); // Start 5 days before
-    for (let num = Math.floor(pseudoRandom() * 10); num > 0; --num) {
-      const dayBefore = Math.floor(pseudoRandom() * 8);
-      const nights = 1 + Math.floor(pseudoRandom() * 7);
+
+    for (let num = Math.floor(pseudoRandom() * 100); num > 0; --num) {
+
+      const dayBefore = Math.floor(pseudoRandom() * 5);
+      const nights = 1 + Math.floor(pseudoRandom() * 5);
       currentDate = addDays(currentDate, dayBefore);
       const departure = addDays(currentDate, nights);
       const arrival = currentDate;
@@ -168,6 +170,9 @@ function generateData(hotelCode: string): Reservation[][] {
     }
   }
   generated[hotelCode] = rez;
+
+  // tslint:disable-next-line:no-console
+  console.log('rez', rez.length, 'profile', allProfiles.length);
   return rez;
 }
 
