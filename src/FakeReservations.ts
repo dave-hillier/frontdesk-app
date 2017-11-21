@@ -20,7 +20,7 @@ const roomTypesList: string[] = [
   'Exec Suite'
 ];
 const rates = ['BAR_RO', 'BAR_BB', 'FLEX_BB', 'FLEX_RO', 'WED_RO', 'WED_BB'];
-
+const allResevations: Reservation[] = [];
 // TODO: must be called after generated.
 export async function getProfiles(): Promise<GuestProfile[]> {
   await generateData('0');
@@ -167,12 +167,13 @@ function generateData(hotelCode: string): Reservation[][] {
         totalForStay: balance + nights * 10 + Math.floor(1 + pseudoRandom() * 10)
       };
       room.push(item);
+      allResevations.push(item);
     }
   }
   generated[hotelCode] = rez;
 
   // tslint:disable-next-line:no-console
-  console.log('rez', rez.length, 'profile', allProfiles.length);
+  console.log('rooms', rez.length, 'profile', allProfiles.length, 'reservations', allResevations.length);
   return rez;
 }
 
