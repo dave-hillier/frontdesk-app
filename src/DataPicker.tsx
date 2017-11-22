@@ -55,12 +55,22 @@ export class DatePicker extends React.PureComponent<{}, {}> {
 
   render() {
     return (
-      <Paper zDepth={5} style={{ borderRadius: '4px' }}>
-        <Button flat={true} disabled={true} primary={true}>Reset</Button>
+      <Paper zDepth={5} style={{ borderRadius: '4px', width: '780px', margin: '50px' }}>
+
+        <div style={{ height: '46px', display: 'flex', flexDirection: 'row' }}>
+          <Button icon={true}>keyboard_arrow_left</Button>
+          <Button icon={true}>keyboard_arrow_right</Button>
+          <Button flat={true} disabled={true} primary={true}>Reset</Button>
+        </div>
         <Divider />
-        <MonthPanel date={new Date(2017, 10, 1)} start={new Date(2017, 10, 22)} end={new Date(2017, 10, 31)} disableBefore={today} />
+        <div className="date-picker-calendar">
+          <MonthPanel date={new Date(2017, 10, 1)} start={new Date(2017, 10, 22)} end={new Date(2017, 10, 30)} disableBefore={today} />
+          <MonthPanel date={new Date(2017, 11, 1)} start={new Date(2017, 10, 22)} end={new Date(2017, 10, 30)} disableBefore={today} />
+        </div>
         <Divider />
-        <Button flat={true} disabled={true} primary={true}>Done</Button>
+        <div style={{ height: '46px' }}>
+          <Button flat={true} primary={true}>Done</Button>
+        </div>
       </Paper>);
   }
 }

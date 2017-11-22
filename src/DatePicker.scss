@@ -35,3 +35,8 @@
   border-top-right-radius: 50%;
 } 
 
+.date-picker-calendar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
