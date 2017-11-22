@@ -1,4 +1,6 @@
 export interface Room {
+
+  // TODO: looks like rooms have custom attributes for filtering purposes. E.g. View, Jacuzzi, Can accomodate cot
   readonly name: string;
   readonly type: string;
   readonly cleaningStatus: 'refreshRequired' | 'cleaningRequired' | 'noAction';

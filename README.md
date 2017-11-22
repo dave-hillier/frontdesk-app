@@ -19,7 +19,7 @@
 - [ ] expand the search on mobile from the bottom
 
 Notes
-md-toolbar-relative 
+consider using application URLs to communicate with H/W
 
 https://thenounproject.com
 - Components files should be saved for stateless components...
