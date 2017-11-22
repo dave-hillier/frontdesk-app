@@ -3,6 +3,7 @@ export interface Room {
   readonly type: string;
   readonly cleaningStatus: 'refreshRequired' | 'cleaningRequired' | 'noAction';
   readonly occupied: boolean;
+  readonly group: { name: string };
 }
 
 export interface CompanyProfile {

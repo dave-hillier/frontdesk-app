@@ -75,13 +75,15 @@ function generateData(hotelCode: string): Reservation[][] {
     const roomType = roomTypesList[roomIndex % roomTypesList.length];
 
     const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
+    const group = { name: 'Floor ' + currentFloor };
     const roomNumber = (roomIndex % (roomCount / floors)) + 1;
     const cleaningStatus: 'cleaningRequired' = 'cleaningRequired';
     const theRoom = {
       name: `${currentFloor}${('0' + roomNumber).slice(-2)}`,
       type: roomType,
       cleaningStatus,
-      occupied: true
+      occupied: true,
+      group
     };
     if (!(hotelCode in allRooms)) {
       allRooms[hotelCode] = [];
