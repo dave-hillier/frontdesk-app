@@ -1,0 +1,37 @@
+
+.date-picker-grid {
+  grid-template-columns: repeat(7, 44px);
+  grid-template-rows: repeat(7, 44px);
+  grid-row-gap: 4px;
+  display: grid;
+
+  text-align: center;
+}
+
+.date-picker-month {
+  text-align: center;
+  width: 46px * 7;
+}
+
+.date-picker-day.disabled {
+  opacity: 0.5;
+} 
+
+.date-picker-day.in-range {
+  background: lightblue;
+} 
+
+.date-picker-day.start-range {
+  background: lightblue;
+
+  border-bottom-left-radius: 50%;
+  border-top-left-radius: 50%;
+} 
+
+.date-picker-day.end-range {
+  background: lightblue;
+
+  border-bottom-right-radius: 50%;
+  border-top-right-radius: 50%;
+} 
+
