@@ -1,3 +1,4 @@
+@import 'globals';
 
 .date-picker-grid {
   grid-template-columns: repeat(7, 44px);
@@ -18,19 +19,16 @@
 } 
 
 .date-picker-day.in-range {
-  background: lightblue;
+  background: $md-light-blue-500;
+  color: white;
 } 
 
 .date-picker-day.start-range {
-  background: lightblue;
-
   border-bottom-left-radius: 50%;
   border-top-left-radius: 50%;
 } 
 
 .date-picker-day.end-range {
-  background: lightblue;
-
   border-bottom-right-radius: 50%;
   border-top-right-radius: 50%;
 } 

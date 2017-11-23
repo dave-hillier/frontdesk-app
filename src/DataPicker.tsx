@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import './DatePicker.css';
-import { Paper, Divider, Button } from 'react-md';
+import { Divider, Button, FontIcon } from 'react-md';
 import { addDays } from './dateHelpers';
 
 const today = new Date();
@@ -27,8 +27,9 @@ const MonthPanel = (props: { date: Date, disableBefore: Date, start: Date, end: 
   const daysInMonth = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
   for (let d = 0; d < daysInMonth; ++d) {
     const day = addDays(date, d);
-    const disabled = disableBefore > day ? ' disabled' : '';
-    const inRange = start < day && end > day ? ' in-range' : '';
+
+    const inRange = start <= day && end >= day ? ' in-range' : '';
+    const disabled = !inRange && disableBefore > day ? ' disabled' : '';
     const startRange = start.getTime() === day.getTime() ? ' start-range' : '';
     const endRange = end.getTime() === day.getTime() ? ' end-range' : '';
     days.push(
@@ -55,9 +56,13 @@ export class DatePicker extends React.PureComponent<{}, {}> {
 
   render() {
     return (
-      <Paper zDepth={5} style={{ borderRadius: '4px', width: '780px', margin: '50px' }}>
+      <div>
 
-        <div style={{ height: '46px', display: 'flex', flexDirection: 'row' }}>
+        <div style={{ height: '52px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <FontIcon style={{ marginLeft: '8px' }}>date_range</FontIcon>
+          <div>Start</div>
+          <div>End</div>
+
           <Button icon={true}>keyboard_arrow_left</Button>
           <Button icon={true}>keyboard_arrow_right</Button>
           <Button flat={true} disabled={true} primary={true}>Reset</Button>
@@ -68,9 +73,9 @@ export class DatePicker extends React.PureComponent<{}, {}> {
           <MonthPanel date={new Date(2017, 11, 1)} start={new Date(2017, 10, 22)} end={new Date(2017, 10, 30)} disableBefore={today} />
         </div>
         <Divider />
-        <div style={{ height: '46px' }}>
+        <div style={{ height: '52px', alignItems: 'center' }}>
           <Button flat={true} primary={true}>Done</Button>
         </div>
-      </Paper>);
+      </div>);
   }
 }
