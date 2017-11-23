@@ -68,15 +68,21 @@ const ReservationHeaders = () => (
 );
 
 // TODO: Move into search bar when its wider...
-const ConfigPlaceholder = () => (
-  <div className="md-paper md-paper--2 config-paper">
-    <div className="config-paper-cell">
-      <FontIcon style={{ color: 'white', marginLeft: '8px' }}>date_range</FontIcon>
-      <div className="config-paper-field">Start</div>
-      <div className="config-paper-field">End</div>
-    </div>
-  </div>
-);
+class ConfigPlaceholder extends React.PureComponent<{}, {}> {
+  render() {
+    return (
+      <div>
+        <div className="md-paper md-paper--2 config-paper">
+          <div className="config-paper-cell">
+            <FontIcon style={{ color: 'white', marginLeft: '8px' }}> date_range</FontIcon >
+            <div className="config-paper-field">Start</div>
+            <div className="config-paper-field">End</div>
+          </div >
+        </div >
+      </div>
+    );
+  }
+}
 
 class Table extends React.PureComponent<{
   rowHeight: number, onClick: (e: any, r: Reservation) => void, reservations: Reservation[]
@@ -123,7 +129,7 @@ class Table extends React.PureComponent<{
 
     const countAfter = reservations.length - endIndex;
     return (
-      <Paper zindex={1} className="reservation-table-grid" >
+      <Paper zDepth={1} className="reservation-table-grid" >
         <ReservationHeaders />
         <div style={{ height: startIndex * rowHeight }} />
         {reservationsToShow.map(r => this.renderItem(r, onClick))}
