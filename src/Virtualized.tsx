@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { List, ListItem } from 'react-md';
 
+// TODO: BUG: how do I fix the scrolling dependency on the window. If we depend on the window, then it vanishes when modal dialog removes the bars
 export class Virtualized<Item> extends
   React.PureComponent<
   {
