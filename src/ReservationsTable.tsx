@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Paper, FontIcon, ListItem } from 'react-md';
+import { Button, Paper, FontIcon, ListItem, DialogContainer } from 'react-md';
 
 import { Reservation } from './Model';
 import { addDays } from './dateHelpers';
@@ -7,6 +7,7 @@ import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 
 import './ReservationsPage.css';
 import { MoreVertButton } from './MoreVertButton';
+import { DatePicker } from './DataPicker';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -67,12 +68,41 @@ const ReservationHeaders = () => (
   </div>
 );
 
+class PickerContainer extends React.PureComponent<{}, { visible: boolean }> {
+  constructor(props: any) {
+    super(props);
+
+    this.state = { visible: false };
+  }
+
+  render() {
+    return (
+      <DialogContainer
+        id={`date-picker-dialog`}
+        visible={this.state.visible}
+        onHide={() => this.setState({ visible: false })}
+        dialogClassName="md-dialog--picker"
+        contentClassName="md-dialog-content--picker"
+        closeOnEsc={true}
+        focusOnMount={false}
+      >
+        <DatePicker />
+      </DialogContainer>
+    );
+  }
+  show() {
+    this.setState({ visible: true });
+  }
+}
+
 // TODO: Move into search bar when its wider...
 class ConfigPlaceholder extends React.PureComponent<{}, {}> {
+  dialog: PickerContainer | null;
   render() {
     return (
       <div>
-        <div className="md-paper md-paper--2 config-paper">
+        <PickerContainer ref={d => this.dialog = d} />
+        <div className="md-paper md-paper--2 config-paper" onClick={() => this.dialog && this.dialog.show()}>
           <div className="config-paper-cell">
             <FontIcon style={{ color: 'white', marginLeft: '8px' }}> date_range</FontIcon >
             <div className="config-paper-field">Start</div>

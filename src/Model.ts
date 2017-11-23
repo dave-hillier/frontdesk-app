@@ -1,6 +1,7 @@
 export interface Room {
 
   // TODO: looks like rooms have custom attributes for filtering purposes. E.g. View, Jacuzzi, Can accomodate cot
+  // TODO: they can also be connected to other rooms
   readonly name: string;
   readonly type: string;
   readonly cleaningStatus: 'refreshRequired' | 'cleaningRequired' | 'noAction';
@@ -44,7 +45,7 @@ export interface GuestProfile {
   readonly notes: Note[];
   readonly created: Date;
 
-  // Note - child/infant profiles seems pointless
+  // Note - child/infant profiles/details seems pointless
 }
 
 export interface BookingLine {
