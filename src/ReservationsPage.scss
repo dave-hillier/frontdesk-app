@@ -1,12 +1,13 @@
 @import 'globals';
 
-$res-grid-width: 40px;
+$res-grid-width: 26px;
+$res-grid-height: 52px;
 
 @mixin res-grid {
     display: grid;
-    grid-template-columns: repeat(60, 40px);
+    grid-template-columns: repeat(60, $res-grid-width);
     align-items: center;
-    height: 60px;
+    height: 52px;
     background: white;
     padding-left: 10px;
     padding-right: 10px;
@@ -120,7 +121,7 @@ $screen-small: 768px;
 @media screen and (min-width: 1260px) {
   .col-ref {
     display: block;
-    grid-column: span 4;
+    grid-column: span 5;
   }
 }
 
