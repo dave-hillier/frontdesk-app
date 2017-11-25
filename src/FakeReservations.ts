@@ -196,8 +196,14 @@ export async function getReservations(hotelSite: string): Promise<Reservation[]>
   });
 }
 
-export async function getAllocations(hotelSite: string, from: Date, until: Date): Promise<any> {
+export async function getBookingLines(hotelSite: string): Promise<BookingLine[]> {
   const reservations = await getReservations(hotelSite);
+  const bookingLineArrays = reservations.map(r => r.bookingLines);
+  return [].concat.apply([], bookingLineArrays);
+}
+
+export async function getAllocations(hotelSite: string, from: Date, until: Date): Promise<any> {
+  const bookingLines = await getBookingLines(hotelSite);
   const result = {};
 
   let days = subtractDates(until, from);
@@ -205,8 +211,7 @@ export async function getAllocations(hotelSite: string, from: Date, until: Date)
     result[type] = new Array(days).fill(0);
   }
 
-  for (let r of reservations) {
-    const b = r.bookingLines[0];
+  for (let b of bookingLines) {
     const arrival = b.arrival;
     const nights = b.nights;
     const departure = addDays(arrival, nights);
