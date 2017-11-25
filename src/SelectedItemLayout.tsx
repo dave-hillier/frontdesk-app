@@ -4,7 +4,6 @@ import {
   Cell,
   LinearProgress,
   CircularProgress,
-  Button,
   Card
 } from 'react-md';
 
@@ -19,6 +18,7 @@ export interface SelectItemLayoutProps<Item> {
   renderItem: (item: Item, onClickCallback: (x: any) => void) => JSX.Element;
   renderSelectedItem: (item: Item) => JSX.Element;
   dialogId: string;
+  onFabClick?: (e: any) => void;
 }
 
 export interface SelectItemLayoutState<Item> {
@@ -88,12 +88,8 @@ export class SelectItemLayout<Item> extends React.Component<SelectItemLayoutProp
       </StandardDialog>
     );
 
-    return (
-      <div>
-        <div className="fab">
-          <Button floating={true} secondary={true} primary={true}>add</Button>
-        </div>
-        {!this.props.isMobile ? <Grid><Cell>{selectedItemsList}</Cell>{selectedPreview}</Grid> : <div>{mobilePreview}{selectedItemsList}</div>}
-      </div>);
+    return !this.props.isMobile ?
+      <Grid><Cell>{selectedItemsList}</Cell>{selectedPreview}</Grid> :
+      <div>{mobilePreview}{selectedItemsList}</div>;
   }
 }
