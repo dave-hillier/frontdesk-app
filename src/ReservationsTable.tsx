@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, Paper, FontIcon, ListItem, Collapse } from 'react-md';
 
-import { Reservation } from './Model';
+import { Reservation, BookingLine } from './Model';
 import { addDays } from './dateHelpers';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 
@@ -123,7 +123,7 @@ class ConfigPlaceholder extends React.PureComponent<{}, {}> {
 }
 
 class Table extends React.PureComponent<{
-  rowHeight: number, onClick: (e: any, r: Reservation) => void, reservations: Reservation[]
+  rowHeight: number, onClick: (e: any, r: Reservation) => void, bookings: BookingLine[]
 }, { scrollPosition: number }> {
   constructor(props: any) {
     super(props);
@@ -138,8 +138,8 @@ class Table extends React.PureComponent<{
     window.removeEventListener('scroll', this.listenScrollEvent);
   }
 
-  renderItem(r: any, onClick: any) {
-    return <ReservationRow key={r.ref} reservation={r} onClick={e => onClick(e, r)} />;
+  renderItem(r: BookingLine, onClick: any) {
+    return <ReservationRow key={r.ref} reservation={r.reservation} onClick={e => onClick(e, r.reservation)} />;
   }
 
   window(count: number, numberBefore: number, numberOnScreen: number) {
@@ -161,11 +161,11 @@ class Table extends React.PureComponent<{
   }
 
   render() {
-    const { rowHeight, onClick, reservations } = this.props;
-    const { startIndex, endIndex } = this.window(reservations.length, 10, 30);
-    const reservationsToShow = reservations.slice(startIndex, endIndex);
+    const { rowHeight, onClick, bookings } = this.props;
+    const { startIndex, endIndex } = this.window(bookings.length, 10, 30);
+    const reservationsToShow = bookings.slice(startIndex, endIndex);
 
-    const countAfter = reservations.length - endIndex;
+    const countAfter = bookings.length - endIndex;
     return (
       <Paper zDepth={1} className="reservation-table-grid" >
         <ReservationHeaders />
@@ -186,7 +186,7 @@ class Table extends React.PureComponent<{
 
 // TODO: This is the whole page
 export class ReservationsTable extends React.PureComponent<{
-  reservations: Reservation[]
+  bookings: BookingLine[]
 }, {}> {
   private dialog: ReservationPreviewDialog;
 
@@ -201,7 +201,7 @@ export class ReservationsTable extends React.PureComponent<{
       <div>
         <ConfigPlaceholder />
         <ReservationPreviewDialog ref={(r: ReservationPreviewDialog) => this.dialog = r} isMobile={false} />
-        <Table rowHeight={65} reservations={this.props.reservations} onClick={(e, r) => this.show(e, r)} />
+        <Table rowHeight={65} bookings={this.props.bookings} onClick={(e, r) => this.show(e, r)} />
       </div >);
   }
 }

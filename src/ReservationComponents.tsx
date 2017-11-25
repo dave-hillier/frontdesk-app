@@ -4,7 +4,7 @@ import { ListItem, Button, Divider, FontIcon } from 'react-md';
 
 import { Tooltip } from './Tooltip';
 import { addDays } from './dateHelpers';
-import { Reservation } from './Model';
+import { Reservation, BookingLine } from './Model';
 import { ProfileShortPanel } from './ProfileComponents';
 
 const today = new Date();
@@ -85,9 +85,9 @@ export const BottomLine = (props: { balance: number, adults: number, children: n
     </div>);
 };
 
-export const ResidentItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
-  const r = props.reservation;
-  const b = r.bookingLines[0];
+export const ResidentItem = (props: { booking: BookingLine, onClick: (e: any) => void }): JSX.Element => {
+  const b = props.booking;
+  const r = b.reservation;
   const a = (b.arrival);
   const room = b.allocatedRoom;
 

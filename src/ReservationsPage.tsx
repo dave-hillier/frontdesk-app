@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { getReservations } from './FakeReservations';
-import { Reservation } from './Model';
+import { getBookingLines } from './FakeReservations';
+import { BookingLine, Reservation } from './Model';
 import { ResidentItem, ReservationPanel } from './ReservationComponents';
 import { SelectItemLayout } from './SelectedItemLayout';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
@@ -11,7 +11,7 @@ import * as Fuse from 'fuse.js';
 import './ReservationsPage.css';
 import { DialogContainer, Toolbar, Button } from 'react-md';
 
-class PageLayout extends SelectItemLayout<Reservation> { }
+class PageLayout extends SelectItemLayout<BookingLine> { }
 
 class CreateReservationDialog extends React.PureComponent<{}, {
   visible: boolean, pageX?: number, pageY?: number
@@ -81,9 +81,9 @@ export class ReservationsPage extends React.PureComponent<{
         <PageLayout
           {...this.props}
           title="Reservation"
-          getItems={getReservations}
-          renderItem={(item: Reservation, onClick: (x: any) => void) => <ResidentItem key={item.ref} reservation={item} onClick={onClick} />}
-          renderSelectedItem={i => <ReservationPanel reservation={i} />}
+          getItems={getBookingLines}
+          renderItem={(item: BookingLine, onClick: (x: any) => void) => <ResidentItem key={item.ref} booking={item} onClick={onClick} />}
+          renderSelectedItem={i => <ReservationPanel reservation={i.reservation} />}
           dialogId="reservation-dialog"
           onFabClick={() => {
             // ..
@@ -115,21 +115,21 @@ export class ReservationsTablePage extends React.PureComponent<
     filter: string
   },
   {
-    reservations: Reservation[],
+    bookings: BookingLine[],
     isLoading: boolean
   }> {
   private dialog: ReservationPreviewDialog;
 
   constructor(props: any) {
     super(props);
-    this.state = { reservations: [], isLoading: true };
+    this.state = { bookings: [], isLoading: true };
   }
 
   componentWillMount() {
-    getReservations(this.props.hotelSiteCode).then((reservations: Reservation[]) => {
+    getBookingLines(this.props.hotelSiteCode).then((bookings: BookingLine[]) => {
       // TODO: needs helper
-      reservations.sort((a, b) => a.bookingLines[0].arrival.getTime() - b.bookingLines[0].arrival.getTime());
-      this.setState({ reservations });
+      bookings.sort((a, b) => a.arrival.getTime() - b.arrival.getTime());
+      this.setState({ bookings });
       // Slight delay to remove loading...
       setTimeout(() => this.setState({ isLoading: false }), 100);
     });
@@ -146,9 +146,9 @@ export class ReservationsTablePage extends React.PureComponent<
       return <ReservationsPage {...this.props} />;
     }
 
-    const fuse = new Fuse(this.state.reservations, fuseOptions);
-    const filtered: Reservation[] = this.props.filter !== '' ? fuse.search(this.props.filter) : this.state.reservations;
-    return <ReservationsTable reservations={filtered} />;
+    const fuse = new Fuse(this.state.bookings, fuseOptions);
+    const filtered: BookingLine[] = this.props.filter !== '' ? fuse.search(this.props.filter) : this.state.bookings;
+    return <ReservationsTable bookings={filtered} />;
   }
 }
 

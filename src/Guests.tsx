@@ -8,26 +8,24 @@ import {
 } from 'react-md';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentItem } from './ReservationComponents';
-import { getReservations } from './FakeReservations';
+import { getBookingLines } from './FakeReservations';
 import { addDays } from './dateHelpers';
-import { Reservation } from './Model';
+import { BookingLine, Reservation } from './Model';
 import * as Fuse from 'fuse.js';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-function getArrivals(rez: Reservation[]) {
-  return rez.filter(r => {
-    const b = r.bookingLines[0];
+function getArrivals(rez: BookingLine[]) {
+  return rez.filter(b => {
     const d = b.arrival;
     d.setHours(0, 0, 0, 0);
     return d.getTime() === today.getTime();
   });
 }
 
-function getDepartures(rez: Reservation[]) {
-  return rez.filter(r => {
-    const b = r.bookingLines[0];
+function getDepartures(rez: BookingLine[]) {
+  return rez.filter(b => {
     const a = b.arrival;
     a.setHours(0, 0, 0, 0);
     const d = addDays(a, b.nights);
@@ -36,9 +34,8 @@ function getDepartures(rez: Reservation[]) {
   });
 }
 
-function getResidents(rez: Reservation[]) {
-  return rez.filter(r => {
-    const b = r.bookingLines[0];
+function getResidents(rez: BookingLine[]) {
+  return rez.filter(b => {
     const a = b.arrival;
     a.setHours(0, 0, 0, 0);
     const d = addDays(a, b.nights);
@@ -51,9 +48,9 @@ function getResidents(rez: Reservation[]) {
 // TODO: warning for no allocation, room state
 // TODO: billing warning for departure red/green?
 // TODO: using routes for mobile subsections
-const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
-  const r = props.reservation;
-  const b = r.bookingLines[0];
+const ArrivalItem = (props: { booking: BookingLine, onClick: (e: any) => void }): JSX.Element => {
+  const b = props.booking;
+  const r = b.reservation;
   const room = b.allocatedRoom;
   return (
     <ListItem
@@ -82,9 +79,9 @@ const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => voi
   );
 };
 
-const DepartureItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
-  const r = props.reservation;
-  const b = r.bookingLines[0];
+const DepartureItem = (props: { booking: BookingLine, onClick: (e: any) => void }): JSX.Element => {
+  const b = props.booking;
+  const r = b.reservation;
   const room = b.allocatedRoom;
 
   return (
@@ -98,7 +95,7 @@ const DepartureItem = (props: { reservation: Reservation, onClick: (e: any) => v
         <div>
           <div className="space-between-content">
             <div>{room ? 'Room: ' + room.name.toString() : ''}</div>
-            <div>{props.reservation.balance && props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
+            <div>{r.balance && r.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
           </div>
         </div>)}
       onClick={props.onClick}
@@ -115,7 +112,7 @@ const GridSection = (props: { primaryText: string, listClassName: string, childr
 
 interface Props {
   listClassName: string;
-  items: Reservation[];
+  items: BookingLine[];
   onClick: (e: any, r: Reservation) => void;
   isMobile: boolean;
   filter: string;
@@ -142,9 +139,9 @@ const fuseOptions = {
 
 const filteredList = (
   { title, items, onClick, filter, ...rest }: Props & TitleProp,
-  renderItem: (r: Reservation, onClick: (e: any, r: Reservation) => void) => void) => {
+  renderItem: (r: BookingLine, onClick: (e: any, r: Reservation) => void) => void) => {
   const fuse = new Fuse(items, fuseOptions);
-  const filtered: Reservation[] = filter ? fuse.search(filter) : items;
+  const filtered: BookingLine[] = filter ? fuse.search(filter) : items;
 
   const i = filtered.map(r => renderItem(r, onClick));
   return <GridSection primaryText={`${title} (${items.length} bookings)`} {...rest}>{...i}</ GridSection>;
@@ -152,15 +149,15 @@ const filteredList = (
 
 const Arrivals = (props: Props) => filteredList(
   { ...props, title: 'Arrivals' },
-  (r: Reservation, onClick: any) => <ArrivalItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
+  (r: BookingLine, onClick: any) => <ArrivalItem key={r.ref} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
 
 const Residents = (props: Props) => filteredList(
   { ...props, title: 'Residents' },
-  (r: Reservation, onClick: any) => <ResidentItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
+  (r: BookingLine, onClick: any) => <ResidentItem key={r.ref} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
 
 const Departures = (props: Props) => filteredList(
   { ...props, title: 'Departures' },
-  (r: Reservation, onClick: any) => <DepartureItem key={r.ref} reservation={r} onClick={(e) => onClick(e, r)} />);
+  (r: BookingLine, onClick: any) => <DepartureItem key={r.ref} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
 
 const links = [{
   label: 'Arrivals',
@@ -182,9 +179,9 @@ export interface GuestsProps {
 export interface GuestsState {
   title: string;
   currentSection: number;
-  arrivals: Reservation[];
-  residents: Reservation[];
-  departures: Reservation[];
+  arrivals: BookingLine[];
+  residents: BookingLine[];
+  departures: BookingLine[];
 }
 
 class Guests extends React.PureComponent<GuestsProps, GuestsState> {
@@ -204,7 +201,7 @@ class Guests extends React.PureComponent<GuestsProps, GuestsState> {
   }
 
   componentWillMount() {
-    getReservations(this.props.hotelSiteCode).then(rez => {
+    getBookingLines(this.props.hotelSiteCode).then(rez => {
       this.setState({
         arrivals: getArrivals(rez),
         residents: getResidents(rez),
