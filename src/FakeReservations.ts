@@ -56,6 +56,7 @@ function hashCode(str: string) {
 
 const allRooms: { [code: string]: Room[] } = {};
 const allProfiles: GuestProfile[] = [];
+const allBookingLines: BookingLine[] = [];
 
 const generated: any = {};
 function generateData(hotelCode: string): Reservation[][] {
@@ -122,30 +123,12 @@ function generateData(hotelCode: string): Reservation[][] {
       allProfiles.push(profile);
       const rate = seededChance.pickone(rates);
       const adults = seededChance.d6() > 3 ? 2 : 1;
-      const reference = 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1';
-      const bookingLine: BookingLine = {
-        ref: 'BK00' + seededChance.ssn().replace('-', '').replace('-', '') + '/1',
+      const reference = 'BK00' + seededChance.ssn().replace('-', '').replace('-', '');
 
-        arrival: arrival, // TODO: change to date?
-        nights: nights,
-        roomType: roomType,
-        allocatedRoom: theRoom,
-        rate: rate,
-        guests: {
-          adults: adults,
-          children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
-          infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
-        },
-        profiles: [],
-        masterRef: reference,
-
-        eta: seededChance.d6() === 1 ? new Date() : undefined,
-        etd: seededChance.d6() === 1 ? new Date() : undefined,
-      };
       const balance = nights * 100 + Math.floor(1 + pseudoRandom() * 100);
       const item: Reservation = {
         contact: profile,
-        bookingLines: [bookingLine],
+        bookingLines: [],
         ref: reference,
 
         balance,
@@ -170,6 +153,29 @@ function generateData(hotelCode: string): Reservation[][] {
       };
       room.push(item);
       allResevations.push(item);
+
+      const bookingLine: BookingLine = {
+        ref: '/1',
+
+        arrival: arrival, // TODO: change to date?
+        nights: nights,
+        roomType: roomType,
+        allocatedRoom: theRoom,
+        rate: rate,
+        guests: {
+          adults: adults,
+          children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
+          infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
+        },
+        profiles: [],
+
+        eta: seededChance.d6() === 1 ? new Date() : undefined,
+        etd: seededChance.d6() === 1 ? new Date() : undefined,
+
+        reservation: item
+      };
+      item.bookingLines.push(bookingLine);
+      allBookingLines.push(bookingLine);
     }
   }
   generated[hotelCode] = rez;

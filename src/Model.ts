@@ -50,7 +50,7 @@ export interface GuestProfile {
 
 export interface BookingLine {
   readonly ref: string;
-  readonly masterRef: string;
+  readonly reservation: Reservation;
 
   readonly arrival: Date;
   readonly nights: number;
