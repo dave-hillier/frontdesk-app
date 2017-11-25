@@ -12,16 +12,16 @@ import { DatePicker } from './DataPicker';
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-const ReservationRow = (props: { reservation: Reservation, onClick: (e: any) => void }) => {
-  // TODO: booking reference first?
-  const bookingLine = props.reservation.bookingLines[0];
+const ReservationRow = (props: { bookingLine: BookingLine, onClick: (e: any) => void }) => {
+  const bookingLine = props.bookingLine;
+  const reservation = props.bookingLine.reservation;
   const room = bookingLine.allocatedRoom;
 
-  const leadGuest = props.reservation.leadGuest ? props.reservation.leadGuest.firstName + ' ' + props.reservation.leadGuest.lastName : '';
+  const leadGuest = reservation.leadGuest ? reservation.leadGuest.firstName + ' ' + reservation.leadGuest.lastName : '';
 
   return (
     <div className="res-row-container md-divider-border md-divider-border--bottom" onClick={props.onClick}>
-      <div className="col-ref">{props.reservation.ref}</div>
+      <div className="col-ref">{reservation.ref + bookingLine.ref}</div>
 
       <div className="col-arrival">{bookingLine.arrival.toLocaleDateString()}</div>
       <div className="col-nights">{bookingLine.nights}</div>
@@ -31,17 +31,17 @@ const ReservationRow = (props: { reservation: Reservation, onClick: (e: any) => 
       <div className="col-roomtype">{bookingLine.roomType}</div>
 
       <div className="col-guest">{leadGuest}</div>
-      <div className="col-contact">{props.reservation.contact.firstName} {props.reservation.contact.lastName}</div>
+      <div className="col-contact">{reservation.contact.firstName} {reservation.contact.lastName}</div>
 
       <div className="col-adult">{bookingLine.guests.adults}</div>
       <div className="col-child">{bookingLine.guests.children}</div>
       <div className="col-infant">{bookingLine.guests.infants}</div>
-      <div className="col-status">{props.reservation.state}</div>
+      <div className="col-status">{reservation.state}</div>
       <div className="col-rate">{bookingLine.rate}</div>
 
-      <div className="col-ledger">{props.reservation.ledger ? props.reservation.ledger.name : ''}</div>
+      <div className="col-ledger">{reservation.ledger ? reservation.ledger.name : ''}</div>
       <div className="col-net">Net</div>
-      <div className="col-gross">{props.reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
+      <div className="col-gross">{reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
       <div className="col-actions">
         <Button icon={true}>edit</Button>
         <MoreVertButton id="dialog-more-button">
@@ -138,8 +138,8 @@ class Table extends React.PureComponent<{
     window.removeEventListener('scroll', this.listenScrollEvent);
   }
 
-  renderItem(r: BookingLine, onClick: any) {
-    return <ReservationRow key={r.ref} reservation={r.reservation} onClick={e => onClick(e, r.reservation)} />;
+  renderItem(bl: BookingLine, onClick: any) {
+    return <ReservationRow key={bl.reservation.ref + bl.ref} bookingLine={bl} onClick={e => onClick(e, bl.reservation)} />;
   }
 
   window(count: number, numberBefore: number, numberOnScreen: number) {
