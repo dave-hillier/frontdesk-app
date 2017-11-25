@@ -3,7 +3,7 @@
 Tasks
 =====
 
-- [ ] Refactor to use Booking lines
+- [x] Refactor to use Booking lines
 - [ ] finish date picker dialog desktop
 - [ ] date picker close esc and click out
 - [ ] date picker dialog mobile

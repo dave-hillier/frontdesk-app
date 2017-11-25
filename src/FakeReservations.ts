@@ -229,40 +229,6 @@ export async function getAllocations(hotelSite: string, from: Date, until: Date)
   return result;
 }
 
-// TODO: grouping function
-export async function getReservationsByRoomType(hotelSite: string) {
-  const rez = await getReservations(hotelSite);
-  const roomTypeToResPairs: { roomType: string, rez: Reservation }[] = rez.filter(r => {
-    const b = r.bookingLines[0];
-    return b.allocatedRoom;
-  }).map(r => {
-    const b = r.bookingLines[0];
-    const roomType = b.roomType;
-    return { roomType, rez: r };
-  });
-
-  let lookup: { [room: string]: Reservation[] } = {};
-  for (let i = 0; i < roomTypeToResPairs.length; ++i) {
-    if (roomTypeToResPairs[i].roomType in lookup) {
-      lookup[roomTypeToResPairs[i].roomType].push(roomTypeToResPairs[i].rez);
-    } else {
-      lookup[roomTypeToResPairs[i].roomType] = [roomTypeToResPairs[i].rez];
-    }
-  }
-
-  for (let key in lookup) {
-    if (lookup.hasOwnProperty(key)) {
-      lookup[key].sort((a: Reservation, b: Reservation) => {
-        const al = a.bookingLines[0];
-        const bl = b.bookingLines[0];
-        return al.arrival.getTime() - bl.arrival.getTime();
-      });
-    }
-  }
-
-  return lookup;
-}
-
 export async function getBookingLinesByRoom(hotelSite: string) {
   const bookingLines = await getBookingLines(hotelSite);
 
