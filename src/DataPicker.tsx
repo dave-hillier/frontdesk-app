@@ -13,8 +13,9 @@ function getMonthName(date: Date, locale: string = 'en-gb') {
   return date.toLocaleString(locale, { month: 'long' });
 }
 
-const MonthPanel = (props: { date: Date, disableBefore: Date, start: Date, end: Date }) => {
+const MonthPanel = (props: { date: Date, disableBefore: Date, start: Date, end: Date, showHeader?: boolean }) => {
   const { date, disableBefore, start, end } = props;
+  const showHeader = props.showHeader ? props.showHeader : true;
 
   const header = dayInitial.map((d, i) => <div className="date-picker-day-of-week" key={++i}>{d}</div>);
   const empty = [];
@@ -45,7 +46,7 @@ const MonthPanel = (props: { date: Date, disableBefore: Date, start: Date, end: 
     <div>
       <div className="date-picker-month">{getMonthName(date)}</div>
       <div className="date-picker-grid">
-        {header}
+        {showHeader ? header : null}
         {empty}
         {days}
       </div>

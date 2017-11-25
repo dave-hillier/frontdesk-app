@@ -19,9 +19,14 @@
 } 
 
 .date-picker-day.in-range {
-  background: $md-light-blue-500;
+  background: $md-light-blue-100;
   color: white;
 } 
+
+.date-picker-day:hover { 
+  box-shadow: 0 0 0 2pt $md-light-blue-500;
+  border-radius: 50%;
+}
 
 .date-picker-day.start-range {
   border-bottom-left-radius: 50%;
