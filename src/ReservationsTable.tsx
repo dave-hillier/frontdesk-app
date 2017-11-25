@@ -89,17 +89,14 @@ class PickerContainer extends React.PureComponent<{}, { visible: boolean }> {
 
   render() {
     return (
-      <Collapse
-        collapsed={!this.state.visible}
-        animate={true}
-      >
-
-        <DatePicker />
+      <Collapse collapsed={!this.state.visible} animate={true}>
+        <DatePicker close={() => this.setState({ visible: false })} />
       </Collapse>
     );
   }
-  toggle() {
-    this.setState({ visible: !this.state.visible });
+
+  show() {
+    this.setState({ visible: true });
   }
 }
 
@@ -110,7 +107,7 @@ class ConfigPlaceholder extends React.PureComponent<{}, {}> {
     return (
       <div>
         <PickerContainer ref={d => this.dialog = d} />
-        <div className="md-paper md-paper--2 config-paper" onClick={() => this.dialog && this.dialog.toggle()}>
+        <div className="md-paper md-paper--2 config-paper" onClick={() => this.dialog && this.dialog.show()}>
           <div className="config-paper-cell">
             <FontIcon style={{ color: 'white', marginLeft: '8px' }}> date_range</FontIcon >
             <div className="config-paper-field">Start</div>
