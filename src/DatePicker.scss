@@ -14,6 +14,7 @@
 .date-picker-month {
   text-align: center;
   width: 46px * 7;
+  line-height: 44px;
 }
 
 .date-picker-day.disabled {
@@ -50,6 +51,7 @@
 
 .date-picker-collapse {
   padding: 8px; 
+  margin: 8px;
   position: absolute;
   z-index: 18; // Above side menu? 
   background: white;

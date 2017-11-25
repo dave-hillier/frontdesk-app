@@ -56,7 +56,7 @@ const ReservationHeaders = () => (
     <div className="col-ref">Booking Ref</div>
 
     <div className="col-arrival">Arrival</div>
-    <div className="col-nights">Nights</div>
+    <div className="col-nights">Ngt</div>
     <div className="col-departure">Departure</div>
 
     <div className="col-room">Room</div>
@@ -199,7 +199,7 @@ export class ReservationsTable extends React.PureComponent<{
       <div>
         <ConfigPlaceholder />
         <ReservationPreviewDialog ref={(r: ReservationPreviewDialog) => this.dialog = r} isMobile={false} />
-        <Table rowHeight={52} reservations={this.props.reservations} onClick={(e, r) => this.show(e, r)} />
+        <Table rowHeight={65} reservations={this.props.reservations} onClick={(e, r) => this.show(e, r)} />
       </div >);
   }
 }

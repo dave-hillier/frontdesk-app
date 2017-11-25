@@ -1,13 +1,13 @@
 @import 'globals';
 
 $res-grid-width: 26px;
-$res-grid-height: 52px;
+$res-grid-height: 65px; // TODO: IDeally this would be a little smaller, 52 but the bottons grow bigger for tablet..
 
 @mixin res-grid {
     display: grid;
     grid-template-columns: repeat(60, $res-grid-width);
     align-items: center;
-    height: 52px;
+    height: $res-grid-height;
     background: white;
     padding-left: 10px;
     padding-right: 10px;
@@ -26,11 +26,11 @@ $res-grid-height: 52px;
 
 .res-row-container > .col-actions {
   display: none;
-  grid-column: span 3;
+  grid-column: span 6;
 }
 .res-row-container:hover > .col-actions {
   display: block;
-  grid-column: span 3;
+  grid-column: span 6;
 }
 
 .res-row-container:hover {
@@ -127,15 +127,7 @@ $screen-small: 768px;
   }
 }
 
-
 @media screen and (min-width: 780px) {
-  .col-contact {
-    grid-column: span 4;
-    @include text-elipsis;
-  }
-}
-
-@media screen and (min-width: 1150px) {
   .col-guest {
     display: block;
     grid-column: span 4;
@@ -143,6 +135,13 @@ $screen-small: 768px;
   }
 }
 
+@media screen and (min-width: 1150px) {
+  .col-contact {
+    display: block;
+    grid-column: span 4;
+    @include text-elipsis;
+  }
+}
 
 @media screen and (min-width: 1230px) {
   .col-adult {
