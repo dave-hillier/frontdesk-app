@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Paper, FontIcon, ListItem, DialogContainer } from 'react-md';
+import { Button, Paper, FontIcon, ListItem, Collapse } from 'react-md';
 
 import { Reservation } from './Model';
 import { addDays } from './dateHelpers';
@@ -87,21 +87,17 @@ class PickerContainer extends React.PureComponent<{}, { visible: boolean }> {
 
   render() {
     return (
-      <DialogContainer
-        id={`date-picker-dialog`}
-        visible={this.state.visible}
-        onHide={() => this.setState({ visible: false })}
-        dialogClassName="md-dialog--picker"
-        contentClassName="md-dialog-content--picker"
-        closeOnEsc={true}
-        focusOnMount={false}
+      <Collapse
+        collapsed={!this.state.visible}
+        animate={true}
       >
+
         <DatePicker />
-      </DialogContainer>
+      </Collapse>
     );
   }
-  show() {
-    this.setState({ visible: true });
+  toggle() {
+    this.setState({ visible: !this.state.visible });
   }
 }
 
@@ -112,7 +108,7 @@ class ConfigPlaceholder extends React.PureComponent<{}, {}> {
     return (
       <div>
         <PickerContainer ref={d => this.dialog = d} />
-        <div className="md-paper md-paper--2 config-paper" onClick={() => this.dialog && this.dialog.show()}>
+        <div className="md-paper md-paper--2 config-paper" onClick={() => this.dialog && this.dialog.toggle()}>
           <div className="config-paper-cell">
             <FontIcon style={{ color: 'white', marginLeft: '8px' }}> date_range</FontIcon >
             <div className="config-paper-field">Start</div>

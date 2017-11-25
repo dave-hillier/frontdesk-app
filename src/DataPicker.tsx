@@ -56,12 +56,13 @@ const MonthPanel = (props: { date: Date, disableBefore: Date, start: Date, end: 
 export class DatePicker extends React.PureComponent<{}, {}> {
   render() {
     return (
-      <div>
+      <div className="date-picker-collapse">
         <div style={{ height: '52px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <FontIcon style={{ marginLeft: '8px' }}>date_range</FontIcon>
-          <div>Start</div>
-          <div>End</div>
-
+          <div className="date-picker-start-end">
+            <FontIcon style={{ marginLeft: '8px' }}>date_range</FontIcon>
+            <div className="date-picker-start-end-field">Start</div>
+            <div className="date-picker-start-end-field">End</div>
+          </div>
           <Button icon={true}>keyboard_arrow_left</Button>
           <Button icon={true}>keyboard_arrow_right</Button>
           <Button flat={true} disabled={true} primary={true}>Reset</Button>
