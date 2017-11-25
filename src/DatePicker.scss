@@ -49,7 +49,7 @@
 .date-picker-collapse {
   padding: 8px; 
   position: absolute;
-  z-index: 12; 
+  z-index: 18; // Above side menu? 
   background: white;
   @include md-box-shadow(3);
 }
@@ -62,13 +62,13 @@
 }
 
 .date-picker-start-end-field { 
-  box-shadow: 0 0 0 1px grey;
+  box-shadow: 0 0 0 1px lightgrey;
   border-radius: 2px; 
   padding: 8px;
   opacity: 0.8;
 }
   
 .date-picker-start-end-field.selected { 
-  box-shadow: 0 0 0 1px black;
+  box-shadow: 0 0 0 2pt $md-light-blue-500;
 }
   

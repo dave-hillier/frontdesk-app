@@ -60,7 +60,7 @@ export class DatePicker extends React.PureComponent<{}, {}> {
         <div style={{ height: '52px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div className="date-picker-start-end">
             <FontIcon style={{ marginLeft: '8px' }}>date_range</FontIcon>
-            <div className="date-picker-start-end-field">Start</div>
+            <div className="date-picker-start-end-field selected">Start</div>
             <div className="date-picker-start-end-field">End</div>
           </div>
           <Button icon={true}>keyboard_arrow_left</Button>
