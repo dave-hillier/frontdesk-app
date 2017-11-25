@@ -1,12 +1,30 @@
 # Frontdesk-App
 
-- [ ] Booking lines vs Reservations
+Tasks
+=====
+
+- [ ] Refactor to use Booking lines
+- [ ] finish date picker dialog desktop
+- [ ] date picker close esc and click out
+- [ ] date picker dialog mobile
+- [ ] filter reservations by picked dates
 - [ ] Mobile reservation search results
-- [ ] Room search
+
 - [ ] Profile search 
+- [ ] table for desktop profiles
+- [ ] Profile create
+- [ ] Profile edit
+- [ ] Profile delete 
+
+- [ ] Table for desktop rooms
+- [ ] Room search
+- [ ] Room status update
+
 - [ ] Planner search
-- [ ] anchors to selected item on the select pages
-- [ ] planner scaling
+
+Ideas
+=====
+
 - [ ] internationalisation, localisation
 - [ ] Try out https://jaysoo.ca/2014/03/20/i18n-with-es2015-template-literals/
 - [ ] Backend, updates
@@ -15,6 +33,8 @@
 - [ ] a refresh thing hidden under the toolbar, springy scroll...
 
 Notes
+=====
+
 consider using application URLs to communicate with H/W
 
 https://thenounproject.com
