@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Planner.css';
-import { getReservationsByRoom, getRooms } from './FakeReservations';
-import { Room, Reservation } from './Model';
+import { getBookingLinesByRoom, getRooms } from './FakeReservations';
+import { Room, BookingLine, Reservation } from './Model';
 import { subtractDates, addDays } from './dateHelpers';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 import DateColumnHeaders from './DateColumnHeaders';
@@ -34,7 +34,7 @@ const EmptyCellBlock = (props: { days: number }): JSX.Element => {
 };
 
 export interface RoomLookup {
-  [room: string]: Reservation[];
+  [room: string]: BookingLine[];
 }
 
 const RowHeader = (props: { rowHeaderStyle: any, key: string, roomName: string }) => (
@@ -73,7 +73,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
 
   componentWillMount() {
     // TODO: get hotel by prop?
-    getReservationsByRoom(this.props.hotelSiteCode).then((l: RoomLookup) => this.setState({ lookup: l }));
+    getBookingLinesByRoom(this.props.hotelSiteCode).then((l: RoomLookup) => this.setState({ lookup: l }));
     getRooms(this.props.hotelSiteCode).then((r: Room[]) => this.setState({ roomNames: r.map(n => n.name) }));
   }
 
@@ -100,8 +100,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
         const roomReservations = this.state.lookup[this.state.roomNames[i]];
         const currentRow: {}[] = [];
         for (let j = 0; j < roomReservations.length; ++j) {
-          const r = roomReservations[j];
-          const b = r.bookingLines[0];
+          const b = roomReservations[j];
           const arrival = b.arrival;
           const nights = b.nights;
           const departure = addDays(arrival, nights);
@@ -121,7 +120,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
           }
           const size = (daysTillNext < 0 && daysTillDeparture > 0) ? ((nights + daysTillNext) * gridSize + 'px') : (nights * gridSize + 'px');
           if (daysTillNext < 0 && daysTillDeparture > 0 || daysTillNext >= 0) {
-            currentRow.push(<ReservationBlock width={size} reservation={r} onClick={(e: any) => this.dialog.show(e, r)} />);
+            currentRow.push(<ReservationBlock width={size} reservation={b.reservation} onClick={(e: any) => this.dialog.show(e, b.reservation)} />);
             currentDate = departure;
           }
 
