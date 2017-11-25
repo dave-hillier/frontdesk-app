@@ -149,15 +149,15 @@ const filteredList = (
 
 const Arrivals = (props: Props) => filteredList(
   { ...props, title: 'Arrivals' },
-  (r: BookingLine, onClick: any) => <ArrivalItem key={r.ref} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
+  (r: BookingLine, onClick: any) => <ArrivalItem key={r.refFull} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
 
 const Residents = (props: Props) => filteredList(
   { ...props, title: 'Residents' },
-  (r: BookingLine, onClick: any) => <ResidentItem key={r.ref} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
+  (r: BookingLine, onClick: any) => <ResidentItem key={r.refFull} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
 
 const Departures = (props: Props) => filteredList(
   { ...props, title: 'Departures' },
-  (r: BookingLine, onClick: any) => <DepartureItem key={r.ref} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
+  (r: BookingLine, onClick: any) => <DepartureItem key={r.refFull} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
 
 const links = [{
   label: 'Arrivals',

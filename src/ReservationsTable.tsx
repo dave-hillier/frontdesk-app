@@ -21,7 +21,7 @@ const ReservationRow = (props: { bookingLine: BookingLine, onClick: (e: any) => 
 
   return (
     <div className="res-row-container md-divider-border md-divider-border--bottom" onClick={props.onClick}>
-      <div className="col-ref">{reservation.ref + bookingLine.ref}</div>
+      <div className="col-ref">{bookingLine.refFull}</div>
 
       <div className="col-arrival">{bookingLine.arrival.toLocaleDateString()}</div>
       <div className="col-nights">{bookingLine.nights}</div>
@@ -139,7 +139,7 @@ class Table extends React.PureComponent<{
   }
 
   renderItem(bl: BookingLine, onClick: any) {
-    return <ReservationRow key={bl.reservation.ref + bl.ref} bookingLine={bl} onClick={e => onClick(e, bl.reservation)} />;
+    return <ReservationRow key={bl.refFull} bookingLine={bl} onClick={e => onClick(e, bl.reservation)} />;
   }
 
   window(count: number, numberBefore: number, numberOnScreen: number) {

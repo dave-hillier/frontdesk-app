@@ -49,7 +49,9 @@ export interface GuestProfile {
 }
 
 export interface BookingLine {
-  readonly ref: string;
+  readonly refSub: string;
+  readonly refFull: string;
+
   readonly reservation: Reservation;
 
   readonly arrival: Date;

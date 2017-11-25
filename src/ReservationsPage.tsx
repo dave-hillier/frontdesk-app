@@ -82,7 +82,7 @@ export class ReservationsPage extends React.PureComponent<{
           {...this.props}
           title="Reservation"
           getItems={getBookingLines}
-          renderItem={(item: BookingLine, onClick: (x: any) => void) => <ResidentItem key={item.ref} booking={item} onClick={onClick} />}
+          renderItem={(item: BookingLine, onClick: (x: any) => void) => <ResidentItem key={item.refFull} booking={item} onClick={onClick} />}
           renderSelectedItem={i => <ReservationPanel reservation={i.reservation} />}
           dialogId="reservation-dialog"
           onFabClick={() => {

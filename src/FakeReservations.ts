@@ -153,10 +153,10 @@ function generateData(hotelCode: string): Reservation[][] {
       };
       room.push(item);
       allResevations.push(item);
-
+      const subref = '1';
       const bookingLine: BookingLine = {
-        ref: '/1',
-
+        refSub: subref,
+        refFull: item.ref + ' / ' + subref,
         arrival: arrival, // TODO: change to date?
         nights: nights,
         roomType: roomType,

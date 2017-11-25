@@ -133,27 +133,31 @@ const BookingLineRow = (props: { bookingLine: BookingLine }) => {
   const { bookingLine } = props;
   return (
     <div>
-      <div className="rd-row">
-        <div className="rd-tile-icon"><FontIcon>date_range</FontIcon></div>
-        <Value title={'Arrival'}>{bookingLine.arrival.toLocaleDateString()}</Value>
-        <Value title={'Nights'}>{bookingLine.nights}</Value>
-        <Value title={'Departure'}>{addDays(bookingLine.arrival, bookingLine.nights).toLocaleDateString()}</Value>
-      </div>
-      <div className="rd-row">
-        <div className="rd-tile-icon"><FontIcon>schedule</FontIcon></div>
-        <Value title="ETA">{bookingLine.eta ? bookingLine.eta.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Value>
-        <Value title="ETD">{bookingLine.etd ? bookingLine.etd.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Value>
+      <div className="rd-grid">
+        <div className="rd-row">
+          <div className="rd-tile-icon"><FontIcon>date_range</FontIcon></div>
+          <Value title={'Arrival'}>{bookingLine.arrival.toLocaleDateString()}</Value>
+          <Value title={'Nights'}>{bookingLine.nights}</Value>
+          <Value title={'Departure'}>{addDays(bookingLine.arrival, bookingLine.nights).toLocaleDateString()}</Value>
+        </div>
+        <div className="rd-row">
+          <div className="rd-tile-icon"><FontIcon>schedule</FontIcon></div>
+          <Value title="ETA">{bookingLine.eta ? bookingLine.eta.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Value>
+          <Value title="ETD">{bookingLine.etd ? bookingLine.etd.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Value>
 
-        <Value title="Guests"><People adults={1} children={0} infants={0} /></Value>
+          <Value title="Guests"><People adults={1} children={0} infants={0} /></Value>
+        </div>
+        <div className="rd-row2">
+          <div className="rd-tile-icon"><FontIcon>hotel</FontIcon></div>
+          <Value title="Room Type">{bookingLine.roomType}</Value>
+          <Value title="Allocated Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</Value>
+        </div>
+        <div>
+          <Value title="Rate">{bookingLine.rate}</Value>
+        </div>
+
       </div>
-      <div className="rd-row2">
-        <div className="rd-tile-icon"><FontIcon>hotel</FontIcon></div>
-        <Value title="Room Type">{bookingLine.roomType}</Value>
-        <Value title="Allocated Room">{bookingLine.allocatedRoom ? bookingLine.allocatedRoom.name : ''}</Value>
-      </div>
-      <div>
-        <Value title="Rate">{bookingLine.rate}</Value>
-      </div>
+      <Divider />
     </div>);
 };
 
@@ -165,8 +169,8 @@ export const ReservationPanel = (props: { reservation: Reservation }) => {
 
   return (
     <div>
+      {reservation.bookingLines.map(bl => <BookingLineRow key={bl.refFull} bookingLine={bl} />)}
       <div className="rd-grid">
-        {reservation.bookingLines.map(bl => <BookingLineRow key={reservation.ref + bl.ref} bookingLine={bl} />)};
         <div className="rd-row2">
           <div className="rd-tile-icon"><FontIcon>pie_chart</FontIcon></div>
           <Value title="Media Source">{reservation.mediaSource}</Value>

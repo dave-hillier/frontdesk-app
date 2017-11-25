@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Planner.css';
 import { getBookingLinesByRoom, getRooms } from './FakeReservations';
-import { Room, BookingLine, Reservation } from './Model';
+import { Room, BookingLine } from './Model';
 import { subtractDates, addDays } from './dateHelpers';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 import DateColumnHeaders from './DateColumnHeaders';
@@ -46,14 +46,14 @@ const RowHeader = (props: { rowHeaderStyle: any, key: string, roomName: string }
     {props.roomName}
   </div>);
 
-const ReservationBlock = (props: { reservation: Reservation, width: string, onClick: any }) => (
+const ReservationBlock = (props: { booking: BookingLine, width: string, onClick: any }) => (
   <div
-    key={props.reservation.ref}
+    key={props.booking.refFull}
     style={{ width: props.width }}
     onClick={props.onClick}
     className="md-font-bold md-divider-border md-divider-border--bottom md-divider-border--right grid-cell rez-cell"
   >
-    {props.reservation.contact.lastName}
+    {props.booking.reservation.contact.lastName}
   </div>
 );
 
@@ -120,7 +120,7 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
           }
           const size = (daysTillNext < 0 && daysTillDeparture > 0) ? ((nights + daysTillNext) * gridSize + 'px') : (nights * gridSize + 'px');
           if (daysTillNext < 0 && daysTillDeparture > 0 || daysTillNext >= 0) {
-            currentRow.push(<ReservationBlock width={size} reservation={b.reservation} onClick={(e: any) => this.dialog.show(e, b.reservation)} />);
+            currentRow.push(<ReservationBlock width={size} booking={b} onClick={(e: any) => this.dialog.show(e, b.reservation)} />);
             currentDate = departure;
           }
 
