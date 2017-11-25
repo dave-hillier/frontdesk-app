@@ -10,8 +10,8 @@ Tasks
 - [ ] filter reservations by picked dates
 - [ ] Mobile reservation search results
 
-- [ ] reservation dialog to show booking lines
-- [ ] guests page to use booking lines
+- [x] reservation dialog to show booking lines
+- [x] guests page to use booking lines
 
 - [ ] Profile search 
 - [ ] table for desktop profiles
@@ -28,6 +28,7 @@ Tasks
 - [ ] Availability summary
 - [ ] availability should subtract to show remaining rooms
 - [ ] Full screen room/calendar control
+- [ ] rationalize search boxes
 
 Ideas
 =====

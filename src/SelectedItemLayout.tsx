@@ -18,7 +18,6 @@ export interface SelectItemLayoutProps<Item> {
   renderItem: (item: Item, onClickCallback: (x: any) => void) => JSX.Element;
   renderSelectedItem: (item: Item) => JSX.Element;
   dialogId: string;
-  onFabClick?: (e: any) => void;
 }
 
 export interface SelectItemLayoutState<Item> {

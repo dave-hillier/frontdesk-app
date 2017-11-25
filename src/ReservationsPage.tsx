@@ -64,6 +64,13 @@ class CreateReservationDialog extends React.PureComponent<{}, {
     );
   }
 }
+
+const FabButton = (props: any) => (
+  <div className="fab">
+    <Button floating={true} secondary={true} primary={true} {...props}>add</Button>
+  </div>
+);
+
 // TODO: only used for mobile view, get rid of the dependency
 export class ReservationsPage extends React.PureComponent<{
   isMobile: boolean,
@@ -75,9 +82,7 @@ export class ReservationsPage extends React.PureComponent<{
     return (
       <div>
         <CreateReservationDialog ref={el => this.dialog = el} />
-        <div className="fab">
-          <Button floating={true} secondary={true} primary={true} onClick={(e) => this.dialog && this.dialog.show(e)}>add</Button>
-        </div>
+        <FabButton onClick={(e: any) => this.dialog && this.dialog.show(e)} />
         <PageLayout
           {...this.props}
           title="Reservation"
@@ -85,9 +90,6 @@ export class ReservationsPage extends React.PureComponent<{
           renderItem={(item: BookingLine, onClick: (x: any) => void) => <ResidentItem key={item.refFull} booking={item} onClick={onClick} />}
           renderSelectedItem={i => <ReservationPanel reservation={i.reservation} />}
           dialogId="reservation-dialog"
-          onFabClick={() => {
-            // ..
-          }}
         />
       </div >);
   }
