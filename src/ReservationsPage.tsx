@@ -127,6 +127,7 @@ export class ReservationsTablePage extends React.PureComponent<
 
   componentWillMount() {
     getReservations(this.props.hotelSiteCode).then((reservations: Reservation[]) => {
+      // TODO: needs helper
       reservations.sort((a, b) => a.bookingLines[0].arrival.getTime() - b.bookingLines[0].arrival.getTime());
       this.setState({ reservations });
       // Slight delay to remove loading...

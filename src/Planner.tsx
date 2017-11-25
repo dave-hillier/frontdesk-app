@@ -101,8 +101,9 @@ export default class Planner extends React.Component<{ isMobile: boolean, hotelS
         const currentRow: {}[] = [];
         for (let j = 0; j < roomReservations.length; ++j) {
           const r = roomReservations[j];
-          const arrival = r.bookingLines[0].arrival;
-          const nights = r.bookingLines[0].nights;
+          const b = r.bookingLines[0];
+          const arrival = b.arrival;
+          const nights = b.nights;
           const departure = addDays(arrival, nights);
           const daysTillNext = subtractDates(arrival, currentDate);
           const daysTillDeparture = subtractDates(departure, currentDate);

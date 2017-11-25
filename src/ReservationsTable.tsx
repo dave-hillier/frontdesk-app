@@ -14,28 +14,30 @@ today.setHours(0, 0, 0, 0);
 
 const ReservationRow = (props: { reservation: Reservation, onClick: (e: any) => void }) => {
   // TODO: booking reference first?
-  const room = props.reservation.bookingLines[0].allocatedRoom;
+  const bookingLine = props.reservation.bookingLines[0];
+  const room = bookingLine.allocatedRoom;
+
   const leadGuest = props.reservation.leadGuest ? props.reservation.leadGuest.firstName + ' ' + props.reservation.leadGuest.lastName : '';
 
   return (
     <div className="res-row-container md-divider-border md-divider-border--bottom" onClick={props.onClick}>
       <div className="col-ref">{props.reservation.ref}</div>
 
-      <div className="col-arrival">{props.reservation.bookingLines[0].arrival.toLocaleDateString()}</div>
-      <div className="col-nights">{props.reservation.bookingLines[0].nights}</div>
-      <div className="col-departure">{addDays(props.reservation.bookingLines[0].arrival, props.reservation.bookingLines[0].nights).toLocaleDateString()}</div>
+      <div className="col-arrival">{bookingLine.arrival.toLocaleDateString()}</div>
+      <div className="col-nights">{bookingLine.nights}</div>
+      <div className="col-departure">{addDays(bookingLine.arrival, bookingLine.nights).toLocaleDateString()}</div>
 
       <div className="col-room">{room ? room.name : ''}</div>
-      <div className="col-roomtype">{props.reservation.bookingLines[0].roomType}</div>
+      <div className="col-roomtype">{bookingLine.roomType}</div>
 
       <div className="col-guest">{leadGuest}</div>
       <div className="col-contact">{props.reservation.contact.firstName} {props.reservation.contact.lastName}</div>
 
-      <div className="col-adult">{props.reservation.bookingLines[0].guests.adults}</div>
-      <div className="col-child">{props.reservation.bookingLines[0].guests.children}</div>
-      <div className="col-infant">{props.reservation.bookingLines[0].guests.infants}</div>
+      <div className="col-adult">{bookingLine.guests.adults}</div>
+      <div className="col-child">{bookingLine.guests.children}</div>
+      <div className="col-infant">{bookingLine.guests.infants}</div>
       <div className="col-status">{props.reservation.state}</div>
-      <div className="col-rate">{props.reservation.bookingLines[0].rate}</div>
+      <div className="col-rate">{bookingLine.rate}</div>
 
       <div className="col-ledger">{props.reservation.ledger ? props.reservation.ledger.name : ''}</div>
       <div className="col-net">Net</div>

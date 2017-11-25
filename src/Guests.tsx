@@ -17,28 +17,31 @@ const today = new Date();
 today.setHours(0, 0, 0, 0);
 
 function getArrivals(rez: Reservation[]) {
-  return rez.filter(res => {
-    const d = res.bookingLines[0].arrival;
+  return rez.filter(r => {
+    const b = r.bookingLines[0];
+    const d = b.arrival;
     d.setHours(0, 0, 0, 0);
     return d.getTime() === today.getTime();
   });
 }
 
 function getDepartures(rez: Reservation[]) {
-  return rez.filter(res => {
-    const a = res.bookingLines[0].arrival;
+  return rez.filter(r => {
+    const b = r.bookingLines[0];
+    const a = b.arrival;
     a.setHours(0, 0, 0, 0);
-    const d = addDays(a, res.bookingLines[0].nights);
+    const d = addDays(a, b.nights);
 
     return d.getTime() === today.getTime();
   });
 }
 
 function getResidents(rez: Reservation[]) {
-  return rez.filter(res => {
-    const a = res.bookingLines[0].arrival;
+  return rez.filter(r => {
+    const b = r.bookingLines[0];
+    const a = b.arrival;
     a.setHours(0, 0, 0, 0);
-    const d = addDays(a, res.bookingLines[0].nights);
+    const d = addDays(a, b.nights);
 
     return d.getTime() > today.getTime() &&
       a.getTime() < today.getTime();
@@ -50,7 +53,8 @@ function getResidents(rez: Reservation[]) {
 // TODO: using routes for mobile subsections
 const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
-  const room = r.bookingLines[0].allocatedRoom;
+  const b = r.bookingLines[0];
+  const room = b.allocatedRoom;
   return (
     <ListItem
       className="md-divider-border md-divider-border--bottom"
@@ -64,13 +68,13 @@ const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => voi
             roomName={room ? 'Room: '
               + room.name.toString() : ''}
             roomType={room ? room.type : ''}
-            nights={r.bookingLines[0].nights}
+            nights={b.nights}
           />
           <BottomLine
             balance={r.balance ? r.balance : 0}
-            adults={r.bookingLines[0].guests.adults}
-            children={r.bookingLines[0].guests.children}
-            infants={r.bookingLines[0].guests.infants}
+            adults={b.guests.adults}
+            children={b.guests.children}
+            infants={b.guests.infants}
           />
         </div>)}
       onClick={props.onClick}
@@ -80,7 +84,8 @@ const ArrivalItem = (props: { reservation: Reservation, onClick: (e: any) => voi
 
 const DepartureItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
-  const room = r.bookingLines[0].allocatedRoom;
+  const b = r.bookingLines[0];
+  const room = b.allocatedRoom;
 
   return (
     <ListItem

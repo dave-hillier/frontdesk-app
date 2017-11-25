@@ -87,8 +87,9 @@ export const BottomLine = (props: { balance: number, adults: number, children: n
 
 export const ResidentItem = (props: { reservation: Reservation, onClick: (e: any) => void }): JSX.Element => {
   const r = props.reservation;
-  const a = (r.bookingLines[0].arrival);
-  const room = r.bookingLines[0].allocatedRoom;
+  const b = r.bookingLines[0];
+  const a = (b.arrival);
+  const room = b.allocatedRoom;
 
   return (
     <ListItem
@@ -97,20 +98,20 @@ export const ResidentItem = (props: { reservation: Reservation, onClick: (e: any
         <ResidentsTopLine
           name={`${r.contact.firstName} ${r.contact.lastName}`}
           arrival={a}
-          departure={addDays(a, r.bookingLines[0].nights)}
+          departure={addDays(a, b.nights)}
         />)}
       secondaryText={(
         <div>
           <MiddleLine
             roomName={room ? ('Room: ' + room.name) : ''}
-            roomType={r.bookingLines[0].roomType}
-            nights={r.bookingLines[0].nights}
+            roomType={b.roomType}
+            nights={b.nights}
           />
           <BottomLine
             balance={r.balance ? r.balance : 0}
-            adults={r.bookingLines[0].guests.adults}
-            children={r.bookingLines[0].guests.children}
-            infants={r.bookingLines[0].guests.infants}
+            adults={b.guests.adults}
+            children={b.guests.children}
+            infants={b.guests.infants}
           />
         </div>)}
       onClick={props.onClick}
