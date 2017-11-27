@@ -33,6 +33,7 @@ const MonthPanel = (props: { date: Date, disableBefore: Date, start?: Date, end?
     const disabled = !inRange && disableBefore > day ? ' disabled' : '';
     const startRange = start && end && start.getTime() === day.getTime() ? ' start-range' : '';
     const endRange = start && end && end.getTime() === day.getTime() ? ' end-range' : '';
+
     days.push(
       <div
         key={'dpd' + d.toString()}

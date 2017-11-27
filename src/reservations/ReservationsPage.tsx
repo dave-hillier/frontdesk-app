@@ -60,7 +60,7 @@ const fuseOptions = {
   ]
 };
 
-export class ReservationsTablePage extends React.PureComponent<
+export class ReservationsPage extends React.PureComponent<
   {
     isMobile: boolean,
     hotelSiteCode: string,
@@ -104,4 +104,4 @@ export class ReservationsTablePage extends React.PureComponent<
   }
 }
 
-export default ReservationsTablePage;
+export default ReservationsPage;
