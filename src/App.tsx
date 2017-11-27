@@ -12,7 +12,7 @@ import * as Rx from 'rx-lite';
 import Guests from './Guests';
 import Availability from './Availability';
 import Planner from './Planner';
-import MobileSearch from './SearchBox';
+import MobileSearch from './MobileSearch';
 import LaunchScreen from './LaunchScreen';
 import RoomsPage from './RoomsPage';
 import ReservationsPage from './reservations/ReservationsPage';
