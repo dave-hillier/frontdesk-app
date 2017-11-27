@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import { getBookingLines } from '../FakeReservations';
-import { BookingLine, Reservation } from '../Model';
-import { ResidentItem, ReservationPanel } from './ReservationComponents';
+import { getBookingLines } from '../model/FakeData';
+import { BookingLine, Reservation } from '../model/Model';
 import { SelectItemLayout } from '../SelectedItemLayout';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 import * as Fuse from 'fuse.js';
@@ -10,6 +9,8 @@ import * as Fuse from 'fuse.js';
 import './ReservationsPage.css';
 import { DialogContainer, Toolbar, Button } from 'react-md';
 import { ReservationsTable } from './FullPage';
+import { ReservationPanel } from './ReservationPanel';
+import { ResidentListItem } from './ReservationListItems';
 
 class PageLayout extends SelectItemLayout<BookingLine> { }
 
@@ -87,7 +88,7 @@ export class MobileReservationsPage extends React.PureComponent<{
           {...this.props}
           title="Reservation"
           getItems={getBookingLines}
-          renderItem={(item: BookingLine, onClick: (x: any) => void) => <ResidentItem key={item.refFull} booking={item} onClick={onClick} />}
+          renderItem={(item: BookingLine, onClick: (x: any) => void) => <ResidentListItem key={item.refFull} booking={item} onClick={onClick} />}
           renderSelectedItem={i => <ReservationPanel reservation={i.reservation} />}
           dialogId="reservation-dialog"
         />

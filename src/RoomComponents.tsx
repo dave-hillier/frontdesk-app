@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ListItem } from 'react-md';
 
-import { Room } from './Model';
+import { Room } from './model/Model';
 
 export const RoomListItem = (props: { item: Room, onClick: (x: any) => void }) => {
   return (

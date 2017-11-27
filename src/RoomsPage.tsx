@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { getRooms } from './FakeReservations';
-import { Room } from './Model';
+import { getRooms } from './model/FakeData';
+import { Room } from './model/Model';
 import { SelectItemLayout } from './SelectedItemLayout';
 import { RoomListItem, RoomPanel } from './RoomComponents';
 

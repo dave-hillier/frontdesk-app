@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { getProfiles } from './FakeReservations';
-import { GuestProfile } from './Model';
+import { getProfiles } from './model/FakeData';
+import { GuestProfile } from './model/Model';
 import { SelectItemLayout } from './SelectedItemLayout';
 import { ProfileListItem, ProfilePanel } from './ProfileComponents';
 

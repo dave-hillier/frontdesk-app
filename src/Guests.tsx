@@ -7,15 +7,16 @@ import {
   FontIcon
 } from 'react-md';
 import { ReservationPreviewDialog } from './reservations/ReservationPreviewDialog';
-import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentItem } from './reservations/ReservationComponents';
-import { getBookingLines } from './FakeReservations';
-import { addDays } from './dateHelpers';
-import { BookingLine, Reservation } from './Model';
+import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentListItem } from './reservations/ReservationListItems';
+import { getBookingLines } from './model/FakeData';
+import { addDays } from './util';
+import { BookingLine, Reservation } from './model/Model';
 import * as Fuse from 'fuse.js';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
+// TODO: push onto model
 function getArrivals(rez: BookingLine[]) {
   return rez.filter(b => {
     const d = b.arrival;
@@ -153,7 +154,7 @@ const Arrivals = (props: Props) => filteredList(
 
 const Residents = (props: Props) => filteredList(
   { ...props, title: 'Residents' },
-  (r: BookingLine, onClick: any) => <ResidentItem key={r.refFull} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
+  (r: BookingLine, onClick: any) => <ResidentListItem key={r.refFull} booking={r} onClick={(e) => onClick(e, r.reservation)} />);
 
 const Departures = (props: Props) => filteredList(
   { ...props, title: 'Departures' },

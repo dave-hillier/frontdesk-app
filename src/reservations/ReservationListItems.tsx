@@ -3,8 +3,8 @@ import * as React from 'react';
 import { ListItem } from 'react-md';
 
 import { Tooltip } from '../Tooltip';
-import { addDays } from '../dateHelpers';
-import { BookingLine } from '../Model';
+import { addDays } from '../util';
+import { BookingLine } from '../model/Model';
 import { People } from './GuestIcons';
 
 const today = new Date();
@@ -66,7 +66,7 @@ export const BottomLine = (props: { balance: number, adults: number, children: n
     </div>);
 };
 
-export const ResidentItem = (props: { booking: BookingLine, onClick: (e: any) => void }): JSX.Element => {
+export const ResidentListItem = (props: { booking: BookingLine, onClick: (e: any) => void }): JSX.Element => {
   const b = props.booking;
   const r = b.reservation;
   const a = (b.arrival);

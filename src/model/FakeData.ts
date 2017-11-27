@@ -1,5 +1,5 @@
 
-import { addDays, subtractDates } from './dateHelpers';
+import { addDays, subtractDates } from '../util';
 import { Chance } from 'chance';
 import { Room, Reservation, GuestProfile, BookingLine } from './Model';
 

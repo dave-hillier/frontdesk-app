@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Allocations.css';
 
-import { addDays } from './dateHelpers';
+import { addDays } from './util';
 import { DateHeader } from './DateHeader';
 
 const DateColumnHeaders = (props: { start: Date, days: number }): JSX.Element => {

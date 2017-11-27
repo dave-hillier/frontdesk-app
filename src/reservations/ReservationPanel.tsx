@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import {  Button, Divider, FontIcon } from 'react-md';
+import { Button, Divider, FontIcon } from 'react-md';
 
-import { addDays } from '../dateHelpers';
-import { Reservation, BookingLine } from '../Model';
+import { addDays } from '../util';
+import { Reservation, BookingLine } from '../model/Model';
 import { ProfileShortPanel } from '../ProfileComponents';
 import { People } from './GuestIcons';
 

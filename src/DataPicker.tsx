@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import './DatePicker.css';
 import { Divider, Button, FontIcon } from 'react-md';
-import { addDays } from './dateHelpers';
+import { addDays } from './util';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);

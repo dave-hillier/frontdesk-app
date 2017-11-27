@@ -1,9 +1,9 @@
 import * as React from 'react';
 import './Availability.css';
 
-import { getRoomTypes, getAllocations } from './FakeReservations';
+import { getRoomTypes, getAllocations } from './model/FakeData';
 import DateColumnHeaders from './DateColumnHeaders';
-import { addDays } from './dateHelpers';
+import { addDays } from './util';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);

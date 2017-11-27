@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { Reservation } from '../Model';
+import { Reservation } from '../model/Model';
 import { StandardDialog } from '../StandardDialog';
-import { ReservationPanel } from './ReservationComponents';
+import { ReservationPanel } from './ReservationPanel';
 
 import './ReservationDialog.css';
 

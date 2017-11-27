@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Reservation, BookingLine } from '../Model';
+import { Reservation, BookingLine } from '../model/Model';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 
 import './ReservationsPage.css';

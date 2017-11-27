@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Button, Paper, ListItem } from 'react-md';
 
-import { Reservation, BookingLine } from '../Model';
-import { addDays } from '../dateHelpers';
+import { Reservation, BookingLine } from '../model/Model';
+import { addDays } from '../util';
 
 import './ReservationsPage.css';
 import { MoreVertButton } from '../MoreVertButton';

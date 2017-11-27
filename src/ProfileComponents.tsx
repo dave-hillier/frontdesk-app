@@ -4,7 +4,7 @@ import {
   ListItem
 } from 'react-md';
 
-import { Address, GuestProfile } from './Model';
+import { Address, GuestProfile } from './model/Model';
 
 export function formatAddress(address: Address): string {
   const parts = [address.building, address.streetAddress, address.postalTown, address.postCode, address.countryRegion];
