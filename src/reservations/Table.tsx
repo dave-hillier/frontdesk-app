@@ -6,6 +6,7 @@ import { addDays } from '../util';
 
 import './ReservationsPage.css';
 import { MoreVertButton } from '../MoreVertButton';
+import { Virtualized } from '../Virtualized';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -78,65 +79,27 @@ const ColumnHeaders = () => (
   </div>
 );
 
-// TODO: create/use Virtualized HOC
 export class Table extends React.PureComponent<{
   rowHeight: number, onClick: (e: any, r: Reservation) => void, bookings: BookingLine[]
-}, { scrollPosition: number }> {
-  constructor(props: any) {
-    super(props);
-    this.state = { scrollPosition: 0 };
-  }
-
-  componentWillMount() {
-    window.addEventListener('scroll', this.listenScrollEvent);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.listenScrollEvent);
-  }
+}, { }> {
 
   renderItem(bl: BookingLine, onClick: any) {
     return <BookingRow key={bl.refFull} bookingLine={bl} onClick={e => onClick(e, bl.reservation)} />;
   }
 
-  window(count: number, numberBefore: number, numberOnScreen: number) {
-    let endIndex = this.state.scrollPosition + numberOnScreen;
-    if (endIndex > count) {
-      endIndex = count;
-    }
-
-    let startIndex = this.state.scrollPosition - numberBefore;
-    if (startIndex < 0) {
-      startIndex = 0;
-    }
-
-    if (startIndex > endIndex - numberOnScreen) {
-      startIndex = endIndex - numberOnScreen;
-    }
-
-    return { startIndex, endIndex };
-  }
-
   render() {
     const { rowHeight, onClick, bookings } = this.props;
-    const { startIndex, endIndex } = this.window(bookings.length, 10, 30);
-    const reservationsToShow = bookings.slice(startIndex, endIndex);
 
-    const countAfter = bookings.length - endIndex;
     return (
       <Paper zDepth={1} className="reservation-table-grid" >
         <ColumnHeaders />
-        <div style={{ height: startIndex * rowHeight }} />
-        {reservationsToShow.map(r => this.renderItem(r, onClick))}
-        <div style={{ height: countAfter * rowHeight }} />
+        <Virtualized
+          numberBefore={10}
+          numberOnScreen={30}
+          rowHeight={rowHeight}
+          collection={bookings}
+          renderItem={(r: BookingLine) => this.renderItem(r, onClick)}
+        />
       </Paper>);
-  }
-
-  private listenScrollEvent = (e: any) => {
-    if (document.scrollingElement) {
-      const offsetFromTop = document.scrollingElement.scrollTop;
-      const scrollPosition = Math.floor(offsetFromTop / this.props.rowHeight);
-      this.setState({ scrollPosition });
-    }
   }
 }
