@@ -95,7 +95,7 @@ export class MobileSearchDialog extends React.Component<{ id: string, area: any,
   }
 }
 
-export default class SearchBox extends React.Component<{ data: any, mobile: boolean }, { open: boolean }> {
+export default class MobileSearch extends React.Component<{ data: any, mobile: boolean }, { open: boolean }> {
   constructor(props: any) {
     super(props);
     this.state = { open: false };

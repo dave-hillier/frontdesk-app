@@ -12,7 +12,7 @@ import * as Rx from 'rx-lite';
 import Guests from './Guests';
 import Availability from './Availability';
 import Planner from './Planner';
-import SearchBox from './SearchBox';
+import MobileSearch from './SearchBox';
 import LaunchScreen from './LaunchScreen';
 import RoomsPage from './RoomsPage';
 import ReservationsPage from './reservations/ReservationsPage';
@@ -179,7 +179,7 @@ class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: num
                 /> : null}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : ''}</div>}
               toolbarActions={<div className="toolbar-actions">
-                {isMobile ? <SearchBox data={['rez1', 'rez2', 'rez3']} mobile={isMobile} /> : null}
+                {isMobile ? <MobileSearch data={['rez1', 'rez2', 'rez3']} mobile={isMobile} /> : null}
                 {!isMobile ? <AccountMenu /> : null}
               </div>}
               navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
