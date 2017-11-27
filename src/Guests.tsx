@@ -8,43 +8,11 @@ import {
 } from 'react-md';
 import { ReservationPreviewDialog } from './reservations/ReservationPreviewDialog';
 import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentListItem } from './reservations/ReservationListItems';
-import { getBookingLines } from './model/FakeData';
-import { addDays } from './util';
 import { BookingLine, Reservation } from './model/Model';
 import * as Fuse from 'fuse.js';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
-
-// TODO: push onto model
-function getArrivals(rez: BookingLine[]) {
-  return rez.filter(b => {
-    const d = b.arrival;
-    d.setHours(0, 0, 0, 0);
-    return d.getTime() === today.getTime();
-  });
-}
-
-function getDepartures(rez: BookingLine[]) {
-  return rez.filter(b => {
-    const a = b.arrival;
-    a.setHours(0, 0, 0, 0);
-    const d = addDays(a, b.nights);
-
-    return d.getTime() === today.getTime();
-  });
-}
-
-function getResidents(rez: BookingLine[]) {
-  return rez.filter(b => {
-    const a = b.arrival;
-    a.setHours(0, 0, 0, 0);
-    const d = addDays(a, b.nights);
-
-    return d.getTime() > today.getTime() &&
-      a.getTime() < today.getTime();
-  });
-}
 
 // TODO: warning for no allocation, room state
 // TODO: billing warning for departure red/green?
@@ -175,14 +143,17 @@ export interface GuestsProps {
   isMobile: boolean;
   hotelSiteCode: string;
   search: string;
+  isLoading: boolean;
+
+  arrivals: BookingLine[];
+  residents: BookingLine[];
+  departures: BookingLine[];
 }
 
 export interface GuestsState {
   title: string;
   currentSection: number;
-  arrivals: BookingLine[];
-  residents: BookingLine[];
-  departures: BookingLine[];
+
 }
 
 class Guests extends React.PureComponent<GuestsProps, GuestsState> {
@@ -194,27 +165,14 @@ class Guests extends React.PureComponent<GuestsProps, GuestsState> {
 
     this.state = {
       title: '',
-      currentSection: 0,
-      arrivals: [],
-      residents: [],
-      departures: []
+      currentSection: 0
     };
-  }
-
-  componentWillMount() {
-    getBookingLines(this.props.hotelSiteCode).then(rez => {
-      this.setState({
-        arrivals: getArrivals(rez),
-        residents: getResidents(rez),
-        departures: getDepartures(rez)
-      });
-    });
   }
 
   render() {
     const arrivals = (
       <Arrivals
-        items={this.state.arrivals}
+        items={this.props.arrivals}
         onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
         listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
         isMobile={this.props.isMobile}
@@ -223,7 +181,7 @@ class Guests extends React.PureComponent<GuestsProps, GuestsState> {
 
     const residents = (
       <Residents
-        items={this.state.residents}
+        items={this.props.residents}
         onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
         listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
         isMobile={this.props.isMobile}
@@ -231,7 +189,7 @@ class Guests extends React.PureComponent<GuestsProps, GuestsState> {
       />);
     const departures = (
       <Departures
-        items={this.state.departures}
+        items={this.props.departures}
         onClick={(e: any, r: Reservation) => this.dialog.show(e, r)}
         listClassName={!this.props.isMobile ? 'md-cell md-paper md-paper--1' : ''}
         isMobile={this.props.isMobile}

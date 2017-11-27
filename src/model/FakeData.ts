@@ -1,7 +1,7 @@
 
 import { addDays, subtractDates } from '../util';
 import { Chance } from 'chance';
-import { Room, Reservation, GuestProfile, BookingLine } from './Model';
+import { Room, Reservation, GuestProfile, BookingLine, AppState } from './Model';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -258,4 +258,94 @@ export async function getBookingLinesByRoom(hotelSite: string) {
   }
 
   return lookup;
+}
+
+export const MobileMinWidth = 320;
+export const TabletMinWidth = 768;
+
+function matchesMedia(min: number, max?: number) {
+  let media = `screen and (min-width: ${min}px)`;
+  if (max) {
+    media += ` and (max-width: ${max}px)`;
+  }
+
+  return window.matchMedia(media).matches;
+}
+
+const isMobile = matchesMedia(MobileMinWidth, TabletMinWidth - 1);
+
+const initialState: AppState = {
+  isLaunching: true,
+  isMobile,
+  currentSite: '0'
+};
+
+const loadedState: AppState = {
+  isLaunching: false,
+  currentSite: '0',
+  isMobile,
+  sites: ['Hotel Site A', 'Hotel Site B', 'Hotel Site C'],
+
+  userDetails: {
+    userName: 'hillierd',
+    userInitials: 'DH'
+  },
+
+  guests: {
+    isLoading: true,
+    arrivals: [],
+    departures: [],
+    residents: []
+  }
+};
+
+// TODO: push onto model
+function getArrivals(rez: BookingLine[]) {
+  return rez.filter(b => {
+    const d = b.arrival;
+    d.setHours(0, 0, 0, 0);
+    return d.getTime() === today.getTime();
+  });
+}
+
+function getDepartures(rez: BookingLine[]) {
+  return rez.filter(b => {
+    const a = b.arrival;
+    a.setHours(0, 0, 0, 0);
+    const d = addDays(a, b.nights);
+
+    return d.getTime() === today.getTime();
+  });
+}
+
+function getResidents(rez: BookingLine[]) {
+  return rez.filter(b => {
+    const a = b.arrival;
+    a.setHours(0, 0, 0, 0);
+    const d = addDays(a, b.nights);
+
+    return d.getTime() > today.getTime() &&
+      a.getTime() < today.getTime();
+  });
+}
+
+export function subscribe(callback: (state: AppState) => void) {
+  callback({
+    ...initialState,
+    isMobile
+  });
+
+  getBookingLines(initialState.currentSite.toString()).then(rez => {
+    const guests = {
+      arrivals: getArrivals(rez),
+      residents: getResidents(rez),
+      departures: getDepartures(rez),
+      isLoading: false
+    };
+    callback({
+      isMobile,
+      ...loadedState,
+      guests
+    });
+  });
 }

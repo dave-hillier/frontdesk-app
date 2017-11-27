@@ -21,27 +21,9 @@ import { SearchBoxToolbar } from './ToolbarSearchBox';
 import AccountMenu from './AccountMenu';
 
 import './App.css';
+import { AppState } from './model/Model';
 
 const logo = require('./logo.svg');
-export const MobileMinWidth = 320;
-export const TabletMinWidth = 768;
-export const DesktopMinWidth = 1025;
-
-function matchesMedia(min: number, max?: number) {
-  let media = `screen and (min-width: ${min}px)`;
-  if (max) {
-    media += ` and (max-width: ${max}px)`;
-  }
-
-  return window.matchMedia(media).matches;
-}
-
-const isMobile = matchesMedia(MobileMinWidth, TabletMinWidth - 1);
-const tablet = matchesMedia(TabletMinWidth, DesktopMinWidth);
-const desktop = matchesMedia(DesktopMinWidth);
-
-// tslint:disable-next-line:no-console
-console.log('Mobile', isMobile, 'Tablet', tablet, 'desktop', desktop);
 
 const hotelSites = ['Hotel Site A', 'Hotel Site B', 'Hotel Site C'];
 
@@ -128,23 +110,17 @@ const titles = {
 const filterSubject = new Rx.Subject<string>();
 const debounced = filterSubject.debounce(300).publish().refCount();
 
-class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: number, filter: string }> {
+class App extends React.PureComponent<{ appState: AppState },
+  { filter: string }> {
   subscription: Rx.IDisposable;
-  constructor(props: {}) {
+  constructor(props: any) {
     super(props);
     this.state = {
-      loaded: false,
-      hotelSiteIndex: 0,
       filter: ''
     };
   }
 
   componentWillMount() {
-    setTimeout(() => {
-      this.setState({ loaded: true });
-      // tslint:disable-next-line:align
-    }, 300); // TODO: replace with real load
-
     this.subscription = debounced.subscribe(f => this.setState({ filter: f }));
   }
 
@@ -153,19 +129,21 @@ class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: num
   }
 
   render() {
+    const { isLaunching, isMobile, currentSite, guests } = this.props.appState;
+
     // https://github.com/reactjs/react-transition-group/issues/79
     return (
       <div>
-        <LaunchScreen show={!this.state.loaded} />
+        <LaunchScreen show={isLaunching} />
         <Route
           render={({ location }) => (
             <NavigationDrawer
               className="nav-drawer"
               drawerTitle={(
                 <DrawerHeader
-                  hotelSiteIndex={this.state.hotelSiteIndex}
+                  hotelSiteIndex={0}
                   onChange={(v, i, e) => {
-                    this.setState({ hotelSiteIndex: i });
+                    // this.setState({ hotelSiteIndex: i }); // TODO: change site
                     // tslint:disable-next-line:no-console
                     console.log('updating site', i);
                   }}
@@ -190,21 +168,22 @@ class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: num
                   path="/"
                   location={location}
                   component={() => (
-                    <Guests
+                    guests ? <Guests
                       isMobile={isMobile}
-                      hotelSiteCode={this.state.hotelSiteIndex.toString()}
+                      hotelSiteCode={currentSite}
                       search={this.state.filter}
-                    />)}
+                      {...guests}
+                    /> : null)}
                 />
                 <Route
                   path="/planner"
                   location={location}
-                  component={() => <Planner isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                  component={() => <Planner isMobile={isMobile} hotelSiteCode={currentSite} />}
                 />
                 <Route
                   path="/availability"
                   location={location}
-                  component={() => (<Availability isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />)}
+                  component={() => (<Availability isMobile={isMobile} hotelSiteCode={currentSite} />)}
                 />
                 <Route
                   path="/reservations"
@@ -212,19 +191,19 @@ class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: num
                   component={() => (
                     <ReservationsPage
                       isMobile={isMobile}
-                      hotelSiteCode={this.state.hotelSiteIndex.toString()}
+                      hotelSiteCode={currentSite}
                       filter={this.state.filter}
                     />)}
                 />
                 <Route
                   path="/rooms"
                   location={location}
-                  component={() => <RoomsPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                  component={() => <RoomsPage isMobile={isMobile} hotelSiteCode={currentSite} />}
                 />
                 <Route
                   path="/profiles"
                   location={location}
-                  component={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
+                  component={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={currentSite} />}
                 />}
                 />
               </Switch>

@@ -91,3 +91,53 @@ export interface Reservation {
   readonly balance: number;
   readonly depositPaid: number; // TODO: obtain from folio?
 }
+
+export interface AppState {
+  isLaunching: boolean;
+  isMobile: boolean;
+
+  currentSite: string;
+  sites?: string[];
+
+  userDetails?: {
+    userName: string,
+    userInitials: string
+  };
+
+  reservations?: {
+    bookingLines: BookingLine[],
+    isLoading: boolean
+  };
+
+  guests?: {
+    arrivals: BookingLine[],
+    departures: BookingLine[],
+    residents: BookingLine[],
+    isLoading: boolean
+  };
+
+  planner?: {
+    roomBookings: {
+      roomName: string,
+      bookingLines: BookingLine[]
+    }[]
+  };
+
+  availability?: {
+    roomTypeAvailability: {
+      roomType: string,
+      quantity: number
+    }[],
+    isLoading: boolean
+  };
+
+  rooms?: {
+    rooms: Room[],
+    isLoading: boolean
+  };
+
+  profiles?: {
+    profiles: GuestProfile[],
+    isLoading: boolean
+  };
+}

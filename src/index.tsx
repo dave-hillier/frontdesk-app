@@ -5,6 +5,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { subscribe } from './model/FakeData';
 
 WebFontLoader.load({
   google: {
@@ -12,9 +13,11 @@ WebFontLoader.load({
   },
 });
 
-ReactDOM.render(
-  <Router><App /></Router>,
-  document.getElementById('root') as HTMLElement
-);
+subscribe((appState) => {
+  ReactDOM.render(
+    <Router><App appState={appState}/></Router>,
+    document.getElementById('root') as HTMLElement
+  );
+});
 
 registerServiceWorker();
