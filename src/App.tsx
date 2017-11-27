@@ -15,7 +15,7 @@ import Planner from './Planner';
 import SearchBox from './SearchBox';
 import LaunchScreen from './LaunchScreen';
 import RoomsPage from './RoomsPage';
-import ReservationsPage from './ReservationsPage';
+import ReservationsPage from './reservations/ReservationsPage';
 import ProfilesPage from './ProfilesPage';
 import ToolbarSearchBox from './ToolbarSearchBox';
 import AccountMenu from './AccountMenu';

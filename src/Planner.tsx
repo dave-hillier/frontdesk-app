@@ -3,7 +3,7 @@ import './Planner.css';
 import { getBookingLinesByRoom, getRooms } from './FakeReservations';
 import { Room, BookingLine } from './Model';
 import { subtractDates, addDays } from './dateHelpers';
-import { ReservationPreviewDialog } from './ReservationPreviewDialog';
+import { ReservationPreviewDialog } from './reservations/ReservationPreviewDialog';
 import DateColumnHeaders from './DateColumnHeaders';
 
 // TODO: break this up!

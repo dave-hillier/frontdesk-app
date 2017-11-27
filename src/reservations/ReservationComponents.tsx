@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { ListItem, Button, Divider, FontIcon } from 'react-md';
 
-import { Tooltip } from './Tooltip';
-import { addDays } from './dateHelpers';
-import { Reservation, BookingLine } from './Model';
-import { ProfileShortPanel } from './ProfileComponents';
+import { Tooltip } from '../Tooltip';
+import { addDays } from '../dateHelpers';
+import { Reservation, BookingLine } from '../Model';
+import { ProfileShortPanel } from '../ProfileComponents';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);

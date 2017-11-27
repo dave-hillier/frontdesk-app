@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Button, Paper, FontIcon, ListItem, Collapse } from 'react-md';
 
-import { Reservation, BookingLine } from './Model';
-import { addDays } from './dateHelpers';
+import { Reservation, BookingLine } from '../Model';
+import { addDays } from '../dateHelpers';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 
 import './ReservationsPage.css';
-import { MoreVertButton } from './MoreVertButton';
-import { DatePicker } from './DataPicker';
+import { MoreVertButton } from '../MoreVertButton';
+import { DatePicker } from '../DataPicker';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);

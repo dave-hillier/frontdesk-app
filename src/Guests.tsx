@@ -6,8 +6,8 @@ import {
   BottomNavigation,
   FontIcon
 } from 'react-md';
-import { ReservationPreviewDialog } from './ReservationPreviewDialog';
-import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentItem } from './ReservationComponents';
+import { ReservationPreviewDialog } from './reservations/ReservationPreviewDialog';
+import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentItem } from './reservations/ReservationComponents';
 import { getBookingLines } from './FakeReservations';
 import { addDays } from './dateHelpers';
 import { BookingLine, Reservation } from './Model';

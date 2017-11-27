@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { getBookingLines } from './FakeReservations';
-import { BookingLine, Reservation } from './Model';
+import { getBookingLines } from '../FakeReservations';
+import { BookingLine, Reservation } from '../Model';
 import { ResidentItem, ReservationPanel } from './ReservationComponents';
-import { SelectItemLayout } from './SelectedItemLayout';
+import { SelectItemLayout } from '../SelectedItemLayout';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 import { ReservationsTable } from './ReservationsTable';
 import * as Fuse from 'fuse.js';
