@@ -9,7 +9,7 @@ export interface ToolbarSearchBoxProps {
   clear: () => void;
 }
 
-const ToolbarSearchBox = ({ showClear, clear, ...props }: ToolbarSearchBoxProps & TextFieldProps) => {
+const SearchTextEntry = ({ showClear, clear, ...props }: ToolbarSearchBoxProps & TextFieldProps) => {
   return (
     <div className="toolbar-search-box-container">
       <div className="toolbar-search-box-inner" >
@@ -26,4 +26,37 @@ const ToolbarSearchBox = ({ showClear, clear, ...props }: ToolbarSearchBoxProps 
     </div>);
 };
 
-export default ToolbarSearchBox;
+export class SearchBoxToolbar extends React.Component<
+  { location: any, onChange?: (filter: string) => void, searchTitle: string },
+  { filter: string }> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      filter: ''
+    };
+  }
+
+  render() {
+    return (
+      <SearchTextEntry
+        placeholder={this.props.searchTitle}
+        onChange={(value: string, e: any) => {
+          this.setState({ filter: value });
+          if (this.props.onChange) {
+            this.props.onChange(value);
+          }
+        }}
+        showClear={this.state.filter.length > 0}
+        value={this.state.filter}
+        clear={() => {
+          this.setState({ filter: '' });
+          if (this.props.onChange) {
+            this.props.onChange('');
+          }
+        }}
+      />
+    );
+  }
+}
+
+export default SearchTextEntry;

@@ -17,7 +17,7 @@ import LaunchScreen from './LaunchScreen';
 import RoomsPage from './RoomsPage';
 import ReservationsPage from './reservations/ReservationsPage';
 import ProfilesPage from './ProfilesPage';
-import ToolbarSearchBox from './ToolbarSearchBox';
+import { SearchBoxToolbar } from './ToolbarSearchBox';
 import AccountMenu from './AccountMenu';
 
 import './App.css';
@@ -89,10 +89,6 @@ const navItems = [{
   label: 'Profiles',
   to: '/profiles',
   icon: 'contacts',
-}, {
-  label: 'Rate Search',
-  to: '/rates',
-  icon: 'pie_chart',
 }];
 
 class NavLink extends React.Component<{ to: string, exact?: boolean, icon: string, label: string }, {}> {
@@ -131,61 +127,6 @@ const titles = {
 };
 const filterSubject = new Rx.Subject<string>();
 const debounced = filterSubject.debounce(300).publish().refCount();
-
-class ToolbarStateful extends React.Component<
-  { location: any, onChange?: (filter: string) => void },
-  { filter: string }> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      filter: ''
-    };
-  }
-
-  render() {
-    const searchTitle = `Search ${titles[this.props.location.pathname] ?
-      titles[this.props.location.pathname].toLowerCase() : ''}`;
-    return (
-      <ToolbarSearchBox
-        placeholder={searchTitle}
-        onChange={(value: string, e: any) => {
-          this.setState({ filter: value });
-          if (this.props.onChange) {
-            this.props.onChange(value);
-          }
-        }}
-        showClear={this.state.filter.length > 0}
-        value={this.state.filter}
-        clear={() => {
-          this.setState({ filter: '' });
-          if (this.props.onChange) {
-            this.props.onChange('');
-          }
-        }}
-      />
-    );
-  }
-}
-
-class RateSearch extends React.PureComponent<{ isMobile: boolean, hotelSiteCode: string }, {}> {
-  render() {
-    return (
-      <div>
-        <div
-          style={{
-            width: '100%',
-            background: '#007ac1',
-            color: 'white',
-            height: '112px'
-          }}
-          className="md-paper md-paper--2"
-        >
-          TODO: Grid..
-        </div>
-        <div style={{ height: '1000px' }}>TODO: body</div>
-      </div>);
-  }
-}
 
 class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: number, filter: string }> {
   subscription: Rx.IDisposable;
@@ -230,9 +171,11 @@ class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: num
                   }}
                 />)}
               toolbarChildren={!isMobile ?
-                <ToolbarStateful
+                <SearchBoxToolbar
+                  searchTitle={`Search ${titles[location.pathname] ?
+                    titles[location.pathname].toLowerCase() : ''}`}
                   location={location}
-                  onChange={s => filterSubject.onNext(s)}
+                  onChange={(s: any) => filterSubject.onNext(s)}
                 /> : null}
               toolbarTitle={<div>{titles[location.pathname] ? titles[location.pathname] : ''}</div>}
               toolbarActions={<div className="toolbar-actions">
@@ -282,14 +225,7 @@ class App extends React.PureComponent<{}, { loaded: boolean, hotelSiteIndex: num
                   path="/profiles"
                   location={location}
                   component={() => <ProfilesPage isMobile={isMobile} hotelSiteCode={this.state.hotelSiteIndex.toString()} />}
-                />
-                <Route
-                  path="/rates"
-                  location={location}
-                  component={() => <RateSearch
-                    isMobile={isMobile}
-                    hotelSiteCode={this.state.hotelSiteIndex.toString()}
-                  />}
+                />}
                 />
               </Switch>
             </NavigationDrawer>
