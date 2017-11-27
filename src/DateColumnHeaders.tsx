@@ -2,14 +2,14 @@ import * as React from 'react';
 import './Allocations.css';
 
 import { addDays } from './util';
-import { DateHeader } from './DateHeader';
+import { WeekDayColumnHeader } from './WeekDayColumnHeader';
 
 const DateColumnHeaders = (props: { start: Date, days: number }): JSX.Element => {
   const cols: {}[] = [];
 
   for (let i = 0; i < props.days; ++i) {
     cols.push(
-      <DateHeader key={i} date={addDays(props.start, i)} />
+      <WeekDayColumnHeader key={i} date={addDays(props.start, i)} />
     );
   }
   return (

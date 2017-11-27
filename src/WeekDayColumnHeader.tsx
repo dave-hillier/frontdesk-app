@@ -2,7 +2,7 @@ import * as React from 'react';
 
 const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-export const DateHeader = (props: { date: Date }) => {
+export const WeekDayColumnHeader = (props: { date: Date }) => {
   const dayOfWeek = props.date.getDay();
   const dayOfMonth = props.date.getDate();
   return (
