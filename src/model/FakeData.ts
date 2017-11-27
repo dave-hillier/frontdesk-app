@@ -259,5 +259,3 @@ export async function getBookingLinesByRoom(hotelSite: string) {
 
   return lookup;
 }
-
-// TODO: get reservations by room type
