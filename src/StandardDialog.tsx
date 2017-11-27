@@ -8,6 +8,7 @@ import {
 } from 'react-md';
 import { MoreVertButton } from './MoreVertButton';
 
+// TODO: does this make sense? Refactor out of existence...
 export class StandardDialog extends React.PureComponent<{ id: string, title: any, isMobile?: boolean, isDesktop?: boolean }, { pageX?: number, pageY?: number, visible: boolean }> {
   constructor(props: any) {
     super(props);

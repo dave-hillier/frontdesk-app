@@ -10,3 +10,17 @@ export function subtractDates(date1: Date, date2: Date): number {
   var difference = date1.getTime() - date2.getTime();
   return Math.round(difference / oneDay);
 }
+
+export function formatDateRange(arrival: Date, departure?: Date) {
+  const arrivalShort = arrival ? arrival.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short'
+  }) : '';
+
+  const departureShort = departure ? (' - ' + departure.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short'
+  })) : '';
+
+  return arrivalShort + departureShort;
+}

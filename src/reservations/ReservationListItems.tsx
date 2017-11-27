@@ -3,26 +3,12 @@ import * as React from 'react';
 import { ListItem } from 'react-md';
 
 import { Tooltip } from '../Tooltip';
-import { addDays } from '../util';
+import { addDays, formatDateRange } from '../util';
 import { BookingLine } from '../model/Model';
 import { People } from './GuestIcons';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
-
-function formatDateRange(arrival: Date, departure?: Date) {
-  const arrivalShort = arrival ? arrival.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short'
-  }) : '';
-
-  const departureShort = departure ? (' - ' + departure.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short'
-  })) : '';
-
-  return arrivalShort + departureShort;
-}
 
 export const ArrivalTopLine = (props: { name: string, time?: Date }) => DepartureTopLine({ name: props.name, time: props.time, label: 'ETA' });
 

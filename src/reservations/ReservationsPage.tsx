@@ -7,64 +7,13 @@ import { ReservationPreviewDialog } from './ReservationPreviewDialog';
 import * as Fuse from 'fuse.js';
 
 import './ReservationsPage.css';
-import { DialogContainer, Toolbar, Button } from 'react-md';
+import { Button } from 'react-md';
 import { ReservationsTable } from './FullPage';
 import { ReservationPanel } from './ReservationPanel';
 import { ResidentListItem } from './ReservationListItems';
+import { CreateDialogContainer } from './CreateDialogContainer';
 
 class PageLayout extends SelectItemLayout<BookingLine> { }
-
-class CreateReservationDialog extends React.PureComponent<{}, {
-  visible: boolean, pageX?: number, pageY?: number
-}> {
-  constructor(props: any) {
-    super(props);
-    this.state = { visible: false };
-  }
-
-  show = (e: any) => {
-    // provide a pageX/pageY to the dialog when making visible to make the
-    // dialog "appear" from that x/y coordinate
-    let { pageX, pageY } = e;
-    if (e.changedTouches) {
-      pageX = e.changedTouches[0].pageX;
-      pageY = e.changedTouches[0].pageY;
-    }
-
-    this.setState({ visible: true, pageX, pageY });
-  }
-
-  hide = () => {
-    this.setState({ visible: false });
-  }
-
-  render() {
-    const { visible, pageX, pageY } = this.state;
-
-    return (
-      <div>
-        <DialogContainer
-          id="create-reservation-dialog"
-          visible={visible}
-          pageX={pageX}
-          pageY={pageY}
-          fullPage={true}
-          onHide={this.hide}
-          aria-labelledby="create-reservation-dialogtitle"
-        >
-          <Toolbar
-            fixed={true}
-            colored={true}
-            title="Create"
-            titleId="create-reservation-dialog-title"
-            nav={<Button icon={true} onClick={this.hide}>close</Button>}
-          />
-
-        </DialogContainer>
-      </div>
-    );
-  }
-}
 
 const FabButton = (props: any) => (
   <div className="fab">
@@ -77,12 +26,12 @@ export class MobileReservationsPage extends React.PureComponent<{
   isMobile: boolean,
   hotelSiteCode: string
 }>  {
-  private dialog: CreateReservationDialog | null;
+  private dialog: CreateDialogContainer | null;
 
   render() {
     return (
       <div>
-        <CreateReservationDialog ref={el => this.dialog = el} />
+        <CreateDialogContainer ref={el => this.dialog = el} />
         <FabButton onClick={(e: any) => this.dialog && this.dialog.show(e)} />
         <PageLayout
           {...this.props}
