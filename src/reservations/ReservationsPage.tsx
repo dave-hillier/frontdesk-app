@@ -5,11 +5,11 @@ import { BookingLine, Reservation } from '../Model';
 import { ResidentItem, ReservationPanel } from './ReservationComponents';
 import { SelectItemLayout } from '../SelectedItemLayout';
 import { ReservationPreviewDialog } from './ReservationPreviewDialog';
-import { ReservationsTable } from './ReservationsTable';
 import * as Fuse from 'fuse.js';
 
 import './ReservationsPage.css';
 import { DialogContainer, Toolbar, Button } from 'react-md';
+import { ReservationsTable } from './FullPage';
 
 class PageLayout extends SelectItemLayout<BookingLine> { }
 
@@ -72,7 +72,7 @@ const FabButton = (props: any) => (
 );
 
 // TODO: only used for mobile view, get rid of the dependency
-export class ReservationsPage extends React.PureComponent<{
+export class MobileReservationsPage extends React.PureComponent<{
   isMobile: boolean,
   hotelSiteCode: string
 }>  {
@@ -145,7 +145,7 @@ export class ReservationsTablePage extends React.PureComponent<
 
   render() {
     if (this.props.isMobile) {
-      return <ReservationsPage {...this.props} />;
+      return <MobileReservationsPage {...this.props} />;
     }
 
     const fuse = new Fuse(this.state.bookings, fuseOptions);
