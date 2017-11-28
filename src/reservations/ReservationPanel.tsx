@@ -7,6 +7,8 @@ import { Reservation, BookingLine } from '../model/Model';
 import { ProfileShortPanel } from '../ProfileComponents';
 import { People } from './GuestIcons';
 
+const locale = navigator.language;
+
 // TODO: remove duplicate
 const Value = (props: { title: string, children: any }) => {
   return (
@@ -31,8 +33,8 @@ const BookingLineRow = (props: { bookingLine: BookingLine }) => {
         </div>
         <div className="rd-row">
           <div className="rd-tile-icon"><FontIcon>schedule</FontIcon></div>
-          <Value title="ETA">{bookingLine.eta ? bookingLine.eta.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Value>
-          <Value title="ETD">{bookingLine.etd ? bookingLine.etd.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Value>
+          <Value title="ETA">{bookingLine.eta ? bookingLine.eta.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Value>
+          <Value title="ETD">{bookingLine.etd ? bookingLine.etd.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' }) : '--:--'}</Value>
 
           <Value title="Guests"><People adults={1} children={0} infants={0} /></Value>
         </div>
@@ -71,13 +73,13 @@ export const ReservationPanel = (props: { reservation: Reservation }) => {
         </div>
         <div className="rd-row2">
           <div />
-          <Value title="Deposit Required">{reservation.depositRequired.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Value>
-          <Value title="Deposit Paid">{reservation.depositPaid.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Value>
+          <Value title="Deposit Required">{reservation.depositRequired.toLocaleString(locale, { style: 'currency', currency: 'GBP' })}</Value>
+          <Value title="Deposit Paid">{reservation.depositPaid.toLocaleString(locale, { style: 'currency', currency: 'GBP' })}</Value>
         </div>
         <div className="rd-row2">
           <div />
-          <Value title="Total For Stay">{reservation.totalForStay.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Value>
-          <Value title="Balance">{reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Value>
+          <Value title="Total For Stay">{reservation.totalForStay.toLocaleString(locale, { style: 'currency', currency: 'GBP' })}</Value>
+          <Value title="Balance">{reservation.balance.toLocaleString(locale, { style: 'currency', currency: 'GBP' })}</Value>
         </div>
       </div>
       <Divider />

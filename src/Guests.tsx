@@ -10,6 +10,7 @@ import { ReservationPreviewDialog } from './reservations/ReservationPreviewDialo
 import { ArrivalTopLine, DepartureTopLine, BottomLine, MiddleLine, ResidentListItem } from './reservations/ReservationListItems';
 import { BookingLine, Reservation } from './model/Model';
 import * as Fuse from 'fuse.js';
+const locale = navigator.language;
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -64,7 +65,7 @@ const DepartureItem = (props: { booking: BookingLine, onClick: (e: any) => void 
         <div>
           <div className="space-between-content">
             <div>{room ? 'Room: ' + room.name.toString() : ''}</div>
-            <div>{r.balance && r.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
+            <div>{r.balance && r.balance.toLocaleString(locale, { style: 'currency', currency: 'GBP' })}</div>
           </div>
         </div>)}
       onClick={props.onClick}

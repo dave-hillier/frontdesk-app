@@ -8,8 +8,9 @@ const today = new Date();
 today.setHours(0, 0, 0, 0);
 
 const dayInitial = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const locale = navigator.language;
 
-function getMonthName(date: Date, locale: string = 'en-gb') {
+function getMonthName(date: Date) {
   return date.toLocaleString(locale, { month: 'long' });
 }
 

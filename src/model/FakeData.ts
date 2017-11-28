@@ -299,7 +299,6 @@ const loadedState: AppState = {
   }
 };
 
-// TODO: push onto model
 function getArrivals(rez: BookingLine[]) {
   return rez.filter(b => {
     const d = b.arrival;
@@ -313,7 +312,6 @@ function getDepartures(rez: BookingLine[]) {
     const a = b.arrival;
     a.setHours(0, 0, 0, 0);
     const d = addDays(a, b.nights);
-
     return d.getTime() === today.getTime();
   });
 }
@@ -323,7 +321,6 @@ function getResidents(rez: BookingLine[]) {
     const a = b.arrival;
     a.setHours(0, 0, 0, 0);
     const d = addDays(a, b.nights);
-
     return d.getTime() > today.getTime() &&
       a.getTime() < today.getTime();
   });

@@ -11,10 +11,11 @@ const today = new Date();
 today.setHours(0, 0, 0, 0);
 
 export const ArrivalTopLine = (props: { name: string, time?: Date }) => DepartureTopLine({ name: props.name, time: props.time, label: 'ETA' });
+const locale = navigator.language;
 
 export const DepartureTopLine = (props: { name: string, time?: Date, label?: string }): JSX.Element => {
   const label = props.label ? props.label : 'ETD';
-  const estimated = props.time ? label + ': ' + props.time.toLocaleTimeString('en-GB', {
+  const estimated = props.time ? label + ': ' + props.time.toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit'
   }) : '';
@@ -48,7 +49,7 @@ export const BottomLine = (props: { balance: number, adults: number, children: n
   return (
     <div className="space-between-content">
       <People {...props} />
-      <Tooltip label="Balance">{props.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</Tooltip>
+      <Tooltip label="Balance">{props.balance.toLocaleString(locale, { style: 'currency', currency: 'GBP' })}</Tooltip>
     </div>);
 };
 

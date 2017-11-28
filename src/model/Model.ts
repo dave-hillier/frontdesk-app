@@ -5,14 +5,16 @@ export interface Room {
   readonly name: string;
   readonly type: string;
   readonly cleaningStatus: 'refreshRequired' | 'cleaningRequired' | 'noAction';
-  readonly occupied: boolean;
+  readonly occupied: boolean; // TODO: infer from reservations?
   readonly group: { name: string };
 }
 
 export interface CompanyProfile {
   readonly name: string;
-
   readonly address: Address;
+
+  // TODO: contact profile
+  // TODO: type of business
 }
 
 // TODO: probably needs to change based on country
@@ -29,23 +31,25 @@ export interface Note {
 }
 
 // TODO: company profiles
-
 export interface GuestProfile {
   readonly title?: string;
   readonly firstName: string;
   readonly lastName: string;
 
   readonly email: string;
-  readonly address: Address;
+  readonly address: Address; // TODO: multiple 
 
   readonly phone: {
     type: string,
     number: string
   }[];
+
   readonly notes: Note[];
   readonly created: Date;
 
   // Note - child/infant profiles/details seems pointless
+  // Social media accounts
+  // Relationship to other profiles
 }
 
 export interface BookingLine {

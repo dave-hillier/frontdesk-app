@@ -10,6 +10,7 @@ import { Virtualized } from '../Virtualized';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
+const locale = navigator.language;
 
 const BookingRow = (props: { bookingLine: BookingLine, onClick: (e: any) => void }) => {
   const bookingLine = props.bookingLine;
@@ -40,7 +41,7 @@ const BookingRow = (props: { bookingLine: BookingLine, onClick: (e: any) => void
 
       <div className="col-ledger">{reservation.ledger ? reservation.ledger.name : ''}</div>
       <div className="col-net">Net</div>
-      <div className="col-gross">{reservation.balance.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
+      <div className="col-gross">{reservation.balance.toLocaleString(locale, { style: 'currency', currency: 'GBP' })}</div>
       <div className="col-actions">
         <Button icon={true}>edit</Button>
         <MoreVertButton id="dialog-more-button">
@@ -81,7 +82,7 @@ const ColumnHeaders = () => (
 
 export class Table extends React.PureComponent<{
   rowHeight: number, onClick: (e: any, r: Reservation) => void, bookings: BookingLine[]
-}, { }> {
+}, {}> {
 
   renderItem(bl: BookingLine, onClick: any) {
     return <BookingRow key={bl.refFull} bookingLine={bl} onClick={e => onClick(e, bl.reservation)} />;
