@@ -153,29 +153,34 @@ function generateData(hotelCode: string): Reservation[][] {
       };
       room.push(item);
       allResevations.push(item);
-      const subref = '1';
-      const bookingLine: BookingLine = {
-        refSub: subref,
-        refFull: item.ref + ' / ' + subref,
-        arrival: arrival, // TODO: change to date?
-        nights: nights,
-        roomType: roomType,
-        allocatedRoom: theRoom,
-        rate: rate,
-        guests: {
-          adults: adults,
-          children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
-          infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
-        },
-        profiles: [],
+      const lineBookings = seededChance.d6() === 6 ? 2 : 1;
 
-        eta: seededChance.d6() === 1 ? new Date() : undefined,
-        etd: seededChance.d6() === 1 ? new Date() : undefined,
+      for (let i = 0; i < lineBookings; ++i) {
+        const subref = 1 + i;
+        const bookingLine: BookingLine = {
+          refSub: subref.toString(),
+          refFull: item.ref + ' / ' + subref,
+          arrival: arrival, // TODO: change to date?
+          nights: nights,
+          roomType: roomType,
+          allocatedRoom: theRoom,
+          rate: rate,
+          guests: {
+            adults: adults,
+            children: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
+            infants: adults === 2 && seededChance.d6() > 3 ? 1 : 0,
+          },
+          profiles: [],
 
-        reservation: item
-      };
-      item.bookingLines.push(bookingLine);
-      allBookingLines.push(bookingLine);
+          eta: seededChance.d6() === 1 ? new Date() : undefined,
+          etd: seededChance.d6() === 1 ? new Date() : undefined,
+
+          reservation: item
+        };
+        item.bookingLines.push(bookingLine);
+        allBookingLines.push(bookingLine);
+      }
+
     }
   }
   generated[hotelCode] = rez;
