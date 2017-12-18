@@ -1,7 +1,7 @@
 
 import { addDays, subtractDates } from '../util';
 import { Chance } from 'chance';
-import { Room, Reservation, GuestProfile, BookingLine, AppState } from './Model';
+import { Room, Reservation, GuestProfile, BookingLine, AppState, CompanyProfile } from './Model';
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -58,6 +58,60 @@ const allRooms: { [code: string]: Room[] } = {};
 const allProfiles: GuestProfile[] = [];
 const allBookingLines: BookingLine[] = [];
 
+function createRoom(roomIndex: number, hotelCode: string) {
+  const roomType = roomTypesList[roomIndex % roomTypesList.length];
+  const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
+  const group = { name: 'Floor ' + currentFloor };
+  const roomNumber = (roomIndex % (roomCount / floors)) + 1;
+  const cleaningStatus: 'cleaningRequired' = 'cleaningRequired';
+
+  const theRoom = {
+    name: `${currentFloor}${('0' + roomNumber).slice(-2)}`,
+    type: roomType,
+    cleaningStatus,
+    occupied: true,
+    group
+  };
+  if (!(hotelCode in allRooms)) {
+    allRooms[hotelCode] = [];
+  }
+  allRooms[hotelCode].push(theRoom);
+  return theRoom;
+}
+
+function createProfile(seededChance: any) {
+  const profile: GuestProfile = {
+    firstName: seededChance.first(),
+    lastName: seededChance.last(),
+    emails: [
+      {
+        email: seededChance.email(),
+        preference: 0
+      }
+    ],
+    phoneNumbers: [{
+      type: 'mobile',
+      number: seededChance.phone(),
+      preference: 0
+    }],
+    addresses: [{
+      value: {
+        building: '',
+        streetAddress: seededChance.address(),
+        postalTown: seededChance.city(),
+        postCode: seededChance.zip(),
+        countryRegion: seededChance.country()
+      },
+      preference: 0
+    }],
+    notes: [],
+    socialMedia: [],
+    identification: [],
+    created: new Date()
+  };
+  allProfiles.push(profile);
+  return profile;
+}
 const generated: any = {};
 function generateData(hotelCode: string): Reservation[][] {
   if (hotelCode in generated) {
@@ -71,77 +125,48 @@ function generateData(hotelCode: string): Reservation[][] {
   };
   // TODO: calculate in a promise/future in a worker
   const rez: Reservation[][] = [];
-
   for (let roomIndex = 0; roomIndex < roomCount; ++roomIndex) {
-    const roomType = roomTypesList[roomIndex % roomTypesList.length];
-
-    const currentFloor = 1 + Math.floor(roomIndex / (roomCount / floors));
-    const group = { name: 'Floor ' + currentFloor };
-    const roomNumber = (roomIndex % (roomCount / floors)) + 1;
-    const cleaningStatus: 'cleaningRequired' = 'cleaningRequired';
-    const theRoom = {
-      name: `${currentFloor}${('0' + roomNumber).slice(-2)}`,
-      type: roomType,
-      cleaningStatus,
-      occupied: true,
-      group
-    };
-    if (!(hotelCode in allRooms)) {
-      allRooms[hotelCode] = [];
-    }
-    allRooms[hotelCode].push(theRoom);
+    const theRoom = createRoom(roomIndex, hotelCode);
 
     const room: Reservation[] = rez[theRoom.name] = [];
     let currentDate = addDays(today, -5); // Start 5 days before
 
     for (let num = Math.floor(pseudoRandom() * 100); num > 0; --num) {
 
-      const dayBefore = Math.floor(pseudoRandom() * 5);
-      const nights = 1 + Math.floor(pseudoRandom() * 5);
-      currentDate = addDays(currentDate, dayBefore);
-      const departure = addDays(currentDate, nights);
-      const arrival = currentDate;
-      currentDate = departure;
-      const profile = {
-        firstName: seededChance.first(),
-        lastName: seededChance.last(),
-        email: seededChance.email(),
-        phone: [{
-          type: 'mobile',
-          number: seededChance.phone()
-        }],
-        address: {
-          building: '',
-          streetAddress: seededChance.address(),
-          postalTown: seededChance.city(),
-          postCode: seededChance.zip(),
-          countryRegion: seededChance.country()
-        },
-        notes: [],
-        created: new Date()
-      };
-      allProfiles.push(profile);
+      const profile = createProfile(seededChance);
       const rate = seededChance.pickone(rates);
       const adults = seededChance.d6() > 3 ? 2 : 1;
       const reference = 'BK00' + seededChance.ssn().replace('-', '').replace('-', '');
 
-      const balance = nights * 100 + Math.floor(1 + pseudoRandom() * 100);
-      const item: Reservation = {
-        contact: profile,
-        bookingLines: [],
-        ref: reference,
-
-        balance,
-        ledger: pseudoRandom() > 0.7 ? {
-          name: 'Ledger ' + seededChance.d100(),
-          address: {
+      const company: CompanyProfile = {
+        name: 'Ledger ' + seededChance.d100(),
+        typeOfBusiness: '',
+        contacts: [{
+          profile: profile,
+          preference: 0
+        }],
+        addresses: [{
+          value: {
             building: '',
             streetAddress: seededChance.address(),
             postalTown: seededChance.city(),
             postCode: seededChance.zip(),
             countryRegion: seededChance.country()
-          }
-        } : undefined,
+          },
+          preference: 0
+        }],
+        socialMedia: []
+      };
+
+      const balance = 5 * 100 + Math.floor(1 + pseudoRandom() * 100);
+      const item: Reservation = {
+
+        contact: profile,
+        bookingLines: [],
+        ref: reference,
+        guests: [profile],
+        balance,
+        ledger: pseudoRandom() > 0.7 ? company : undefined,
 
         state: 'provisional',
         created: new Date(),
@@ -149,20 +174,29 @@ function generateData(hotelCode: string): Reservation[][] {
         mediaSource: 'internet',
         depositPaid: 0,
         depositRequired: 100,
-        totalForStay: balance + nights * 10 + Math.floor(1 + pseudoRandom() * 10)
+        totalForStay: balance + 5 * 10 + Math.floor(1 + pseudoRandom() * 10)
       };
       room.push(item);
       allResevations.push(item);
       const lineBookings = seededChance.d6() === 6 ? 2 : 1;
 
+      const dayBefore = Math.floor(pseudoRandom() * 5);
+
+      currentDate = addDays(currentDate, dayBefore);
+
       for (let i = 0; i < lineBookings; ++i) {
+        const nights = 1 + Math.floor(pseudoRandom() * 5);
+        const departure = addDays(currentDate, nights);
+        const arrival = currentDate;
+        currentDate = departure;
+
         const subref = 1 + i;
         const bookingLine: BookingLine = {
           refSub: subref.toString(),
           refFull: item.ref + ' / ' + subref,
           arrival: arrival, // TODO: change to date?
           nights: nights,
-          roomType: roomType,
+          roomType: theRoom.type,
           allocatedRoom: theRoom,
           rate: rate,
           guests: {
@@ -177,6 +211,7 @@ function generateData(hotelCode: string): Reservation[][] {
 
           reservation: item
         };
+
         item.bookingLines.push(bookingLine);
         allBookingLines.push(bookingLine);
       }

@@ -28,9 +28,9 @@ export const ProfileShortPanel = (props: { profile: GuestProfile }) => {
   return (
     <div>
       <Row title="Name" icon="person">{props.profile.firstName} {props.profile.lastName}</Row>
-      <Row title="Address" icon="person_pin_circle">{formatAddress(props.profile.address)}</Row>
-      <Row title="Mail" icon="mail">{props.profile.email}</Row>
-      <Row title="Phone" icon="phone"><a href={`tel:${props.profile.phone[0].number}`}>{props.profile.phone[0].number}</a></Row>
+      <Row title="Address" icon="person_pin_circle">{formatAddress(props.profile.addresses[0].value)}</Row>
+      <Row title="Mail" icon="mail">{props.profile.emails[0].email}</Row>
+      <Row title="Phone" icon="phone"><a href={`tel:${props.profile.phoneNumbers[0].number}`}>{props.profile.phoneNumbers[0].number}</a></Row>
     </div>
   );
 };
@@ -40,7 +40,7 @@ export const ProfileListItem = (props: { item: GuestProfile, onClick: any }) => 
     key={`${props.item.firstName} ${props.item.lastName} ${props.item.created}`}
     className="md-divider-border md-divider-border--bottom"
     primaryText={`${props.item.firstName} ${props.item.lastName}`}
-    secondaryText={`${formatAddress(props.item.address)}\n${props.item.email}`}
+    secondaryText={`${formatAddress(props.item.addresses[0].value)}\n${props.item.emails[0].email}`}
     threeLines={true}
     onClick={props.onClick}
   />
@@ -65,11 +65,11 @@ export class ProfilePanel extends React.PureComponent<{ profile: GuestProfile }>
 
         <div className="md-cell md-cell--bottom" style={{ minWidth }}>
           <div className="md-text--primary">Address</div>
-          <div className="md-text--secondary">{formatAddress(p.address)}</div>
+          <div className="md-text--secondary">{formatAddress(p.addresses[0].value)}</div>
         </div>
         <div className="md-cell md-cell--bottom" style={{ minWidth }}>
           <div className="md-text--primary">Email</div>
-          <div className="md-text--secondary">{p.email}</div>
+          <div className="md-text--secondary">{p.emails[0].email}</div>
         </div>
       </div>);
   }

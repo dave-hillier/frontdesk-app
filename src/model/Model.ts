@@ -9,12 +9,25 @@ export interface Room {
   readonly group: { name: string };
 }
 
+export type Preference = number;
+// TODO: room type, descriptions, images
+// TODO: hotel info, site info
+
 export interface CompanyProfile {
   readonly name: string;
-  readonly address: Address;
+  readonly addresses: { value: Address, preference: Preference }[];
 
-  // TODO: contact profile
-  // TODO: type of business
+  readonly contacts: {
+    profile: GuestProfile,
+    preference: Preference
+  }[];
+
+  readonly typeOfBusiness: string;
+
+  readonly socialMedia: {
+    value: string,
+    preference: Preference
+  }[];
 }
 
 // TODO: probably needs to change based on country
@@ -30,26 +43,47 @@ export interface Note {
   readonly body: string;
 }
 
-// TODO: company profiles
+export interface Metadata {
+  readonly modified: Date;
+  readonly created: Date;
+  readonly user: string;
+}
+
 export interface GuestProfile {
   readonly title?: string;
   readonly firstName: string;
   readonly lastName: string;
 
-  readonly email: string;
-  readonly address: Address; // TODO: multiple 
+  readonly addresses: {
+    value: Address,
+    preference: Preference
+  }[];
 
-  readonly phone: {
+  readonly phoneNumbers: {
     type: string,
-    number: string
+    number: string,
+    preference: Preference
+  }[];
+
+  readonly emails: {
+    email: string,
+    preference: Preference
   }[];
 
   readonly notes: Note[];
-  readonly created: Date;
 
-  // Note - child/infant profiles/details seems pointless
-  // Social media accounts
-  // Relationship to other profiles
+  readonly identification: {
+    type: string,
+    uniqueId: string,
+    expiry: Date
+  }[];
+
+  readonly socialMedia: {
+    value: string,
+    preference: Preference
+  }[];
+
+  readonly created: Date;
 }
 
 export interface BookingLine {
@@ -81,6 +115,7 @@ export interface Reservation {
   readonly ref: string;
   readonly contact: GuestProfile;
   readonly leadGuest?: GuestProfile; // If null, then use the above
+  readonly guests: GuestProfile[];
   readonly ledger?: CompanyProfile;
   readonly state: 'provisional' | 'confirmed' | 'cancelled';
   readonly created: Date; // TODO: metadata, last modified, last modified user, etc
